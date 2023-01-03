@@ -1,0 +1,7 @@
+Cycle
+inc 1
+inc 1
+inc 2
+dec 1
+dec 1
+dec 2

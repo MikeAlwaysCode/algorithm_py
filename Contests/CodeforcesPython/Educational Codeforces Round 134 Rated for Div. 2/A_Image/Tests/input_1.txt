@@ -1,0 +1,11 @@
+5
+rb
+br
+cc
+wb
+aa
+aa
+ab
+cd
+yy
+xx

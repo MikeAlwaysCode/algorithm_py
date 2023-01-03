@@ -1,0 +1,5 @@
+Command failed: python "c:/Users/Mike/OneDrive - Carlsberg Group/MyODDocs/AlwaysCode/CodeforcesPython/Codeforces Round 814 Div. 2/F_Tonya_and_Burenka179/F_Tonya_and_Burenka179.py" 1  < "c:/Users/Mike/OneDrive - Carlsberg Group/MyODDocs/AlwaysCode/CodeforcesPython/Codeforces Round 814 Div. 2/F_Tonya_and_Burenka179/Tests/input_1.txt" > "c:/Users/Mike/OneDrive - Carlsberg Group/MyODDocs/AlwaysCode/CodeforcesPython/Codeforces Round 814 Div. 2/F_Tonya_and_Burenka179/Tests/code_output_1.txt"
+Traceback (most recent call last):
+  File "c:\Users\Mike\OneDrive - Carlsberg Group\MyODDocs\AlwaysCode\CodeforcesPython\Codeforces Round 814 Div. 2\F_Tonya_and_Burenka179\F_Tonya_and_Burenka179.py", line 12, in <module>
+    t = int(input())
+ValueError: invalid literal for int() with base 10: '<div class="test-example-line test-example-line-even test-example-line-0">4</div><div class="test-example-line test-example-line-odd test-example-line-1">2 1</div><div class="test-example-line test-e

@@ -1,0 +1,50 @@
+Test 1 Passed
+
+Input 1: 
+12
+YES
+esYes
+codeforces
+es
+se
+YesY
+esYesYesYesYesYesYe
+seY
+Yess
+sY
+o
+Yes
+
+
+Expected Output : 
+NO
+YES
+NO
+YES
+NO
+YES
+YES
+NO
+NO
+YES
+NO
+YES
+
+
+Obtained Output : 
+NO
+YES
+NO
+YES
+NO
+YES
+YES
+NO
+NO
+YES
+NO
+YES
+
+
+________________________________________________________
+

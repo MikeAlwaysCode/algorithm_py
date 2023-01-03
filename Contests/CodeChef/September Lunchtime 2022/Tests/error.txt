@@ -1,0 +1,5 @@
+Command failed: python "d:/OneDrive/文档/AlwaysCode/CodeChef/September Lunchtime 2022/P6 - Longest Unfriendly Subsequence.py" 1  < "d:/OneDrive/文档/AlwaysCode/CodeChef/September Lunchtime 2022/Tests/input_1.txt" > "d:/OneDrive/文档/AlwaysCode/CodeChef/September Lunchtime 2022/Tests/code_output_1.txt"
+Traceback (most recent call last):
+  File "d:\OneDrive\�ĵ�\AlwaysCode\CodeChef\September Lunchtime 2022\P6 - Longest Unfriendly Subsequence.py", line 31, in <module>
+    t = int(input())
+ValueError: invalid literal for int() with base 10: ''

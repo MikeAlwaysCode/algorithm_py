@@ -1,0 +1,22 @@
+Test 1 Run time error
+
+Input 1: 
+null
+
+null
+
+null
+
+null
+
+
+
+Expected Output : 
+1
+
+
+Obtained Output : 
+
+
+________________________________________________________
+

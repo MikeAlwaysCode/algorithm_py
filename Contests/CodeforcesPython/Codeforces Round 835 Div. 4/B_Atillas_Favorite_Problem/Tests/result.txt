@@ -1,0 +1,34 @@
+Test 1 Passed
+
+Input 1: 
+5
+1
+a
+4
+down
+10
+codeforces
+3
+bcf
+5
+zzzzz
+
+
+Expected Output : 
+1
+23
+19
+6
+26
+
+
+Obtained Output : 
+1
+23
+19
+6
+26
+
+
+________________________________________________________
+

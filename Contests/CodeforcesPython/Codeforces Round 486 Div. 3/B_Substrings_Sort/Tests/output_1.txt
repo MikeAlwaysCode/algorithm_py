@@ -1,0 +1,6 @@
+YES
+a
+ba
+aba
+aba
+abacaba

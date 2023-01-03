@@ -1,0 +1,352 @@
+Current time: 07/21/2022 Thu 14:08:08.15 
+----------------------------- 
+N: 6 V: 3 
+Score = 39.0
+N: 6 V: 4 
+Score = 53.0
+N: 6 V: 5 
+Score = 29.0
+N: 6 V: 6 
+Score = 46.0
+N: 6 V: 7 
+Score = 46.0
+N: 6 V: 8 
+Score = 85.0
+N: 6 V: 9 
+Score = 65.0
+N: 7 V: 3 
+Score = 42.0
+N: 7 V: 4 
+Score = 54.0
+N: 7 V: 5 
+Score = 52.0
+N: 7 V: 6 
+Score = 61.0
+N: 7 V: 7 
+Score = 76.0
+N: 7 V: 8 
+Score = 66.0
+N: 7 V: 9 
+Score = 82.0
+N: 8 V: 3 
+Score = 55.0
+N: 8 V: 4 
+Score = 71.0
+N: 8 V: 5 
+Score = 78.0
+N: 8 V: 6 
+Score = 76.0
+N: 8 V: 7 
+Score = 83.0
+N: 8 V: 8 
+Score = 96.0
+N: 8 V: 9 
+Score = 102.0
+N: 9 V: 3 
+Score = 75.0
+N: 9 V: 4 
+Score = 82.0
+N: 9 V: 5 
+Score = 88.0
+N: 9 V: 6 
+Score = 96.0
+N: 9 V: 7 
+Score = 117.0
+N: 9 V: 8 
+Score = 104.0
+N: 9 V: 9 
+Score = 110.0
+N: 10 V: 3 
+Score = 91.0
+N: 10 V: 4 
+Score = 92.0
+N: 10 V: 5 
+Score = 120.0
+N: 10 V: 6 
+Score = 102.0
+N: 10 V: 7 
+Score = 95.0
+N: 10 V: 8 
+Score = 115.0
+N: 10 V: 9 
+Score = 133.0
+N: 11 V: 3 
+Score = 102.0
+N: 11 V: 4 
+Score = 128.0
+N: 11 V: 5 
+Score = 108.0
+N: 11 V: 6 
+Score = 107.0
+N: 11 V: 7 
+Score = 128.0
+N: 11 V: 8 
+Score = 165.0
+N: 11 V: 9 
+Score = 123.0
+N: 12 V: 3 
+Score = 136.0
+N: 12 V: 4 
+Score = 133.0
+N: 12 V: 5 
+Score = 153.0
+N: 12 V: 6 
+Score = 134.0
+N: 12 V: 7 
+Score = 135.0
+N: 12 V: 8 
+Score = 165.0
+N: 12 V: 9 
+Score = 153.0
+N: 13 V: 3 
+Score = 147.0
+N: 13 V: 4 
+Score = 126.0
+N: 13 V: 5 
+Score = 175.0
+N: 13 V: 6 
+Score = 151.0
+N: 13 V: 7 
+Score = 199.0
+N: 13 V: 8 
+Score = 164.0
+N: 13 V: 9 
+Score = 221.0
+N: 14 V: 3 
+Score = 166.0
+N: 14 V: 4 
+Score = 157.0
+N: 14 V: 5 
+Score = 169.0
+N: 14 V: 6 
+Score = 176.0
+N: 14 V: 7 
+Score = 180.0
+N: 14 V: 8 
+Score = 191.0
+N: 14 V: 9 
+Score = 196.0
+N: 15 V: 3 
+Score = 204.0
+N: 15 V: 4 
+Score = 190.0
+N: 15 V: 5 
+Score = 223.0
+N: 15 V: 6 
+Score = 194.0
+N: 15 V: 7 
+Score = 214.0
+N: 15 V: 8 
+Score = 232.0
+N: 15 V: 9 
+Score = 285.0
+N: 16 V: 3 
+Score = 220.0
+N: 16 V: 4 
+Score = 214.0
+N: 16 V: 5 
+Score = 209.0
+N: 16 V: 6 
+Score = 241.0
+N: 16 V: 7 
+Score = 247.0
+N: 16 V: 8 
+Score = 238.0
+N: 16 V: 9 
+Score = 268.0
+N: 17 V: 3 
+Score = 258.0
+N: 17 V: 4 
+Score = 256.0
+N: 17 V: 5 
+Score = 239.0
+N: 17 V: 6 
+Score = 257.0
+N: 17 V: 7 
+Score = 246.0
+N: 17 V: 8 
+Score = 271.0
+N: 17 V: 9 
+Score = 297.0
+N: 18 V: 3 
+Score = 294.0
+N: 18 V: 4 
+Score = 277.0
+N: 18 V: 5 
+Score = 262.0
+N: 18 V: 6 
+Score = 314.0
+N: 18 V: 7 
+Score = 326.0
+N: 18 V: 8 
+Score = 285.0
+N: 18 V: 9 
+Score = 368.0
+N: 19 V: 3 
+Score = 330.0
+N: 19 V: 4 
+Score = 295.0
+N: 19 V: 5 
+Score = 313.0
+N: 19 V: 6 
+Score = 348.0
+N: 19 V: 7 
+Score = 327.0
+N: 19 V: 8 
+Score = 329.0
+N: 19 V: 9 
+Score = 380.0
+N: 20 V: 3 
+Score = 369.0
+N: 20 V: 4 
+Score = 333.0
+N: 20 V: 5 
+Score = 336.0
+N: 20 V: 6 
+Score = 370.0
+N: 20 V: 7 
+Score = 363.0
+N: 20 V: 8 
+Score = 402.0
+N: 20 V: 9 
+Score = 448.0
+N: 21 V: 3 
+Score = 396.0
+N: 21 V: 4 
+Score = 332.0
+N: 21 V: 5 
+Score = 409.0
+N: 21 V: 6 
+Score = 410.0
+N: 21 V: 7 
+Score = 370.0
+N: 21 V: 8 
+Score = 366.0
+N: 21 V: 9 
+Score = 484.0
+N: 22 V: 3 
+Score = 441.0
+N: 22 V: 4 
+Score = 392.0
+N: 22 V: 5 
+Score = 372.0
+N: 22 V: 6 
+Score = 432.0
+N: 22 V: 7 
+Score = 499.0
+N: 22 V: 8 
+Score = 416.0
+N: 22 V: 9 
+Score = 581.0
+N: 23 V: 3 
+Score = 477.0
+N: 23 V: 4 
+Score = 433.0
+N: 23 V: 5 
+Score = 413.0
+N: 23 V: 6 
+Score = 465.0
+N: 23 V: 7 
+Score = 475.0
+N: 23 V: 8 
+Score = 456.0
+N: 23 V: 9 
+Score = 599.0
+N: 24 V: 3 
+Score = 501.0
+N: 24 V: 4 
+Score = 479.0
+N: 24 V: 5 
+Score = 450.0
+N: 24 V: 6 
+Score = 501.0
+N: 24 V: 7 
+Score = 497.0
+N: 24 V: 8 
+Score = 547.0
+N: 24 V: 9 
+Score = 581.0
+N: 25 V: 3 
+Score = 558.0
+N: 25 V: 4 
+Score = 476.0
+N: 25 V: 5 
+Score = 517.0
+N: 25 V: 6 
+Score = 594.0
+N: 25 V: 7 
+Score = 535.0
+N: 25 V: 8 
+Score = 528.0
+N: 25 V: 9 
+Score = 626.0
+N: 26 V: 3 
+Score = 591.0
+N: 26 V: 4 
+Score = 511.0
+N: 26 V: 5 
+Score = 528.0
+N: 26 V: 6 
+Score = 593.0
+N: 26 V: 7 
+Score = 589.0
+N: 26 V: 8 
+Score = 587.0
+N: 26 V: 9 
+Score = 784.0
+N: 27 V: 3 
+Score = 633.0
+N: 27 V: 4 
+Score = 564.0
+N: 27 V: 5 
+Score = 565.0
+N: 27 V: 6 
+Score = 639.0
+N: 27 V: 7 
+Score = 591.0
+N: 27 V: 8 
+Score = 604.0
+N: 27 V: 9 
+Score = 796.0
+N: 28 V: 3 
+Score = 684.0
+N: 28 V: 4 
+Score = 610.0
+N: 28 V: 5 
+Score = 639.0
+N: 28 V: 6 
+Score = 714.0
+N: 28 V: 7 
+Score = 645.0
+N: 28 V: 8 
+Score = 696.0
+N: 28 V: 9 
+Score = 834.0
+N: 29 V: 3 
+Score = 720.0
+N: 29 V: 4 
+Score = 666.0
+N: 29 V: 5 
+Score = 709.0
+N: 29 V: 6 
+Score = 737.0
+N: 29 V: 7 
+Score = 738.0
+N: 29 V: 8 
+Score = 681.0
+N: 29 V: 9 
+Score = 817.0
+N: 30 V: 3 
+Score = 747.0
+N: 30 V: 4 
+Score = 686.0
+N: 30 V: 5 
+Score = 730.0
+N: 30 V: 6 
+Score = 770.0
+N: 30 V: 7 
+Score = 770.0
+N: 30 V: 8 
+Score = 743.0
+N: 30 V: 9 
+Score = 857.0

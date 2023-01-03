@@ -1,0 +1,7 @@
+Command failed: python "d:/OneDrive/文档/AlwaysCode/CodeforcesPython/Good Bye 2022 2023 is NEAR/D_Koxia_and_Game/D_Koxia_and_Game.py" 1  < "d:/OneDrive/文档/AlwaysCode/CodeforcesPython/Good Bye 2022 2023 is NEAR/D_Koxia_and_Game/Tests/input_1.txt" > "d:/OneDrive/文档/AlwaysCode/CodeforcesPython/Good Bye 2022 2023 is NEAR/D_Koxia_and_Game/Tests/code_output_1.txt"
+Traceback (most recent call last):
+  File "d:\OneDrive\�ĵ�\AlwaysCode\CodeforcesPython\Good Bye 2022 2023 is NEAR\D_Koxia_and_Game\D_Koxia_and_Game.py", line 114, in <module>
+    solve()
+  File "d:\OneDrive\�ĵ�\AlwaysCode\CodeforcesPython\Good Bye 2022 2023 is NEAR\D_Koxia_and_Game\D_Koxia_and_Game.py", line 104, in solve
+    print(go(0, s) % MOD)
+TypeError: unhashable type: 'set'

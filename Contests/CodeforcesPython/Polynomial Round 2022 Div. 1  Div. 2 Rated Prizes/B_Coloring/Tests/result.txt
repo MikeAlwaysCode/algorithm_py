@@ -1,0 +1,22 @@
+Test 1 Passed
+
+Input 1: 
+2
+12 6 2
+1 1 1 1 1 7
+12 6 2
+2 2 2 2 2 2
+
+
+Expected Output : 
+NO
+YES
+
+
+Obtained Output : 
+NO
+YES
+
+
+________________________________________________________
+

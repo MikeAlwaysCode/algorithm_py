@@ -1,0 +1,85 @@
+Test 1 Passed
+
+Input 1: 
+6 4
+3 2 2 2 3 3
+
+
+Expected Output : 
+Yes
+
+
+Obtained Output : 
+Yes
+
+
+________________________________________________________
+
+Test 2 Passed
+
+Input 2: 
+8 3
+3 2 2 2 2 2 1 1
+
+
+Expected Output : 
+Yes
+
+
+Obtained Output : 
+Yes
+
+
+________________________________________________________
+
+Test 3 Passed
+
+Input 3: 
+7 8
+7 7 7 7 7 7 7
+
+
+Expected Output : 
+No
+
+
+Obtained Output : 
+No
+
+
+________________________________________________________
+
+Test 4 Passed
+
+Input 4: 
+10 5
+4 3 2 1 4 3 2 4 3 4
+
+
+Expected Output : 
+No
+
+
+Obtained Output : 
+No
+
+
+________________________________________________________
+
+Test 5 Passed
+
+Input 5: 
+2 500000
+499999 499999
+
+
+Expected Output : 
+No
+
+
+Obtained Output : 
+No
+
+
+________________________________________________________
+

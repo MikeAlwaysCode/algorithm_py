@@ -1,0 +1,15 @@
+Grid size, N = 10
+Number of values, V = 9
+Negation probability, P = 0.1
+Bonus multiplier, B = 1.0667025620177855
+
+
+
+
+
+
+
+
+
+
+Score = 45.0

@@ -1,0 +1,34 @@
+Test 1 Passed
+
+Input 1: 
+5
+4
+QQAA
+4
+QQAQ
+3
+QAA
+1
+Q
+14
+QAQQAQAAQQQAAA
+
+
+Expected Output : 
+Yes
+No
+Yes
+No
+Yes
+
+
+Obtained Output : 
+Yes
+No
+Yes
+No
+Yes
+
+
+________________________________________________________
+

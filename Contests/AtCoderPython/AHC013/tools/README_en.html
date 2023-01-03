@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>AHC013 Tester</title>
+	<style type="text/css">
+		body {
+			margin: 10px 5%;
+			font-family: sans-serif;
+		}
+		h2 {
+			border-left: 8px solid gray;
+			margin-top:  40px;
+			padding-left: 10px;
+		}
+		code {
+			background-color: rgba(27, 31, 35, 0.05);
+			border-radius: 3px;
+			font-family: monospace;
+			padding: 0.2em 0.4em;
+		}
+		pre {
+			background-color: rgb(246, 248, 250);
+			padding: 16px;
+		}
+	</style>
+</head>
+<body>
+<h1>Local tools</h1>
+<p>
+	We provide the contestant tools for <a href="https://atcoder.jp/contests/ahc013">RECRUIT Nihonbashi Half Marathon 2022 Summer (AHC013)</a>.
+</p>
+<ul>
+	<li>These programs don't guarantee the actual score of the contest.</li>
+	<li>Use these programs at your own risk.</li>
+	<li>These programs are provided as-is. We don't accept any questions about them.</li>
+	<li>You can use these programs in your solution.</li>
+</ul>
+
+<h2>Requirements</h2>
+<p>Please install a compiler for Rust language (see <a href="https://www.rust-lang.org">https://www.rust-lang.org</a>)</p>
+<p>The following examples assume that you will be working in the directory where this README is located.</p>
+
+<h2>Input Generation</h2>
+<p>The <code>in</code> directory contains pre-generated input files for seed=0-99.</p>
+<p>If you want more inputs, prepare <code>seeds.txt</code> which contains a list of random seeds (unsigned 64bit integers) and execute the following command.</p>
+<pre>
+cargo run --release --bin gen seeds.txt
+</pre>
+<p>This will output input files into <code>in</code> directory.</p>
+
+<h2>Visualization</h2>
+<p>Let <code>in.txt</code> be an input file and <code>out.txt</code> be an output file. You can visualize the output by executing the following command.</p>
+<pre>
+cargo run --release --bin vis in.txt out.txt
+</pre>
+<p>The above command writes a visualization result to <code>vis.html</code>. It also outputs the score to standard output.</p>
+<p>You can also use a <a href="https://img.atcoder.jp/ahc013/a42302b3af.html?lang=en">web visualizer</a>.</p>
+<p>To use the web visualizer, copy and paste the output of your program into the Output field of the visualizer.<br>
+By changing the number in the Seed field, you can switch to an input for another seed. You can start animation by pressing the <code>▶</code> button.</p>
+</body>
+</html>

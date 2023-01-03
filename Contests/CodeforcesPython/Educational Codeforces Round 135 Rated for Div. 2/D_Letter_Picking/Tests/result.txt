@@ -1,0 +1,20 @@
+Test 1 Passed
+
+Input 1: 
+2
+forces
+abba
+
+
+Expected Output : 
+Alice
+Draw
+
+
+Obtained Output : 
+Alice
+Draw
+
+
+________________________________________________________
+

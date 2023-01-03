@@ -1,0 +1,25 @@
+[package]
+name = "tools"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+proconio = "0.4.3"
+rand = "0.8.5"
+rand_chacha = "0.3.1"
+svg = "0.10.0"
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen = "0.2.81"
+getrandom = { version = "0.2.7", features = ["js"] }
+
+[profile.dev]
+overflow-checks = false
+
+[profile.test]
+overflow-checks = false
+
+[lib]
+crate_type = ["cdylib", "rlib"]

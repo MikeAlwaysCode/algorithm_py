@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>AHC013 Tester</title>
+	<style type="text/css">
+		body {
+			margin: 10px 5%;
+			font-family: sans-serif;
+		}
+		h2 {
+			border-left: 8px solid gray;
+			margin-top:  40px;
+			padding-left: 10px;
+		}
+		code {
+			background-color: rgba(27, 31, 35, 0.05);
+			border-radius: 3px;
+			font-family: monospace;
+			padding: 0.2em 0.4em;
+		}
+		pre {
+			background-color: rgb(246, 248, 250);
+			padding: 16px;
+		}
+	</style>
+</head>
+<body>
+<h1>ローカル用ツール</h1>
+<p>
+	これは <a href="https://atcoder.jp/contests/ahc013">RECRUIT 日本橋ハーフマラソン 2022夏（AHC013）</a> の開発用ツールです。これらを用いることで、ローカル環境でプログラムのテストを行うことができます。
+</p>
+<ul>
+	<li>これらのプログラム上で計算された得点は、当コンテストでの得点を保証するものではありません。</li>
+	<li>これらのプログラムを使用することによるあらゆる損害は保障しかねますので、予めご了承ください。</li>
+	<li>これらのプログラムに関する質問は受け付けていません。予めご了承ください。</li>
+	<li>これらのプログラムを、コンテストの解答に流用してもかまいません。</li>
+</ul>
+
+<h2>実行環境</h2>
+<p>Rust言語のコンパイル環境が必要です。 <a href="https://www.rust-lang.org/ja">https://www.rust-lang.org/ja</a> を参考に各自インストールしてください。</p>
+<p>以下の実行例では、このREADMEが置かれているディレクトリに移動して作業することを想定しています。</p>
+
+<h2>テストケース生成</h2>
+<p><code>in</code> ディレクトリに、あらかじめ生成された seed=0~99 に対する入力ファイルが置かれています。</p>
+<p>より多くの入力が欲しい場合は、 <code>seeds.txt</code> に欲しい入力ファイルの数だけ乱数seed値(符号なし64bit整数値)を記入し、以下のコマンドを実行します。</p>
+<pre>
+cargo run --release --bin gen seeds.txt
+</pre>
+<p>生成された入力ファイルは <code>in</code> ディレクトリに出力されます。</p>
+
+<h2>ビジュアライザ</h2>
+<p>入力ファイル名を <code>in.txt</code>、出力ファイル名を <code>out.txt</code> としたとき、以下のコマンドを実行します。</p>
+<pre>
+cargo run --release --bin vis in.txt out.txt
+</pre>
+<p>出力のビジュアライズ結果は <code>vis.html</code> というファイルに書き出されます。標準出力にはスコアを出力します。</p>
+<p>より機能が豊富な <a href="https://img.atcoder.jp/ahc013/a42302b3af.html?lang=ja">ウェブ版のビジュアライザ</a>も利用可能です。</p>
+<p>ウェブ版のビジュアライザを使用するには、解答プログラムの出力をビジュアライザのOutput欄に貼り付けてください。<br>
+Seed欄の数字を変更することで他のseedの入力に切り替わります。 <code>▶</code> ボタンを押すとアニメーションが開始します。</p>
+</body>
+</html>
