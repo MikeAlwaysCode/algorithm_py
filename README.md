@@ -1,14 +1,10 @@
-# Algorithm implement by Python3
+# The algorithmic interest trail
 
-## Contests
+重拾算法兴趣，保存比赛记录，总结收集算法模板。
 
-* [Codeforces](/Contests/CodeforcesPython/)
-* [AtCoder](/Contests/AtCoderPython/)
-* [LeetCode](/Contests/LeetCodePython/)
-* [Codechef](Contests/CodeChef/)
-* [DMOJ](/Contests/DMOJ/)
+---
 
-## Template
+## Alogrithm & Template
 
 * 数据结构
   * [并查集DSU(disjoint set union)](/Template/dsu.py)
@@ -39,3 +35,13 @@
 * 字符串
   * 字典树
   * KMP
+
+---
+
+## Contests
+
+* [Codeforces](/Contests/CodeforcesPython/)
+* [AtCoder](/Contests/AtCoderPython/)
+* [LeetCode](/Contests/LeetCodePython/)
+* [Codechef](Contests/CodeChef/)
+* [DMOJ](/Contests/DMOJ/)
