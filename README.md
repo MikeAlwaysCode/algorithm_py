@@ -2,11 +2,11 @@
 
 ## Contests
 
-* Codeforces
-* AtCoder
-* LeetCode
-* Codechef
-* DMOJ
+* [Codeforces](/Contests/CodeforcesPython/)
+* [AtCoder](/Contests/AtCoderPython/)
+* [LeetCode](/Contests/LeetCodePython/)
+* [Codechef](Contests/CodeChef/)
+* [DMOJ](/Contests/DMOJ/)
 
 ## Template
 
