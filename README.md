@@ -43,5 +43,21 @@
 * [Codeforces](/Contests/CodeforcesPython/)
 * [AtCoder](/Contests/AtCoderPython/)
 * [LeetCode](/Contests/LeetCodePython/)
-* [Codechef](Contests/CodeChef/)
+* [CodeChef](Contests/CodeChef/)
 * [DMOJ](/Contests/DMOJ/)
+
+---
+
+## Appendix
+
+1. [Codeforces](https://codeforces.com/)
+2. [AtCoder](https://atcoder.jp/home)
+3. [LeetCode](https://leetcode.cn/)
+4. [CodeChef](https://www.codechef.com/)
+5. [DMOJ](https://dmoj.ca/)
+6. [Clist](https://clist.by/)
+7. [LeetCode problem rating](https://zerotrac.github.io/leetcode_problem_rating/#/)
+8. [AtCoder problem rating](https://kenkoooo.com/atcoder/#/list/)
+9. [灵茶の试炼](https://docs.qq.com/sheet/DWGFoRGVZRmxNaXFz?tab=BB08J2)
+10. [OI Wiki](https://oi-wiki.org/)
+11. [Python3 菜鸟教程](https://www.runoob.com/python3/python3-tutorial.html)

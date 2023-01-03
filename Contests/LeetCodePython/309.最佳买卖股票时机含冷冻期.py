@@ -56,9 +56,12 @@ from typing import List
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
         n = len(prices)
+        # dp0: 没持有股票，并且没有冷冻期，转移自dp0 & dp2
+        # dp1: 持有股票，转移自dp0 & dp1
+        # dp2: 没持有股票，刚卖，还处于冷冻期，转移自dp1
         dp0, dp1, dp2 = 0, - prices[0], 0
         for i in range(1, n):
-            dp0, dp1 = max(dp0, dp1 + prices[i]), max(dp1, dp0 - prices[i])
+            dp0, dp1, dp2 = max(dp0, dp2), max(dp1, dp0 - prices[i]), dp1 + prices[i]
         return max(dp0, dp2)
 # @lc code=end
 
