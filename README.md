@@ -11,8 +11,8 @@
 ## Template
 
 * 数据结构
-  * 并查集DSU(disjoint set union)(/Template/dsu.py)
-  * 树状数组(disjoint set union)(/Template/bit.py)
+  * [并查集DSU(disjoint set union)](/Template/dsu.py)
+  * [树状数组(disjoint set union)](/Template/bit.py)
   * 线段数
 
 * 图论
