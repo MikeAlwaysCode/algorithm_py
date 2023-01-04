@@ -1,9 +1,9 @@
-import sys
-import math
 import collections
+import math
 import random
-from heapq import heappush, heappop
+import sys
 from functools import reduce
+from heapq import heappop, heappush
 
 input = sys.stdin.readline
 ints = lambda: list(map(int, input().split()))

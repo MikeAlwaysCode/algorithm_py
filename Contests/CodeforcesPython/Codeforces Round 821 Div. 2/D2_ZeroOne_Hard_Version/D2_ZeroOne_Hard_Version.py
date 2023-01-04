@@ -1,9 +1,9 @@
-import sys
-import math
 import collections
+import math
 import random
-from heapq import heappush, heappop
+import sys
 from functools import reduce
+from heapq import heappop, heappush
 
 input = sys.stdin.readline
 ints = lambda: list(map(int, input().split()))
@@ -69,6 +69,7 @@ def solve() -> None:
                     z1[i][j] = min({z1[i][j], z0[i - 1][j - 2] + x, z1[i - 1][j - 2] + y})
 
     print(z0[n-1][0])
+    
 t = int(input())
 for _ in range(t):
     solve()
