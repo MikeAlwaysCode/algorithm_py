@@ -1,7 +1,0 @@
-Command failed: python "d:/OneDrive/文档/AlwaysCode/CodeforcesPython/Educational Codeforces Round 29/E_Turn_Off_The_TV/E_Turn_Off_The_TV.py" 1  < "d:/OneDrive/文档/AlwaysCode/CodeforcesPython/Educational Codeforces Round 29/E_Turn_Off_The_TV/Tests/input_1.txt" > "d:/OneDrive/文档/AlwaysCode/CodeforcesPython/Educational Codeforces Round 29/E_Turn_Off_The_TV/Tests/code_output_1.txt"
-Traceback (most recent call last):
-  File "d:\OneDrive\�ĵ�\AlwaysCode\CodeforcesPython\Educational Codeforces Round 29\E_Turn_Off_The_TV\E_Turn_Off_The_TV.py", line 89, in <module>
-    solve()
-  File "d:\OneDrive\�ĵ�\AlwaysCode\CodeforcesPython\Educational Codeforces Round 29\E_Turn_Off_The_TV\E_Turn_Off_The_TV.py", line 68, in solve
-    n = int(input())
-ValueError: invalid literal for int() with base 10: 'null'

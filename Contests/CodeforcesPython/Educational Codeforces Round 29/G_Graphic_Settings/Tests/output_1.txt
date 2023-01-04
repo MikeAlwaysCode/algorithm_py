@@ -1,3 +1,0 @@
-Path
-inc 1
-inc 1

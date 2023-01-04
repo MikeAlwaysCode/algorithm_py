@@ -1,2 +1,0 @@
-netman: Hello, Vladik!
-Vladik: Hi

@@ -1,7 +1,0 @@
-Command failed: python "d:/OneDrive/文档/AlwaysCode/CodeforcesPython/Good Bye 2013/D_New_Year_Letter/D_New_Year_Letter.py" 1  < "d:/OneDrive/文档/AlwaysCode/CodeforcesPython/Good Bye 2013/D_New_Year_Letter/Tests/input_1.txt" > "d:/OneDrive/文档/AlwaysCode/CodeforcesPython/Good Bye 2013/D_New_Year_Letter/Tests/code_output_1.txt"
-Traceback (most recent call last):
-  File "d:\OneDrive\�ĵ�\AlwaysCode\CodeforcesPython\Good Bye 2013\D_New_Year_Letter\D_New_Year_Letter.py", line 149, in <module>
-    solve()
-  File "d:\OneDrive\�ĵ�\AlwaysCode\CodeforcesPython\Good Bye 2013\D_New_Year_Letter\D_New_Year_Letter.py", line 92, in solve
-    k, x, n, m = map(int, input().split())
-ValueError: invalid literal for int() with base 10: 'null'
