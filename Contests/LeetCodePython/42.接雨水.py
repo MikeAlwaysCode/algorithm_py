@@ -52,6 +52,20 @@ from typing import List
 class Solution:
     def trap(self, height: List[int]) -> int:
         n = len(height)
+        
+        ans = 0
+        i, j = 0, len(height) - 1
+        pre = suf = 0
+        while i <= j:
+            pre = max(pre, height[i])
+            suf = max(suf, height[j])
+            if pre <= suf:
+                ans += pre - height[i]
+                i += 1
+            else:
+                ans += suf - height[j]
+                j -= 1
+        '''
         pre_max = [0] * n
         pre_max[0] = height[0]
         for i in range(1, n):
@@ -62,10 +76,9 @@ class Solution:
         for i in range(n - 2, -1, -1):
             suf_max[i] = max(suf_max[i + 1], height[i])
 
-        ans = 0
-        for h, pre, suf in zip(height, pre_max, suf_max)
+        for h, pre, suf in zip(height, pre_max, suf_max):
             ans += min(pre, suf) - h
-        
+        '''
         return ans
 # @lc code=end
 

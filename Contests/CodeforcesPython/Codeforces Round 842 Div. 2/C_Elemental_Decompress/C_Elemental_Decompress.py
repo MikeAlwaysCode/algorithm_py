@@ -1,13 +1,14 @@
-import math
 import collections
+import math
+import os
 import random
-from heapq import heappush, heappop
+import sys
+from bisect import bisect, bisect_left
 from functools import reduce
-
-# Sample Inputs/Output 
-# region fastio
-import sys, os
+from heapq import heapify, heappop, heappush
 from io import BytesIO, IOBase
+
+# region fastio
 BUFSIZE = 8192
 class FastIO(IOBase):
     newlines = 0
@@ -54,7 +55,9 @@ class IOWrapper(IOBase):
 sys.stdin, sys.stdout = IOWrapper(sys.stdin), IOWrapper(sys.stdout)
 input = lambda: sys.stdin.readline().rstrip("\r\n")
 ints = lambda: list(map(int, input().split()))
+# endregion fastio
 
+# region interactive
 def printQry(a, b) -> None:
     sa = str(a)
     sb = str(b)
@@ -63,33 +66,56 @@ def printQry(a, b) -> None:
 def printAns(ans) -> None:
     s = str(ans)
     print(f"! {s}", flush = True)
+# endregion interactive
+
+# MOD = 998244353
+# MOD = 10 ** 9 + 7
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, k = map(int, input().split())
-    arr = [-1, 0] + ints()
-    # n−1 integers p2,p3,…,pn (1≤pi<i) — the parent of the i-th vertex. Vertex 1 is the root.
+    n = int(input())
+    arr = ints()
     
-    h = [0] * (n + 1)
-    l, r = 1, n - 1
-    while l <= r:
-        m = (l + r) // 2
-        tot = 0
-        
-        for i in range(n + 1):
-            h[i] = 0
+    cnt = collections.Counter(arr)
+    if cnt.most_common(1)[0][1] > 2:
+        print("NO")
+        return
+    
+    sm = []
+    sl = []
+    for i in range(1, n + 1):
+        if cnt[i] == 2:
+            sm.append(i)
+        if cnt[i] == 0:
+            sl.append(i)
 
-        for i in range(n, 1, -1):
-            if h[i] == m - 1 and arr[i] != 1:   # Height = m - 1 and not root, need to cut and the height become m
-                tot += 1
-            else:   # Height of parent + 1
-                h[arr[i]] = max(h[arr[i]], h[i] + 1)
+    d1 = dict()
+    d2 = dict()
+    k = len(sm)
+    for fr, to in zip(sm, sl):
+        if fr < to:
+            print("NO")
+            return
+        d1[fr] = to
 
-        if tot <= k:
-            r = m - 1
-        else:
-            l = m + 1
+    ans1 = []
+    ans2 = []
+    for a in arr:
+        if cnt[a] == 1:
+            ans1.append(a)
+            ans2.append(a)
+        elif a in d2:
+            ans1.append(d2[a])
+            ans2.append(a)
+        elif a in d1:
+            ans1.append(a)
+            ans2.append(d1[a])
+            d2[a] = d1[a]
 
-    print(l)
+
+    print("YES")
+    print(*ans1)
+    print(*ans2)
 
 t = int(input())
 for _ in range(t):

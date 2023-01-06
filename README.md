@@ -7,25 +7,26 @@
 ## Alogrithm & Template
 
 * 数据结构
-  * [并查集DSU(disjoint set union)](/Template/dsu.py)
-  * [树状数组(disjoint set union)](/Template/bit.py)
+  * [并查集DSU(Disjoint Set Union)](/Template/dsu.py)
+  * [树状数组(Binary Indexed Tree)](/Template/bit.py)
   * 线段数
 
 * 图论
   * 拓扑排序TopoSort
   * 双向BFS
-  * LCA
+  * [最近公共祖先(Least Common Ancestors)](/Template/lca.py)
 
 * 动态规划(Dynamic Programming)
   * 数位DP
 
 * 数论
-  * 质数
-  * 质因子
-  * 逆元
-  * 组合数
-  * 容斥
-  * Isqrt
+  * 质数(Prime Number)
+  * 质因子(Prime Factors)
+  * 逆元(Inverse Element)
+  * 组合数(Combinations)
+  * 容斥(Include/Exclude)
+  * [isqrt(Integer Sqrt)](/Template/isqrt.py)
+  * [超几何分布(Hypergeometric Distribution)](hypergeometricDistribution.md)
 
 * 位运算
   * 二进制分组
@@ -33,7 +34,8 @@
   * 数字异或运算
 
 * 字符串
-  * 字典树
+  * [字典树(Trie)](/Template/trie.py)
+  * 异或字典树(01Trie)
   * KMP
 
 ---
