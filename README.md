@@ -35,7 +35,7 @@
 
 * 字符串
   * [字典树(Trie)](/Template/trie.py)
-  * 异或字典树(01Trie)
+  * [异或字典树(01Trie)](/Template/binaryTrie.py)
   * KMP
 
 ---
