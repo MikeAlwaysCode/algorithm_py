@@ -26,7 +26,7 @@
   * 组合数(Combinations)
   * 容斥(Include/Exclude)
   * [isqrt(Integer Sqrt)](/Template/isqrt.py)
-  * [超几何分布(Hypergeometric Distribution)](hypergeometricDistribution.md)
+  * [超几何分布(Hypergeometric Distribution)](/Template/hypergeometricDistribution.md)
 
 * 位运算
   * 二进制分组
