@@ -27,6 +27,7 @@
   * 容斥(Include/Exclude)
   * [isqrt(Integer Sqrt)](/Template/isqrt.py)
   * [超几何分布(Hypergeometric Distribution)](/Template/hypergeometricDistribution.md)
+  * [卡塔兰数(Catalan)](/Template/catalan.md)
 
 * 位运算
   * 二进制分组

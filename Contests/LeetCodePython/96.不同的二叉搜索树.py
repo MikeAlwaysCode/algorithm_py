@@ -42,7 +42,31 @@
 #
 
 # @lc code=start
+# f = [0] * 20
+# f[0] = f[1] = 1
+# for i in range(2, 20):
+#     k = (i - 1) // 2
+#     if k * 2 == i - 1:
+#         f[i] = f[k] * f[k]
+#     k += 1
+#     for j in range(k, i):
+#         f[i] += f[j] * f[i - j - 1] * 2
+
 class Solution:
     def numTrees(self, n: int) -> int:
+        # return f[n]
+        C = 1
+        for i in range(0, n):
+            C = C * 2 * (2 * i + 1) // (i + 2)
+        return C
 # @lc code=end
+
+def main():
+    sol = Solution()
+
+    n = 5
+    print(sol.numTrees(n))
+
+if __name__ == '__main__':
+    main()
 
