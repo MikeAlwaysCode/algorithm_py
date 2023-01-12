@@ -30,7 +30,8 @@ def lis(nums, cmp = lambda x, y: x < y):
     return S
 
 class Solution:
-    def lengthOfLIS(self, nums: list[int]) -> int:
+    # def lengthOfLIS(self, nums: list[int]) -> int:
+    def lengthOfLIS(self, nums: list) -> int:
         d = []
         for n in nums:
             if not d or n > d[-1]:
