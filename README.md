@@ -17,7 +17,10 @@
   * [最近公共祖先(Least Common Ancestors)](/Template/lca.py)
 
 * 动态规划(Dynamic Programming)
+  * 线性DP
+    * [LIS最长上升子序列](/Template/lis.py)
   * 数位DP
+  * 树形DP
 
 * 数论
   * 质数(Prime Number)

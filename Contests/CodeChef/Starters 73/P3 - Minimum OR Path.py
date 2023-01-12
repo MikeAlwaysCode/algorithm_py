@@ -15,14 +15,25 @@ def solve() -> None:
     n = int(input())
     arr = ints()
 
-    dp = [math.inf] * n
-    mn = dp[0] = arr[0]
-    for i in range(n):
-        to = min(n - 1, i + arr[i])
-        mx = max(mx, to)
-        dp[to] = min(dp[to], dp[i] | arr[to])
-
-    print(dp[n - 1])
+    def check(mask) -> bool:
+        if (arr[0] & mask) != arr[0]: return False
+        if (arr[-1] & mask) != arr[-1]: return False
+        reach = arr[0]
+        for i in range(1, n):
+            if i > reach: return False
+            if (arr[i] & mask) == arr[i]: reach = max(reach, i + arr[i])
+        return True
+        
+    ans = 0
+    for bit in reversed(range(21)):
+        if check(ans + (1 << bit) - 1):
+            continue
+        else:
+            ans += 1 << bit
+    if check(ans):
+        print(ans)
+    else:
+        print(-1)
 
 t = int(input())
 for _ in range(t):
