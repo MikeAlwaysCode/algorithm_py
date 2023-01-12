@@ -73,41 +73,36 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, k = map(int, input().split())
-    arr = ints()
+    n, x = map(int, input().split())
+    if n & x != x:
+        print(-1)
+        return
 
-    # DSU
-    
+    if x == n:
+        print(n)
+        return
+        
+    max_bit = n.bit_length()
+    check = False
+    i = max_bit + 1
+    for bit in range(max_bit, -1, -1):
+        if (n >> bit) & 1:
+            if check:
+                if (x >> bit) & 1:
+                    print(-1)
+                    return
+            elif (x >> bit) & 1 == 0:
+                if i != bit + 1:
+                    print(-1)
+                    return
+                n |= 1 << i
+                i = bit
+                check = True
+        elif not check:
+            i = bit
 
-    '''
-    # 二分
-    def check(m) -> bool:
-        cnt0 = cnt1 = 0
-        for i in range(n):
-            if arr[i] <= m:
-                cnt0 += 1
-                cnt1 += 1
-            else:
-                if cnt0 & 1:
-                    cnt0 += 1
-                if not cnt1 & 1:
-                    cnt1 += 1
-            if cnt0 >= k or cnt1 >= k:
-                return True
-        return False
+    print(n - (n & ((1 << (i + 1)) - 1)))
 
-    l, r = 1, 10 ** 9
-    while l < r:
-        mid = l + r >> 1
-        if check(mid):
-            r = mid
-        else:
-            l = mid + 1
-
-    print(r)
-    '''
-
-# t = int(input())
-t = 1
+t = int(input())
 for _ in range(t):
     solve()

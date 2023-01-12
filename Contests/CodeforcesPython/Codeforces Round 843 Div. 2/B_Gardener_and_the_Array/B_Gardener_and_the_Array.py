@@ -73,41 +73,27 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, k = map(int, input().split())
-    arr = ints()
+    n = int(input())
+    c = []
+    for _ in range(n):
+        c.append(ints()[1:])
 
-    # DSU
-    
+    d = collections.Counter()
+    for i in range(n):
+        for a in c[i]:
+            d[a] += 1
+        
+    for i in range(n):
+        chk = True
+        for a in c[i]:
+            if d[a] == 1:
+                chk = False
+        if chk:
+            print("Yes")
+            return
 
-    '''
-    # 二分
-    def check(m) -> bool:
-        cnt0 = cnt1 = 0
-        for i in range(n):
-            if arr[i] <= m:
-                cnt0 += 1
-                cnt1 += 1
-            else:
-                if cnt0 & 1:
-                    cnt0 += 1
-                if not cnt1 & 1:
-                    cnt1 += 1
-            if cnt0 >= k or cnt1 >= k:
-                return True
-        return False
+    print("No")
 
-    l, r = 1, 10 ** 9
-    while l < r:
-        mid = l + r >> 1
-        if check(mid):
-            r = mid
-        else:
-            l = mid + 1
-
-    print(r)
-    '''
-
-# t = int(input())
-t = 1
+t = int(input())
 for _ in range(t):
     solve()

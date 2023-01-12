@@ -73,41 +73,44 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, k = map(int, input().split())
-    arr = ints()
+    s = input()
+    n = len(s)
 
-    # DSU
-    
+    cnt = collections.Counter(s)
+    if len(cnt) == 1:
+        print(s[0], s[1:-1], s[-1])
+        return
 
-    '''
-    # 二分
-    def check(m) -> bool:
-        cnt0 = cnt1 = 0
-        for i in range(n):
-            if arr[i] <= m:
-                cnt0 += 1
-                cnt1 += 1
-            else:
-                if cnt0 & 1:
-                    cnt0 += 1
-                if not cnt1 & 1:
-                    cnt1 += 1
-            if cnt0 >= k or cnt1 >= k:
-                return True
-        return False
+    i = 1
+    while i < n and s[i] == s[0]:
+        i += 1
 
-    l, r = 1, 10 ** 9
-    while l < r:
-        mid = l + r >> 1
-        if check(mid):
-            r = mid
+    if i == n - 1:
+        if s[i] > s[0]:
+            print(s[:i - 1], s[i - 1], s[i])
         else:
-            l = mid + 1
+            print(s[0], s[1:i], s[i])
+        return
+    
+    j = i + 1
+    if s[i] < s[0]:
+        while j < n and s[j] < s[j - 1]:
+            j += 1
+        if j < n:
+            print(s[:j - 1], s[j - 1], s[j:])
+            return
+    else:
+        while j < n and s[j] >= s[j - 1]:
+            j += 1
+        if j < n:
+            print(s[:j - 1], s[j - 1], s[j:])
+            return
+        if s[-1] == s[-2]:
+            print(s[:-2], s[-2], s[-1])
+            return
 
-    print(r)
-    '''
+    print(":(")
 
-# t = int(input())
-t = 1
+t = int(input())
 for _ in range(t):
     solve()

@@ -73,41 +73,13 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, k = map(int, input().split())
-    arr = ints()
+    # n = int(input())
+    # s = input()
+    # n, m = map(int, input().split())
+    # arr = ints()
 
-    # DSU
-    
+    return
 
-    '''
-    # 二分
-    def check(m) -> bool:
-        cnt0 = cnt1 = 0
-        for i in range(n):
-            if arr[i] <= m:
-                cnt0 += 1
-                cnt1 += 1
-            else:
-                if cnt0 & 1:
-                    cnt0 += 1
-                if not cnt1 & 1:
-                    cnt1 += 1
-            if cnt0 >= k or cnt1 >= k:
-                return True
-        return False
-
-    l, r = 1, 10 ** 9
-    while l < r:
-        mid = l + r >> 1
-        if check(mid):
-            r = mid
-        else:
-            l = mid + 1
-
-    print(r)
-    '''
-
-# t = int(input())
-t = 1
+t = int(input())
 for _ in range(t):
     solve()

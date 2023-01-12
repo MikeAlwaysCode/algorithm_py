@@ -53,9 +53,21 @@
 # 
 # 
 #
+from typing import List
+
 
 # @lc code=start
 class Solution:
     def minFallingPathSum(self, matrix: List[List[int]]) -> int:
+        n = len(matrix)
+        for i in range(1, n):
+            for j in range(n):
+                x = matrix[i][j]
+                matrix[i][j] += matrix[i - 1][j]
+                if j - 1 >= 0:
+                    matrix[i][j] = min(matrix[i][j], x + matrix[i - 1][j - 1])
+                if j + 1 < n:
+                    matrix[i][j] = min(matrix[i][j], x + matrix[i - 1][j + 1])
+        return min(matrix[n - 1])
 # @lc code=end
 

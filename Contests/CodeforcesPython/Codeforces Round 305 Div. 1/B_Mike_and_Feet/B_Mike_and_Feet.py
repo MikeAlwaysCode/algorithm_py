@@ -73,38 +73,56 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, k = map(int, input().split())
+    n = int(input())
     arr = ints()
 
-    # DSU
-    
+    # 并查集
+    fa = list(range(n))
+    sz = [1] * n
+    def find(x: int):
+        cur = x
+        while x != fa[x]:
+            x = fa[x]
+        if cur != x:
+            fa[cur] = x
+        return x
+    def union(fr: int, to: int):
+        fa[find(fr)] = find(to)
+
+    h = [(-a, i) for i, a in enumerate(arr)]
+    heapify(h)
+    ans = [0] * n
+    for x in range(1, n + 1):
+        while sz[find(h[0][1])] < x:
+            a, i = heappop(h)
+            a = - a
+            
+
+        ans[x - 1] = h[0][0]
 
     '''
-    # 二分
-    def check(m) -> bool:
-        cnt0 = cnt1 = 0
-        for i in range(n):
-            if arr[i] <= m:
-                cnt0 += 1
-                cnt1 += 1
-            else:
-                if cnt0 & 1:
-                    cnt0 += 1
-                if not cnt1 & 1:
-                    cnt1 += 1
-            if cnt0 >= k or cnt1 >= k:
-                return True
-        return False
+    # 单调栈
+    left = [0] * n
+    right = [0] * n
+    stk = [-1]
+    for i in range(n):
+        while len(stk) > 1 and arr[stk[-1]] >= arr[i]:
+            right[stk[-1]] = i
+            stk.pop()
+        left[i] = stk[-1]
+        stk.append(i)
+    while len(stk) > 1:
+        right[stk.pop()] = n
 
-    l, r = 1, 10 ** 9
-    while l < r:
-        mid = l + r >> 1
-        if check(mid):
-            r = mid
-        else:
-            l = mid + 1
+    ans = [0] * (n + 1)
+    for i, a in enumerate(arr):
+        size = right[i] - left[i] - 1
+        ans[size] = max(ans[size], a)
 
-    print(r)
+    for i in range(n - 1, -1, -1):
+        ans[i] = max(ans[i], ans[i + 1])
+
+    print(*ans[1:])
     '''
 
 # t = int(input())
