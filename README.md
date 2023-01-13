@@ -2,7 +2,6 @@
 
 [//]: 重拾算法兴趣，保存比赛记录，总结收集算法模板。
 
-[123]: https://baidu.com
 
 ---
 
@@ -55,7 +54,7 @@
 </details>
 
 <details>
-  <summary>字符串</summary>
+  <summary>字符串(String)</summary>
 
   * [字典树(Trie)](/Template/trie.py)
   * [异或字典树(01Trie)](/Template/binaryTrie.py)
