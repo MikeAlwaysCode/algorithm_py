@@ -6,23 +6,34 @@
 
 ## Alogrithm & Template
 
-* 数据结构
+<details>
+  <summary>数据结构(Data Structures)</summary>
+  
   * [并查集DSU(Disjoint Set Union)](/Template/dsu.py)
   * [树状数组(Binary Indexed Tree)](/Template/bit.py)
   * 线段数
+</details>
 
-* 图论
+<details>
+  <summary>图论(Graphs)</summary>
+
   * 拓扑排序TopoSort
   * 双向BFS
   * [最近公共祖先(Least Common Ancestors)](/Template/lca.py)
+</details>
 
-* 动态规划(Dynamic Programming)
+<details>
+  <summary>动态规划(Dynamic Programming)</summary>
+
   * 线性DP
     * [LIS最长上升子序列](/Template/lis.py)
   * 数位DP
   * 树形DP
+</details>
 
-* 数论
+<details>
+  <summary>数学(Mathematics)</summary>
+
   * 质数(Prime Number)
   * 质因子(Prime Factors)
   * 逆元(Inverse Element)
@@ -31,16 +42,23 @@
   * [isqrt(Integer Sqrt)](/Template/isqrt.py)
   * [超几何分布(Hypergeometric Distribution)](/Template/hypergeometricDistribution.md)
   * [卡塔兰数(Catalan)](/Template/catalan.md)
+</details>
 
-* 位运算
+<details>
+  <summary>位运算(Bit Operation)</summary>
+
   * 二进制分组
   * 按位或运算
   * 数字异或运算
+</details>
 
-* 字符串
+<details>
+  <summary>字符串</summary>
+
   * [字典树(Trie)](/Template/trie.py)
   * [异或字典树(01Trie)](/Template/binaryTrie.py)
   * KMP
+</details>
 
 ---
 
