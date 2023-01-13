@@ -1,6 +1,8 @@
 # The algorithmic interest trail
 
-重拾算法兴趣，保存比赛记录，总结收集算法模板。
+[//]: 重拾算法兴趣，保存比赛记录，总结收集算法模板。
+
+[123]: https://baidu.com
 
 ---
 
