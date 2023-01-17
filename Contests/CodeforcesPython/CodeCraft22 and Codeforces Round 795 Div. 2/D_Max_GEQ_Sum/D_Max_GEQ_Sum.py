@@ -75,18 +75,27 @@ def printAns(ans) -> None:
 def solve() -> None:
     n = int(input())
     arr = ints()
-    mx = arr[0]
-    s = arr[0]
-    l = 0
-    for r in range(1, n):
-        s += arr[r]
-        mx = max(mx, arr[r])
-        while l < r and arr[l] < 0:
-            s -= arr[l]
-            l += 1
-        if s > mx:
-            print("NO")
-            return
+    s = 0
+    stk = []
+    for i in range(n):
+        if stk and stk[-1][0] <= arr[i]:
+            while stk and stk[-1][0] <= arr[i]:
+                if stk.pop()[1] < s:
+                    print("NO")
+                    return
+        stk.append((arr[i], s))
+        s += arr[i]
+        
+    s = 0
+    stk = []
+    for i in range(n - 1, -1, -1):
+        if stk and stk[-1][0] <= arr[i]:
+            while stk and stk[-1][0] <= arr[i]:
+                if stk.pop()[1] < s:
+                    print("NO")
+                    return
+        stk.append((arr[i], s))
+        s += arr[i]
 
     print("YES")
 
