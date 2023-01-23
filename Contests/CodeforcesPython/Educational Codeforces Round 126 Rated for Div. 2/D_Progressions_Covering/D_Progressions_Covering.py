@@ -73,13 +73,27 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n, k = map(int, input().split())
+    arr = ints()
 
-    return
+    ans = s = cnt = 0
+    d = [0] * n
+    for i in range(n - 1, -1, -1):
+        s -= cnt    # 影响当前元素的有效操作数对当前元素的影响全部减1，相当于之前增加的数减去当前有效操作数
+        cnt -= d[i] # 减去失效的操作数
+        arr[i] -= s
+        if arr[i] <= 0: continue
 
-t = int(input())
+        el = min(k, i + 1)
+        need = (arr[i] + el - 1) // el
+        s += need * el
+        cnt += need
+        ans += need
+        if i - el >= 0: d[i - el] += need   # 差分
+
+    print(ans)
+
+# t = int(input())
+t = 1
 for _ in range(t):
     solve()
