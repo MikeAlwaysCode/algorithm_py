@@ -73,12 +73,25 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n = int(input())
+    arr = ints()
 
-    return
+    mx = max(arr)
+    cnt01 = cnt02 = cnt11 = cnt12 = 0
+    for h in arr:
+        cnt01 += (mx - h) & 1
+        cnt02 += (mx - h) // 2
+        cnt11 += (mx - h + 1) & 1
+        cnt12 += (mx - h + 1) // 2
+    
+    def cal(c1, c2) -> int:
+        ans = c1 * 2 - 1
+        c2 -= c1 - 1
+        if c2 > 0:
+            ans += c2 // 3 * 4 + (c2 % 3) // 2 * 3 + (c2 % 3 % 2)
+        return ans
+
+    print(min(cal(cnt01, cnt02), cal(cnt11, cnt12)))
 
 t = int(input())
 for _ in range(t):
