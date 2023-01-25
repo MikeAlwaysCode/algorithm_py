@@ -80,36 +80,153 @@
 # 
 # 
 #
+from collections import deque
 from typing import List
 
 
 # @lc code=start
+class Solution: 
+    def matrixRankTransform(self, matrix: List[List[int]]) -> List[List[int]]: 
+        LIM = 512
+        R, C = len(matrix), len(matrix[0])
+        res = [[0]*C for _ in range(R)]
+        countR, countC = [0]*R, [0]*C
+        
+        # 按元素大小分别存储元素坐标
+        ls = collections.defaultdict(list)
+        for r, row in enumerate(matrix): 
+            for c, val in enumerate(row): 
+                ls[val].append((r, c))
+                
+        # 并查集用于合并行或列相同的元素
+        union = list(range(LIM*2))
+        def find(i): 
+            if union[i] == i: return i
+            union[i] = find(union[i])
+            return union[i]
+        
+        # 按val从小到大遍历
+        pool = collections.defaultdict(list)
+        for val in sorted(ls.keys()): 
+
+            # 用并查集合并行和列相同的元素并分组
+            for r, c in ls[val]: 
+                union[find(r)] = find(c+LIM)
+            pool.clear()
+            for r, c in ls[val]: 
+                pool[find(r)].append((r, c))
+
+                
+            # 行和列相同的元素，共享相同的rank
+            for group in pool.values(): 
+                rank = max(max((countR[r], countC[c])) for r, c in group) + 1
+                for r, c in group: 
+                    countR[r] = countC[c] = res[r][c] = rank
+                    # 重置并查集
+                    union[r] = r
+                    union[c+LIM] = c+LIM
+        return res
+'''
+class UnionFind:
+    def __init__(self, m, n):
+        self.m = m
+        self.n = n
+        self.root = [[[i, j] for j in range(n)] for i in range(m)]
+        self.size = [[1] * n for _ in range(m)]
+
+    def find(self, i, j):
+        ri, rj = self.root[i][j]
+        if [ri, rj] == [i, j]:
+            return [i, j]
+        self.root[i][j] = self.find(ri, rj)
+        return self.root[i][j]
+
+    def union(self, i1, j1, i2, j2):
+        ri1, rj1 = self.find(i1, j1)
+        ri2, rj2 = self.find(i2, j2)
+        if [ri1, rj1] != [ri2, rj2]:
+            if self.size[ri1][rj1] >= self.size[ri2][rj2]:
+                self.root[ri2][rj2] = [ri1, rj1]
+                self.size[ri1][rj1] += self.size[ri2][rj2]
+            else:
+                self.root[ri1][rj1] = [ri2, rj2]
+                self.size[ri2][rj2] += self.size[ri1][rj1]
+
 class Solution:
     def matrixRankTransform(self, matrix: List[List[int]]) -> List[List[int]]:
         n, m = len(matrix), len(matrix[0])
-        ans = [[0] * m for _ in range(n)]
 
-        incnt = [0] * k
-        edge = [[] for _ in range(k)]
-        for a, b in conditions:
-            incnt[a] += 1
-            edge[b].append(a)
+        uf = UnionFind(n, m)
+
+        idx = list(range(m))
+        for i in range(n):
+            idx.sort(key = lambda x: matrix[i][x])
+            prej = idx[0]
+            for nxtj in idx[1:]:
+                if matrix[i][nxtj] == matrix[i][prej]:
+                    uf.union(i, prej, i, nxtj)
+                else:
+                    prej = nxtj
         
-        ans = [0] * numCourses
-        cnt = 0
-        q = deque(i for i, v in enumerate(incnt) if v == 0)
-                
+        idx = list(range(n))
+        for j in range(m):
+            idx.sort(key = lambda x: matrix[x][j])
+            prei = idx[0]
+            for nxti in idx[1:]:
+                uprei, uprej = uf.find(prei, j)
+                unxti, unxtj = uf.find(nxti, j)
+                if matrix[nxti][j] == matrix[prei][j]:
+                    uf.union(uprei, uprej, unxti, unxtj)
+                else:
+                    prei = nxti
+                    
+        incnt = [[0] * m for _ in range(n)]
+        edge = [[[] for _ in range(m)] for _ in range(n)]
+        
+        idx = list(range(m))
+        for i in range(n):
+            idx.sort(key = lambda x: matrix[i][x])
+            prej = idx[0]
+            for nxtj in idx[1:]:
+                if matrix[i][nxtj] != matrix[i][prej]:
+                    uprei, uprej = uf.find(i, prej)
+                    unxti, unxtj = uf.find(i, nxtj)
+                    incnt[unxti][unxtj] += 1
+                    edge[uprei][uprej].append((unxti, unxtj))
+                    prej = nxtj
+        
+        idx = list(range(n))
+        for j in range(m):
+            idx.sort(key = lambda x: matrix[x][j])
+            prei = idx[0]
+            for nxti in idx[1:]:
+                if matrix[nxti][j] != matrix[prei][j]:
+                    uprei, uprej = uf.find(prei, j)
+                    unxti, unxtj = uf.find(nxti, j)
+                    incnt[unxti][unxtj] += 1
+                    edge[uprei][uprej].append((unxti, unxtj))
+                    prei = nxti
+        # print(edge[1][1])
+        # print(edge[2][1])
+        ans = [[1] * m for _ in range(n)]
+        q = deque((i, j) for i, row in enumerate(incnt) for j, v in enumerate(row) if v == 0)
+        # print(incnt)
         while q:
-            cur = q.popleft()
+            i, j = q.popleft()
             
-            ans[cnt] = cur
-            cnt += 1
-            
-            for x in edge[cur]:
-                incnt[x] -= 1
-                if incnt[x] == 0:
-                    q.append(x)
+            for nxti, nxtj in edge[i][j]:
+                incnt[nxti][nxtj] -= 1
+                
+                if incnt[nxti][nxtj] == 0:
+                    ans[nxti][nxtj] = max(ans[nxti][nxtj], ans[i][j] + 1)
+                    q.append((nxti, nxtj))
         
-        return ans if cnt == k else []
+        for i in range(n):
+            for j in range(m):
+                ui, uj = uf.find(i, j)
+                ans[i][j] = ans[ui][uj]
+        
+        return ans
+'''
 # @lc code=end
 
