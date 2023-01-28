@@ -20,17 +20,23 @@ def solve() -> None:
         k *= 2
         f += 1
         g = g * 2 + 1
-    
-    if k < l:
-        g -= l - k
-        if l & 1 and l + 1 <= r:
-            l += 1
-        f = 0
-        while l:
-            f += (l & 1) == 0
-            l >>= 1
 
-    print(f + g)
+    def calf(x: int) -> int:
+        f = 0
+        while x:
+            f += (x & 1) == 0
+            x >>= 1
+        return f
+    if k >= l:
+        ans = f + g
+    else:
+        g -= l - k
+        ans = 0
+        for i in range(31):
+            if l + i > r: break
+            ans = max(ans, g - i + calf(l + i))
+
+    print(ans)
 
 
 t = int(input())
