@@ -88,43 +88,62 @@ def solve() -> None:
         graph[v].append(u)
     input()
 
-    seen = [0] * (n + 1)
+    seen = [False] * (n + 1)
     bonuses  = [False] * (n + 1)
-    q = collections.deque()
+    infb  = [False] * (n + 1)
     for token in arrp:
         seen[token] = True
-        q.append(token)
-
-    if seen[1]:
-        print("YES")
-        return
 
     for bon in arrb:
         bonuses[bon] = True
 
-    sp = set(arrp)
+    for i in range(1, n + 1):
+        for j in graph[i]:
+            if bonuses[i] and bonuses[j]:
+                infb[i] = True
 
-    finish = other = False
+    dis = [-1] * (n + 1)
+    dis[1] = 0
+    q = collections.deque([1])
+
     while q:
         x = q.popleft()
         for u in graph[x]:
-            if seen[u]:
-                if bonuses[u]:
-                    other = True
-                continue
-            if u == 1:
-                if x in sp:
-                    print("YES")
-                    return
-                finish = True
-                continue
-            seen[u] = True
-            if bonuses[u]:
+            if bonuses[u] and dis[u] == -1:
+                dis[u] = dis[x] + 1
                 q.append(u)
-    if finish and other:
-        print("YES")
-    else:
-        print("NO")
+
+    other_inf = 0
+    other_cnt = 0
+    for i in range(1, n + 1):
+        if not seen[i]: continue
+        valid = 0
+        curinf = 0
+        for j in graph[i]:
+            if infb[j]:
+                curinf = 1
+            if bonuses[j]:
+                valid = 1
+        other_inf += curinf
+        other_cnt += valid
+
+    for i in range(1, n + 1):
+        if not seen[i]: continue
+        res = dis[i]
+        valid = 1
+        curinf = 0
+        for j in graph[i]:
+            if dis[j] != -1 and (res == -1 or res > dis[j] + 1):
+                res = dis[j] + 1
+            if infb[j]:
+                curinf = 1
+            if bonuses[j]:
+                valid = 0
+        if res != -1 and (other_inf - curinf or other_cnt >= res - valid):
+            print("YES")
+            return
+    
+    print("NO")
 
 t = int(input())
 for _ in range(t):

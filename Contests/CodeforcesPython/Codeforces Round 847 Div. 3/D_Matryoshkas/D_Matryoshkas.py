@@ -77,6 +77,7 @@ def solve() -> None:
     arr = ints()
 
     ans = pres = prec = 0
+    arr.sort()  # 不排序1e9可能会哈希冲突？
     cnt = collections.Counter(arr)
     for k, v in sorted(cnt.items()):
         if k == pres + 1:
