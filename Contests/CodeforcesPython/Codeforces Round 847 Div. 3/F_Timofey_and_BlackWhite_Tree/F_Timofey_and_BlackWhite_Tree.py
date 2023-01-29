@@ -102,13 +102,12 @@ def solve() -> None:
             ans[i] = ans[i - 1]
         d = 0
         h[x] = 0
-        while parent[x] != 0:
+        while parent[x] and d < ans[i]:
             x = parent[x]
             d += 1
             ans[i] = min(ans[i], h[x] + d)
-            if h[x] <= d:
-                break
-            h[x] = d
+            if h[x] > d:
+                h[x] = d
         if ans[i] == 1:
             break
 
