@@ -69,7 +69,8 @@ def solve() -> None:
     n, k = map(int, input().split())
     arr = ints()
     
-    apple = sorted([a for a in arr if a > 0])
+    # apple = sorted([a for a in arr if a > 0])
+    apple = sorted(arr)
     apple.sort()
     m = len(apple)
 

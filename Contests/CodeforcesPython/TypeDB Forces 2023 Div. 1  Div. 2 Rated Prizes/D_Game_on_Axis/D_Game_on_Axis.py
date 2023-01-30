@@ -78,10 +78,10 @@ def solve() -> None:
 
     ans = n + 1
 
-    if arr[0] < 0 or arr[0] == n:
-        ans += (n * 2 + 1) * (n - 1)
-    elif arr[0] > 0:
-        ans += n - arr[0] + 1 + n - arr[0]
+    # if arr[0] < 0 or arr[0] == n:
+    #     ans += (n * 2 + 1) * (n - 1)
+    # elif arr[0] > 0:
+    #     ans += n - arr[0] + 1 + n - arr[0]
     
     valid = [False] * n
     check = [False] * n
