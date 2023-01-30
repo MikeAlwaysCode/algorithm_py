@@ -1,14 +1,14 @@
-import math
 import collections
+import math
+import os
 import random
-from heapq import heappush, heappop
+import sys
+from bisect import bisect, bisect_left
 from functools import reduce
-from re import A
-
-# Sample Inputs/Output 
-# region fastio
-import sys, os
+from heapq import heapify, heappop, heappush
 from io import BytesIO, IOBase
+
+# region fastio
 BUFSIZE = 8192
 class FastIO(IOBase):
     newlines = 0
@@ -55,7 +55,9 @@ class IOWrapper(IOBase):
 sys.stdin, sys.stdout = IOWrapper(sys.stdin), IOWrapper(sys.stdout)
 input = lambda: sys.stdin.readline().rstrip("\r\n")
 ints = lambda: list(map(int, input().split()))
+# endregion fastio
 
+# region interactive
 def printQry(a, b) -> None:
     sa = str(a)
     sb = str(b)
@@ -64,39 +66,20 @@ def printQry(a, b) -> None:
 def printAns(ans) -> None:
     s = str(ans)
     print(f"! {s}", flush = True)
+# endregion interactive
+
+# MOD = 998244353
+# MOD = 10 ** 9 + 7
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, k = map(int, input().split())
-    arr = ints()
-    
-    apple = sorted([a for a in arr if a > 0])
-    apple.sort()
-    m = len(apple)
+    # n = int(input())
+    # s = input()
+    # n, m = map(int, input().split())
+    # arr = ints()
 
-    least = 0
-    for a in apple:
-        a -= least
-        if a <= 0:
-            m -= 1
-        elif k >= a * m:
-            least += a
-            k -= a * m
-            m -= 1
-        elif k >= m:
-            mxa = k // m
-            least += mxa
-            k -= mxa * m
-        if k < m:
-            break
-        
-    for i in range(n):
-        arr[i] = max(arr[i] - least, 0)
-        if arr[i] > 0 and k > 0:
-            arr[i] -= 1
-            k -= 1
+    return
 
-    print(*arr)
-
-# t = int(input())
-# for _ in range(t):
-solve()
+t = int(input())
+for _ in range(t):
+    solve()
