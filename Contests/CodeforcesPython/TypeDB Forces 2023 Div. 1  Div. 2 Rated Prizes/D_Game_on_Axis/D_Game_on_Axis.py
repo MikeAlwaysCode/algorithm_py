@@ -76,32 +76,45 @@ def solve() -> None:
     n = int(input())
     arr = ints()
 
-    ans = n + 1
-
-    # if arr[0] < 0 or arr[0] == n:
-    #     ans += (n * 2 + 1) * (n - 1)
-    # elif arr[0] > 0:
-    #     ans += n - arr[0] + 1 + n - arr[0]
-    
     valid = [False] * n
     check = [False] * n
+    ans = n + 1 # 点1到范围外的可能数
 
-    check[0] = True
-    if arr[0] < 0 or arr[0] >= n:
-        valid[0] = True
+    j = 0
+    check[j] = True
+    m = 1
+    while 0 <= j + arr[j] < n and not check[j + arr[j]]:
+        j += arr[j]
+        ans += n + 1    # 点1会到此点，此点到范围外的可能数
+        m += 1
+        check[j] = True
+    if j + arr[j] >= n or j + arr[j] < 0:
+        valid[0] = valid[j] = True
+    else:
+        valid[0] = valid[j] = valid[j + arr[j]]
+    
+    if valid[0]:
+        ans += (n * 2 + 1) * (n - m)    # 点1循环外的点可能数
+        ans += m * (m - 1) // 2         # 提前往后面跳的可能数
+
+    valid[0] = False
 
     for i in range(1, n):
+        if check[i]: continue
         j = i
         check[j] = True
+        k = 1
         while 0 <= j + arr[j] < n and not check[j + arr[j]]:
             j += arr[j]
+            k += 1
             check[j] = True
         if j + arr[j] >= n or j + arr[j] < 0:
             valid[i] = valid[j] = True
-        else:
+            ans += m * k
+        elif j + arr[j] != 0 and valid[j + arr[j]]:
             valid[i] = valid[j] = valid[j + arr[j]]
-        # print(i, valid[i], ans)
-        ans += int(valid[i])
+            ans += (m - 1) * k
+        # if valid[i]: ans += m * k
 
     print(ans)
 

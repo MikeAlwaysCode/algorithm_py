@@ -72,8 +72,44 @@ def printAns(ans) -> None:
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
+class TreeNode:
+    def __init__(self, val=0, left=-1, right=-1):
+        self.val = val
+        self.left = left
+        self.right = right
+
 def solve() -> None:
     n = int(input())
+    ans = 0
+
+    '''
+    nodes = [TreeNode() for _ in range(n)]
+    parent = [-1] * n
+    cnt = collections.Counter()
+    for i in range(n):
+        v, l, r = map(int, input().split())
+        nodes[i].val = v
+        cnt[v] += 1
+        if l != -1:
+            nodes[i].left = l - 1
+            parent[l - 1] = i
+        if r != -1:
+            nodes[i].right = r - 1
+            parent[r - 1] = i
+    # q = collections.deque([(i, - math.inf, math.inf) for i in range(n) if parent[i] == -1])
+    root = 0
+    while parent[root] != -1:
+        root += 1
+    q = collections.deque([(root, - math.inf, math.inf)])
+    while q:
+        x, l, r = q.popleft()
+        if l <= nodes[x].val <= r: ans += cnt[nodes[x].val]
+        if nodes[x].left != -1:
+            q.append((nodes[x].left, l, min(nodes[x].val - 1, r)))
+        if nodes[x].right != -1:
+            q.append((nodes[x].right, max(nodes[x].val + 1, l), r))
+    '''
+
     vals = [-1] * n
     left = [-1] * n
     right = [-1] * n
@@ -90,7 +126,6 @@ def solve() -> None:
             right[i] = r - 1
             parent[r - 1] = i
     
-    ans = 0
     # q = collections.deque([(i, - math.inf, math.inf) for i in range(n) if parent[i] == -1])
     root = 0
     while parent[root] != -1:
