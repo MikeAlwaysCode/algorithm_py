@@ -78,10 +78,8 @@ class Solution:
         tree = [[] for _ in range(n)]
         for u, v in redEdges:
             tree[u].append((v, 1))
-            # tree[v].append((u, 1))
         for u, v in blueEdges:
             tree[u].append((v, 0))
-            # tree[v].append((u, 0))
 
         ans = [-1] * n
         vis = [[-1] * 2 for _ in range(n)]
@@ -91,9 +89,9 @@ class Solution:
         while q:
             tmp = q
             q = []
-            for x, pc, step in tmp:
+            for x, p, step in tmp:
                 for u, col in tree[x]:
-                    if col == pc:
+                    if col == p:
                         continue
                     if vis[u][col] == -1 or vis[u][col] > step + 1:
                         vis[u][col] = step + 1

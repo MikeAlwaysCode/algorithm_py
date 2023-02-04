@@ -56,6 +56,8 @@
 #
 from bisect import bisect_left
 from typing import List
+
+
 # @lc code=start
 class Segtree:
     def __init__(self):

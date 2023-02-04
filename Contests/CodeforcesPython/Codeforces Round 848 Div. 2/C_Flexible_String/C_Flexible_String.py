@@ -1,4 +1,5 @@
 import collections
+import itertools
 import math
 import os
 import random
@@ -73,47 +74,46 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = int(input())
-    arr = ints()
-
-    s = [1] * (n + 1)     # size
-    v = [0] * (n + 1)     # valid
-    p = [[] for _ in range(n + 1)]     # parent
-
+    n, k = map(int, input().split())
+    sa = input()
+    sb = input()
+    ans = pre = 0
     for i in range(n):
-        arr[i] = min(i + arr[i], n)
-        if arr[i] < 0: arr[i] = n
-        p[arr[i]].append(i)
-        
-    def dfs(u: int) -> None:
-        v[u] = 1
-        for x in p[u]:
-            dfs(x)
-            s[u] += s[x]
-    dfs(n)
+        if sa[i] == sb[i]:
+            pre += 1
+            ans += pre
+        else:
+            pre = 0
+            
+    if k == 0:
+        print(ans)
+        return
 
-    # q = collections.deque([n])
-    # v[n] = 1
-    # while q:
-    #     x = q.popleft()
-    #     for u in p[x]:
-    #         v[u] = 1
-    #         s[n] += 1
-    #         q.append(u)
+    s = list(set(sa))
+    d = {c:i for i, c in enumerate(s)}
+    m = len(s)
+    k = min(m, k)
+    # for comb in itertools.combinations(range(m), k):
+    #     mask = 0
+    #     for j in comb:
+    #         mask |= 1 << j
+    # for mask in range(1 << m):
+    #     # if mask.bit_count() != k: continue
+    #     if bin(mask).count("1") != k: continue
+    mask = (1 << k) - 1
+    while mask < 1 << m:
+        curr = pre = 0
+        for i in range(n):
+            if sa[i] == sb[i] or (mask >> d[sa[i]]) & 1:
+                pre += 1
+                curr += pre
+            else:
+                pre = 0
+        ans = max(ans, curr)
 
-    if v[0]:
-        ans = n * (2 * n + 1)
-        j = 0
-        while j < n:
-            ans -= s[j] + (n - s[n] + 1)
-            j = arr[j]
-    else:
-        ans = 0
-        j = 0
-        while not v[j]:
-            v[j] = 1
-            ans += n + s[n]
-            j = arr[j]
+        lb = mask & -mask
+        x = mask + lb
+        mask = (x ^ mask) // lb >> 2 | x
 
     print(ans)
 

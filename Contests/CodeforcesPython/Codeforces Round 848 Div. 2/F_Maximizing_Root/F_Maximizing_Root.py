@@ -73,49 +73,12 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = int(input())
-    arr = ints()
+    # n = int(input())
+    # s = input()
+    # n, m = map(int, input().split())
+    # arr = ints()
 
-    s = [1] * (n + 1)     # size
-    v = [0] * (n + 1)     # valid
-    p = [[] for _ in range(n + 1)]     # parent
-
-    for i in range(n):
-        arr[i] = min(i + arr[i], n)
-        if arr[i] < 0: arr[i] = n
-        p[arr[i]].append(i)
-        
-    def dfs(u: int) -> None:
-        v[u] = 1
-        for x in p[u]:
-            dfs(x)
-            s[u] += s[x]
-    dfs(n)
-
-    # q = collections.deque([n])
-    # v[n] = 1
-    # while q:
-    #     x = q.popleft()
-    #     for u in p[x]:
-    #         v[u] = 1
-    #         s[n] += 1
-    #         q.append(u)
-
-    if v[0]:
-        ans = n * (2 * n + 1)
-        j = 0
-        while j < n:
-            ans -= s[j] + (n - s[n] + 1)
-            j = arr[j]
-    else:
-        ans = 0
-        j = 0
-        while not v[j]:
-            v[j] = 1
-            ans += n + s[n]
-            j = arr[j]
-
-    print(ans)
+    return
 
 t = int(input())
 for _ in range(t):
