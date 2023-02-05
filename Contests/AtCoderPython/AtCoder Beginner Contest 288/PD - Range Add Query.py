@@ -74,14 +74,53 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # n, m, k = map(int, input().split())
-    # s = input()
-    # arr = ints()
+    n, k = map(int, input().split())
+    arr = ints()
 
-    ans = 0
+    # d = [0] * n
+    # cur = 0
+    # for i, a in enumerate(arr):
+    #     cur += d[i]
+    #     d[i] -= cur + a
+    #     if i + k < n:
+    #         d[i + k] += cur + a
+    #     cur -= cur + a
+    # print(d)
 
-    print(ans)
+    q = int(input())
+    for _ in range(q):
+        l, r = map(int, input().split())
+        
+        check = True
+        last = r - k
+        for i in range(r - k + 1, r):
+            if i - k < l - 1:
+                pre = 0
+            elif i - k == l - 1:
+                pre = arr[i - k]
+            else:
+                pre = arr[i - k] - arr[i - k - 1]
+            # print(pre)
+            if arr[i] - arr[i - 1] + pre != 0:
+                check = False
+            if arr[i]: last = i
+
+        if check:
+            print("Yes")
+            continue
+        
+        if last - l + 2 >= k:
+            check = True
+            for i in range(last, last - k + 1, -1):
+                if arr[i] != arr[i - 1]:
+                    check = False
+                    break
+            if check:
+                print("Yes")
+                continue
+
+        print("No")
+        
 
 # t = int(input())
 t = 1

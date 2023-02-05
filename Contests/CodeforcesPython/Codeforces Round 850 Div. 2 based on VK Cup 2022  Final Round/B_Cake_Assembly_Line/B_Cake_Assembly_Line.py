@@ -1,12 +1,11 @@
-import bisect
 import collections
-import itertools
 import math
 import os
 import random
 import sys
+from bisect import bisect, bisect_left
 from functools import reduce
-from heapq import *
+from heapq import heapify, heappop, heappush
 from io import BytesIO, IOBase
 
 # region fastio
@@ -74,16 +73,24 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # n, m, k = map(int, input().split())
-    # s = input()
-    # arr = ints()
+    n, w, h = map(int, input().split())
+    a = ints()
+    b = ints()
 
-    ans = 0
+    l, r = - math.inf, math.inf
+    
+    for i in range(n):
+        bl, br = b[i] - h, b[i] + h
+        al, ar = a[i] - w, a[i] + w
+        cl, cr = br - ar, bl - al
+        l = max(l, cl)
+        r = min(r, cr)
+        if l > r:
+            print("NO")
+            return
 
-    print(ans)
+    print("YES")
 
-# t = int(input())
-t = 1
+t = int(input())
 for _ in range(t):
     solve()
