@@ -57,6 +57,8 @@
 #
 from heapq import heapify, heapreplace
 from typing import List
+
+
 # @lc code=start
 class Solution:
     def mincostToHireWorkers(self, quality: List[int], wage: List[int], k: int) -> float:
