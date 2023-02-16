@@ -1,13 +1,14 @@
-import math
 import collections
+import math
+import os
 import random
-from heapq import heappush, heappop
+import sys
+from bisect import bisect, bisect_left
 from functools import reduce
-
-# Sample Inputs/Output 
-# region fastio
-import sys, os
+from heapq import heapify, heappop, heappush
 from io import BytesIO, IOBase
+
+# region fastio
 BUFSIZE = 8192
 class FastIO(IOBase):
     newlines = 0
@@ -54,7 +55,9 @@ class IOWrapper(IOBase):
 sys.stdin, sys.stdout = IOWrapper(sys.stdin), IOWrapper(sys.stdout)
 input = lambda: sys.stdin.readline().rstrip("\r\n")
 ints = lambda: list(map(int, input().split()))
+# endregion fastio
 
+# region interactive
 def printQry(a, b) -> None:
     sa = str(a)
     sb = str(b)
@@ -63,31 +66,27 @@ def printQry(a, b) -> None:
 def printAns(ans) -> None:
     s = str(ans)
     print(f"! {s}", flush = True)
+# endregion interactive
+
+# MOD = 998244353
+# MOD = 10 ** 9 + 7
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, k = map(int, input().split())
+    n, h, l, r = map(int, input().split())
     arr = ints()
 
-    arr.sort()
-    mx = arr[-1]
-    s = [[] for _ in range(mx + 1)]
-    for a in arr:
-        s[a].append(0)
+    dp = [0] * (n + 1)
+    pres = 0
 
-    # print(s)
-
-    ans = math.inf
-    for x in range(mx, -1, -1):
-        if len(s[x]) >= k:
-            s[x].sort()
-            ans = min(ans, sum(s[x][:k]))
-        
-        if x == 0: break
-        m = x >> 1
-        for op in s[x]:
-            s[m].append(op + 1)
-
-    print(ans)
+    for i in range(n):
+        pres += arr[i]
+        for j in range(i + 1, -1, -1):
+            if j: dp[j] = max(dp[j], dp[j-1])
+            if l <= (pres - j) % h <= r:
+                dp[j] += 1
+                
+    print(max(dp))
 
 # t = int(input())
 t = 1

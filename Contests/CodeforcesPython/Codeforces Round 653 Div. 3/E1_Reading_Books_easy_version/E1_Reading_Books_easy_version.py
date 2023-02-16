@@ -1,13 +1,14 @@
-import math
 import collections
+import math
+import os
 import random
-from heapq import heappush, heappop
+import sys
+from bisect import bisect, bisect_left
 from functools import reduce
-
-# Sample Inputs/Output 
-# region fastio
-import sys, os
+from heapq import heapify, heappop, heappush
 from io import BytesIO, IOBase
+
+# region fastio
 BUFSIZE = 8192
 class FastIO(IOBase):
     newlines = 0
@@ -54,7 +55,9 @@ class IOWrapper(IOBase):
 sys.stdin, sys.stdout = IOWrapper(sys.stdin), IOWrapper(sys.stdout)
 input = lambda: sys.stdin.readline().rstrip("\r\n")
 ints = lambda: list(map(int, input().split()))
+# endregion fastio
 
+# region interactive
 def printQry(a, b) -> None:
     sa = str(a)
     sb = str(b)
@@ -63,33 +66,53 @@ def printQry(a, b) -> None:
 def printAns(ans) -> None:
     s = str(ans)
     print(f"! {s}", flush = True)
+# endregion interactive
+
+# MOD = 998244353
+# MOD = 10 ** 9 + 7
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
     n, k = map(int, input().split())
-    arr = ints()
+    a = []
+    b = []
+    c = []
+    for _ in range(n):
+        t, al, bl = map(int, input().split())
+        if al and bl:
+            c.append(t)
+        elif al:
+            a.append(t)
+        elif bl:
+            b.append(t)
 
-    arr.sort()
-    mx = arr[-1]
-    s = [[] for _ in range(mx + 1)]
-    for a in arr:
-        s[a].append(0)
+    m1 = len(c)
+    m2 = min(len(a), len(b))
 
-    # print(s)
+    if m1 + m2 < k:
+        print(-1)
+        return
 
-    ans = math.inf
-    for x in range(mx, -1, -1):
-        if len(s[x]) >= k:
-            s[x].sort()
-            ans = min(ans, sum(s[x][:k]))
-        
-        if x == 0: break
-        m = x >> 1
-        for op in s[x]:
-            s[m].append(op + 1)
-
+    a.sort()
+    b.sort()
+    c.sort()
+    ans = i = j = 0
+    while i + j < k:
+        if i < m1 and j < m2 and c[i] <= a[j] + b[j]:
+            ans += c[i]
+            i += 1
+        elif i < m1 and j < m2 and c[i] > a[j] + b[j]:
+            ans += a[j] + b[j]
+            j += 1
+        elif i < m1:
+            ans += c[i]
+            i += 1
+        elif j < m2:
+            ans += a[j] + b[j]
+            j += 1
+    
     print(ans)
 
 # t = int(input())
-t = 1
-for _ in range(t):
-    solve()
+# for _ in range(t):
+solve()
