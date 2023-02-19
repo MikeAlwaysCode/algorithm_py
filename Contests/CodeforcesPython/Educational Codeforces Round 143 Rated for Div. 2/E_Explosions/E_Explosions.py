@@ -73,12 +73,25 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n = int(input())
+    arr = ints()
 
-    return
+    left = [0] * n
+    right = [0] * n
+
+    l = 0
+    for i in range(1, n):
+        if arr[i] < arr[i - 1]:
+            right[l] += arr[i]
+        else:
+            l = i
+        if arr[i] > arr[i - 1]:
+            left[i] += left[i - 1] + arr[i - 1]
+
+    print(left)
+    print(right)
+
+    print(sum(arr) - max(l + r for l, r in zip(left, right)))
 
 t = int(input())
 for _ in range(t):
