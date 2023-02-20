@@ -65,9 +65,24 @@
 # 
 # 
 #
+from typing import List
+
 
 # @lc code=start
 class Solution:
     def bestHand(self, ranks: List[int], suits: List[str]) -> str:
+        if len(set(suits)) == 1:
+            return "Flush"
+        
+        c = Counter(ranks)
+        # sc = c.most_common(1)[0][1]
+        sc = max(c.values())
+            
+        if sc >= 3:
+            return "Three of a Kind"
+        elif sc >= 2:
+            return "Pair"
+        else:
+            return "High Card"
 # @lc code=end
 
