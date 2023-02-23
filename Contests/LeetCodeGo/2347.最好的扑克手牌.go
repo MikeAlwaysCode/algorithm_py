@@ -65,6 +65,9 @@
  *
  *
  */
+package LeetCodeGo
+
+import "bytes"
 
 // @lc code=start
 func bestHand(ranks []int, suits []byte) string {
@@ -88,4 +91,3 @@ func bestHand(ranks []int, suits []byte) string {
 }
 
 // @lc code=end
-

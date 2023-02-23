@@ -61,5 +61,15 @@
 # @lc code=start
 class Solution:
     def numDistinct(self, s: str, t: str) -> int:
+        n, m = len(s), len(t)
+        if n < m: return 0
+        dp = [[0] * (m + 1) for _ in range(n + 1)]
+        for i in range(n):
+            dp[i][0] = 1
+            for j in range(min(m, i+1)):
+                dp[i+1][j+1] = dp[i][j+1]
+                if s[i] == t[j]:
+                    dp[i+1][j+1] += dp[i][j]
+        return dp[n][m]
 # @lc code=end
 

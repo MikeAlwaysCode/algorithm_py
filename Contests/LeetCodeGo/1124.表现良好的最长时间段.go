@@ -47,6 +47,7 @@
  *
  *
  */
+package LeetCodeGo
 
 // @lc code=start
 func longestWPI(hours []int) (ans int) {
@@ -82,4 +83,3 @@ func max(a, b int) int {
 }
 
 // @lc code=end
-
