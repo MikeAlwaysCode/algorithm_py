@@ -56,9 +56,40 @@
 # 
 # 
 #
+from typing import List
+
 
 # @lc code=start
 class Solution:
+    def preLis(self, nums: list) -> list:
+        n = len(nums)
+        plis = [0] * n
+        d = []
+        for i, x in enumerate(nums):
+            if not d or x > d[-1]:
+                d.append(x)
+                plis[i] = len(d)
+            else:
+                l, r = 0, len(d) - 1
+                loc = r
+                while l <= r:
+                    mid = (l + r) // 2
+                    if d[mid] >= x:
+                        loc = mid
+                        r = mid - 1
+                    else:
+                        l = mid + 1
+                d[loc] = x
+                plis[i] = loc + 1
+        return plis
+
     def minimumMountainRemovals(self, nums: List[int]) -> int:
+        pres = self.preLis(nums)
+        suff = self.preLis(nums[::-1])
+        ans = n = len(nums)
+        for i in range(1, len(nums) - 1):
+            if pres[i] > 1 and suff[n - i - 1] > 1:
+                ans = min(ans, n + 1 - pres[i] - suff[n - i - 1])
+        return ans
 # @lc code=end
 

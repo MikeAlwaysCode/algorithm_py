@@ -74,13 +74,62 @@ def printAns(ans) -> None:
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
+# d = collections.Counter()
+# def init():
+#     n, mx = 1, 2 * 10 ** 9
+#     while n * (n - 1) <= mx:
+#         d[n * (n - 1) // 2] = n
+#         n += 1
+
+def cal(c) -> int:
+    x = (math.isqrt(c * 8 + 1) + 1) // 2
+    if x * (x - 1) // 2 == c:
+        return x
+    return -1
+
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    a00, a01, a10, a11 = map(int, input().split())
 
-    return
+    # n, m = d[a00], d[a11]
+    n, m = cal(a00), cal(a11)
+    
+    # if not n or not m:
+    if n < 0 or m < 0:
+        print("Impossible")
+        return
 
-for _ in range(int(input())):
-    solve()
+    if a01 == 0 and a10 == 0:
+        if a00 == 0 and a11 == 0:
+            print("0")
+            return
+        if a00 and a11:
+            print("Impossible")
+            return
+        elif a00:
+            print("0" * n)
+            return
+        elif a11:
+            print("1" * m)
+            return
+
+    if a01 + a10 != n * m:
+        if a00 == 0 and a01 + a10 == m:
+            n = 1
+        elif a11 == 0 and a10 + a10 == n:
+            m = 1
+        else:
+            print("Impossible")
+            return
+    
+    r1 = a01 // n
+    l0 = a01 % n
+    r0 = n - l0
+    m1 = 1 if l0 else 0
+    if l0: a10 -= n - l0
+    l1 = m - m1 - r1
+    ans = "1" * l1 + "0" * l0 + "1" * m1 + "0" * r0 + "1" * r1
+    print(ans)
+
+# init()
+# for _ in range(int(input())):
+solve()
