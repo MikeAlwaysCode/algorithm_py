@@ -70,18 +70,66 @@ def printAns(ans) -> None:
     print(f"! {s}", flush = True)
 # endregion interactive
 
-# MOD = 998244353
+MOD = 998244353
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # n, m, k = map(int, input().split())
-    # s = input()
-    # arr = ints()
+    n = int(input())
+    
+    dp = [1, 1]
+    pa, pb = map(int, input().split())
+    for _ in range(n - 1):
+        a, b = map(int, input().split())
+        tmp = [0] * 2
+        if a != pa:
+            tmp[0] = (tmp[0] + dp[0]) % MOD
+        if a != pb:
+            tmp[0] = (tmp[0] + dp[1]) % MOD
+        if b != pa:
+            tmp[1] = (tmp[1] + dp[0]) % MOD
+        if b != pb:
+            tmp[1] = (tmp[1] + dp[1]) % MOD
+        pa, pb = a, b
+        dp = tmp
+        # print(dp)
+    print(sum(dp) % MOD)
 
-    ans = 0
+    '''
+    g = collections.defaultdict(list)
+    vis = collections.Counter()
 
+    for _ in range(n):
+        a, b = map(int, input().split())
+        g[a].append(b)
+        g[b].append(a)
+        vis[a] = 0
+        vis[b] = 0
+
+    ans = 1
+    # print(g)
+    for v in vis.keys():
+        if not vis[v] and g[v]:
+            cntV = cntE = 0
+            q = collections.deque([v])
+            vis[v] = 1
+            while q:
+                u = q.popleft()
+                cntV += 1
+                cntE += len(g[u])
+                for v in g[u]:
+                    if not vis[v]: 
+                        vis[v] = 1
+                        q.append(v)
+            # print(cntV, cntE)
+            if cntE // 2 > cntV:
+                print(0)
+                return
+            elif cntE // 2 < cntV:
+                ans = ans * cntV % MOD
+            elif cntV > 1:
+                ans = ans * 2 % MOD
     print(ans)
+    '''
 
 solve()

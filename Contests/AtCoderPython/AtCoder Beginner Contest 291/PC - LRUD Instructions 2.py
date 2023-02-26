@@ -75,13 +75,27 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # n, m, k = map(int, input().split())
-    # s = input()
-    # arr = ints()
+    n = int(input())
+    s = input()
 
-    ans = 0
+    cnt = collections.Counter()
 
-    print(ans)
+    x, y = 0, 0
+    cnt[(0, 0)] = 1
+    for c in s:
+        if c == 'L':
+            x -= 1
+        elif c == 'R':
+            x += 1
+        elif c == 'U':
+            y += 1
+        else:
+            y -= 1
+        cnt[(x, y)] += 1
+        if cnt[(x, y)] > 1:
+            print("Yes")
+            return
+        
+    print("No") 
 
 solve()

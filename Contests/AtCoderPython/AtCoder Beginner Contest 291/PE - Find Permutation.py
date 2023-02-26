@@ -75,13 +75,36 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # n, m, k = map(int, input().split())
-    # s = input()
-    # arr = ints()
+    n, m = map(int, input().split())
+    g = [[] for _ in range(n)]
+    incnt = [0] * n
+    for _ in range(m):
+        u, v = map(int, input().split())
+        g[u-1].append(v-1)
+        incnt[v-1] += 1
 
-    ans = 0
+    ans = [0] * n
+    cur = 1
+    q = collections.deque(i for i, v in enumerate(incnt) if v == 0)
 
-    print(ans)
+    while q:
+        if len(q) != 1:
+            break
+            
+        idx = q.popleft()
+        
+        ans[idx] = cur
+        cur += 1
+        
+        for x in g[idx]:
+            incnt[x] -= 1
+            if incnt[x] == 0:
+                q.append(x)
+
+    if cur != n + 1:
+        print("No")
+    else:
+        print("Yes")
+        print(*ans)
 
 solve()

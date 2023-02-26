@@ -75,13 +75,11 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # n, m, k = map(int, input().split())
-    # s = input()
-    # arr = ints()
-
-    ans = 0
-
-    print(ans)
+    s = input()
+    
+    for i, c in enumerate(s, 1):
+        if c.isupper():
+            print(i)
+            return
 
 solve()
