@@ -49,9 +49,23 @@
 # 
 # 
 #
+from typing import List
+
 
 # @lc code=start
 class Solution:
     def movesToMakeZigzag(self, nums: List[int]) -> int:
+        n = len(nums)
+        def cal(s: int) -> int:
+            res = 0
+            for i in range(s, n, 2):
+                mn = 1000
+                if i > 0:
+                    mn = min(mn, nums[i - 1] - 1)
+                if i < n - 1:
+                    mn = min(mn, nums[i + 1] - 1)
+                res += max(0, nums[i] - mn)
+            return res
+        return min(cal(0), cal(1))
 # @lc code=end
 

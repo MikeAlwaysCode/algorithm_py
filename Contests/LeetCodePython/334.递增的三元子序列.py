@@ -59,6 +59,8 @@
 #
 import bisect
 from typing import List
+
+
 # @lc code=start
 class Solution:
     def increasingTriplet(self, nums: List[int]) -> bool:
@@ -71,8 +73,7 @@ class Solution:
                     return True
             else:
                 i = bisect.bisect_left(lis, num)
-                if lis[i] > num:
-                    lis[i] = num
+                lis[i] = num
         return False
         '''
         n = len(nums)
