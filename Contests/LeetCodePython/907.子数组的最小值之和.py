@@ -48,6 +48,8 @@
 # 
 #
 from typing import List
+
+
 # @lc code=start
 class Solution:
     def sumSubarrayMins(self, arr: List[int]) -> int:

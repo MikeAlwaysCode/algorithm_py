@@ -66,26 +66,37 @@
 # 
 # 
 #
+import collections
 from heapq import heappop, heappush
 from typing import List
+
+
 # @lc code=start
 class Solution:
     def secondGreaterElement(self, nums: List[int]) -> List[int]:
         n = len(nums)
         ans = [-1] * n
         s, t = [], []
-        h = []
+        for i, num in enumerate(nums):
+            while t and nums[t[-1]] < num:
+                ans[t.pop()] = num
+            j = len(s) - 1
+            while j >= 0 and nums[s[j]] < num:
+                j -= 1
+            t += s[j+1:]
+            del s[j+1:]
+            s.append(i)
+        '''
+        s, h = [], []
         for i, num in enumerate(nums):
             while h and h[0][0] < num:
                 p = heappop(h)
                 ans[p[1]] = num
-            # while t and nums[t[-1]] < num:
-            #     ans[t.pop()] = num
             while s and nums[s[-1]] < num:
-                # t.append(s.pop())
                 heappush(h, (nums[s[-1]], s[-1]))
                 s.pop()
             s.append(i)
+        '''
         return ans
 # @lc code=end
 
