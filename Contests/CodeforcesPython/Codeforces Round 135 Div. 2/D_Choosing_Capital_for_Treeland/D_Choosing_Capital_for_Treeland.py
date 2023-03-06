@@ -1,10 +1,10 @@
-import collections
 import itertools
 import math
 import os
 import random
 import sys
 from bisect import bisect, bisect_left
+from collections import *
 from functools import reduce
 from heapq import heapify, heappop, heappush
 from io import BytesIO, IOBase
@@ -76,15 +76,41 @@ def printAns(ans) -> None:
 
 def solve() -> None:
     n = int(input())
-    arr = ints()
+    tree = [[] for _ in range(n)]
+    # cnt = Counter()
+    for _ in range(n - 1):
+        u, v = map(int, input().split())
+        u -= 1
+        v -= 1
+        tree[u].append((v, 1))
+        tree[v].append((u, -1))
 
-    for i in range(n):
-        if arr[i] == 1:
-            arr[i] += 1
-        if i and arr[i] % arr[i-1] == 0:
-            arr[i] += 1
+        # cnt[(v, u)] += 1
 
-    print(*arr)
+    ans = defaultdict(list)
+    inv = 0
 
-for _ in range(int(input())):
-    solve()
+    q = deque([(0, -1)])
+    while q:
+        u, p = q.popleft()
+        for v, c in tree[u]:
+            if v == p: continue
+            # inv += cnt[(u, v)]
+            inv += int(c < 0)
+            q.append((v, u))
+    ans[inv].append(1)
+    q = deque([(0, -1, inv)])
+    while q:
+        u, p, uc = q.popleft()
+        for v, c in tree[u]:
+            if v == p: continue
+            vc = uc + c
+            if vc < inv: inv = vc
+            ans[vc].append(v+1)
+            q.append((v, u, vc))
+
+    print(inv)
+    print(*sorted(ans[inv]))
+
+# for _ in range(int(input())):
+solve()

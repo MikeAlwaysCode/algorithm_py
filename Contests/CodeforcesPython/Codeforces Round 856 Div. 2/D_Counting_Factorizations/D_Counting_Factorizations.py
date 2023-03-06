@@ -1,10 +1,10 @@
-import collections
 import itertools
 import math
 import os
 import random
 import sys
 from bisect import bisect, bisect_left
+from collections import *
 from functools import reduce
 from heapq import heapify, heappop, heappush
 from io import BytesIO, IOBase
@@ -70,17 +70,61 @@ def printAns(ans) -> None:
     print(f"! {s}", flush = True)
 # endregion interactive
 
-# MOD = 998244353
+MOD = 998244353
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
+MXN = 10 ** 6
+isprime = [True] * (MXN + 1)
+MC = 4048
+fact = [1] * (MC + 1)
+inverse = [0] * (MC + 1)
+
+def init():
+    isprime[1] = False
+    for i in range(2, MXN + 1):
+        if not isprime[i]:
+            continue
+        for j in range(i + i, MXN + 1, i):
+            isprime[j] = False
+    
+    # 阶乘
+    for i in range(1, MC + 1):
+        fact[i] = fact[i-1] * i % MOD
+    # 逆元
+    inverse[MC] = pow(fact[MC], MOD - 2, MOD)
+    for i in range(MC, 0, -1):
+        inverse[i-1] = inverse[i] * i % MOD
+
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n = int(input())
+    arr = ints()
 
-    return
+    cnt = Counter(arr)
+    ans = 1
+    primes = []
+    for k, v in cnt.items():
+        if not isprime[k]:
+            ans = ans * inverse[v] % MOD
+        else:
+            primes.append(k)
+    
+    if len(primes) < n:
+        print(0)
+        return
+    
+    dp = [0] * (n + 1)
+    dp[0] = 1
+    for p in primes:
+        c = cnt[p]
+        for j in range(n-1, -1, -1):
+            # dp[j] = (dp[j] * inverse[c] + dp[j-1] * inverse[c-1]) % MOD
+            dp[j+1] = (dp[j+1] + dp[j] * inverse[c-1]) % MOD
+            dp[j] = dp[j] * inverse[c] % MOD
+    
+    ans = ans * dp[n] * fact[n] % MOD
+    print(ans)
 
-for _ in range(int(input())):
-    solve()
+init()
+# for _ in range(int(input())):
+solve()

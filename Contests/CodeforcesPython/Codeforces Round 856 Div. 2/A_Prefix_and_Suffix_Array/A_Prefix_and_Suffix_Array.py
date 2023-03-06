@@ -75,12 +75,15 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n = int(input())
+    s = list(input().split())
+    s.sort(key = lambda x: len(x))
+    for i in range(0, n*2-2, 2):
+        if s[i] != s[i+1][::-1]:
+            print("NO")
+            return
 
-    return
+    print("YES")
 
 for _ in range(int(input())):
     solve()
