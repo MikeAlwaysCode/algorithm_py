@@ -1,10 +1,10 @@
-import collections
 import itertools
 import math
 import os
 import random
 import sys
 from bisect import bisect, bisect_left
+from collections import *
 from functools import reduce
 from heapq import heapify, heappop, heappush
 from io import BytesIO, IOBase
@@ -76,24 +76,62 @@ def printAns(ans) -> None:
 
 def solve() -> None:
     n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
-    
-    # q = collections.deque([root.left, root.right])
-    # while q:
-    #     node1 = q.popleft()
-    #     node2 = q.popleft()
-    #     if node1 is None and node2 is None:
-    #         continue
-    #     elif (node1 is None or node2 is None) or (node1.val != node2.val):
-    #         return False
+    g = [[] for _ in range(n)]
+    for _ in range(n - 1):
+        u, v = map(int, input().split())
+        u -= 1
+        v -= 1
+        g[u].append(v)
+        g[v].append(u)
         
-    #     q.append(node1.left)
-    #     q.append(node2.right)
-    #     q.append(node1.right)
-    #     q.append(node2.left)
-    # return True
+    parent = [-1] * n
+    order = [0]
+    stack = [0]
+    while stack:
+        u = stack.pop()
+        for v in g[u]:
+            if v == parent[u]: continue
+            parent[v] = u
+            order.append(v)
+            stack.append(v)
+    
+    seen = dict()
+    hash_val = [0] * n
+    idx = 0
+
+    for u in order[::-1]:
+        children = []
+        for v in g[u]:
+            if v == parent[u]: continue
+            children.append(hash_val[v])
+        code = tuple(sorted(children))
+        if code not in seen:
+            idx += 1
+            seen[code] = idx
+        hash_val[u] = seen[code]
+
+    u = 0
+    while True:
+        cnt = Counter()
+        for v in g[u]:
+            if v == parent[u]: continue
+            cnt[hash_val[v]] += 1
+        c = 0
+        for v in cnt.values():
+            if v & 1: c += 1
+        
+        if c == 0:
+            print("YES")
+            return
+        if c > 1:
+            print("NO")
+            return
+        
+        for v in g[u]:
+            if v == parent[u]: continue
+            if cnt[hash_val[v]] & 1:
+                u = v
+                break
 
 for _ in range(int(input())):
     solve()

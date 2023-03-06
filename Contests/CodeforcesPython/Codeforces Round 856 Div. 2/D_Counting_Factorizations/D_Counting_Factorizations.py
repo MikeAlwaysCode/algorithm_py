@@ -107,20 +107,20 @@ def solve() -> None:
         if not isprime[k]:
             ans = ans * inverse[v] % MOD
         else:
-            primes.append(k)
+            primes.append(v)
     
     if len(primes) < n:
         print(0)
         return
-    
+    # print(primes)
     dp = [0] * (n + 1)
     dp[0] = 1
-    for p in primes:
-        c = cnt[p]
-        for j in range(n-1, -1, -1):
-            # dp[j] = (dp[j] * inverse[c] + dp[j-1] * inverse[c-1]) % MOD
-            dp[j+1] = (dp[j+1] + dp[j] * inverse[c-1]) % MOD
-            dp[j] = dp[j] * inverse[c] % MOD
+    for c in primes:
+        for j in range(n, -1, -1):
+            if j:
+                dp[j] = (dp[j] * inverse[c] + dp[j-1] * inverse[c-1]) % MOD
+            else:
+                dp[j] = dp[j] * inverse[c] % MOD
     
     ans = ans * dp[n] * fact[n] % MOD
     print(ans)
