@@ -24,16 +24,24 @@
 *   [拓扑排序TopoSort](/Template/topoSort.py)
 *   双向BFS
 *   [最近公共祖先(Least Common Ancestors)](/Template/lca.py)
+*   [树哈希(Hash of root trees)](/Template/hash-tree.py)
 
 </details>
 
 <details>
   <summary>动态规划(Dynamic Programming)</summary>
 
+*   [背包问题](/Template/dp-knapsack.py)
+    *   01背包
+    *   完全背包
+    *   多重背包
+    *   分组背包
+    *   树上背包
 *   线性DP
     *   [LIS最长上升子序列](/Template/lis.py)
 *   数位DP
 *   树形DP
+    *   [换根DP(Reroot)](/Template/dp-tree.py)
 
 </details>
 

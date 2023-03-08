@@ -78,9 +78,40 @@
 # 
 # 
 #
+from typing import List
+
 
 # @lc code=start
 class Solution:
     def braceExpansionII(self, expression: str) -> List[str]:
+        res, cur = [set()], {""}
+        for c in expression:
+            if c == ",":
+                res[-1] = res[-1] | cur
+                cur = {""}
+            elif c == "{":
+                res.append(cur)
+                res.append(set())
+                cur = {""}
+            elif c == "}":
+                cur = set(p + s for s in (res.pop() | cur) for p in res[-1])
+            else: # letter
+                cur = {p + c for p in cur}
+        return sorted(cur)
+        '''
+        def dfs(exp):
+            j = exp.find('}')
+            if j == -1:
+                s.add(exp)
+                return
+            i = exp.rfind('{', 0, j - 1)
+            a, c = exp[:i], exp[j + 1:]
+            for b in exp[i + 1: j].split(','):
+                dfs(a + b + c)
+
+        s = set()
+        dfs(expression)
+        return sorted(s)
+        '''
 # @lc code=end
 

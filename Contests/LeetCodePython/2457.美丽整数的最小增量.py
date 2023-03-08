@@ -58,34 +58,11 @@
 # @lc code=start
 class Solution:
     def makeIntegerBeautiful(self, n: int, target: int) -> int:
-        tot = 0
-        x = n
-        while x:
-            tot += x % 10
-            x //= 10
-
-        if tot <= target:
-            return 0
-        
-        ans = 0
-        x = n
-        p10 = 1
-        prev = 0
-        while x:
-            if x % 10 + prev:
-                ans += (10 - prev - (x % 10)) * p10
-                tot -= x % 10 + prev
-                prev = 1
-            elif not x % 10:
-                prev = 0
-            tot += prev
-            x //= 10
-            # x += prev
-            p10 *= 10
-            # print(x, tot)
-            if tot <= target:
-                break
-        return ans
+        m, p = n, 10
+        while sum(map(int, str(m))) > target:
+            m += (- m) % p
+            p *= 10
+        return m - n
         '''
         tail = 1
         while True:
