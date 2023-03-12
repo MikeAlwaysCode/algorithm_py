@@ -74,55 +74,40 @@ def printAns(ans) -> None:
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-class BIT:
-    def __init__(self, n: int):
-        self.nums = [0] * (n + 1)
-        self.n = n
-        self.BITree = [0] * (self.n + 1)
-        
-    def lowbit(self, x: int) -> int:
-        return x & -x
-    
-    def query(self, x: int) -> int:
-        ans = 0
-        while x:
-            ans += self.BITree[x]
-            x -= self.lowbit(x)
-        return ans
-
-    def add(self, x: int, val: int):
-        while x <= self.n:
-            self.BITree[x] += val
-            x += self.lowbit(x)
-
-    def update(self, x: int, val: int) -> None:
-        self.add(x + 1, val - self.nums[x])
-        self.nums[x] = val
-
 def solve() -> None:
     n = int(input())
-    rng = []
+    store = []
     for _ in range(n):
-        l, r = map(int, input().split())
-        rng.append((l, r))
-    
-    idx = sorted(range(n), key = lambda x: rng[x][1])
-    # discretization = {rng[idx[i]][1]:i for i in range(n)}
-    discretization = [0] * n
-    for i, pos in enumerate(idx):
-        discretization[pos] = i
-    # print(discretization)
-    bit = BIT(n)
-    ans = [0] * n
-    idx.sort(key = lambda x: -rng[x][0])
-    for i in idx:
-        # ans[i] = bit.query(discretization[rng[i][1]])
-        # bit.update(discretization[rng[i][1]], 1)
-        ans[i] = bit.query(discretization[i])
-        bit.update(discretization[i], 1)
+        a, b = map(int, input().split())
+        store.append((a, b))
 
-    for a in ans:
-        print(a)
+    h = []
+    store.sort(key = lambda x: (x[0], -x[1]))
+    mx = [0] * n
+    for i in range(n - 2, -1, -1):
+        mx[i] = max(mx[i + 1], store[i + 1][1])
+        
+    ans, mx[-1], mnb = math.inf, -1, -1
 
-# for _ in range(int(input())):
-solve()
+    for i in range(n):
+        a, b = store[i][0], store[i][1]
+        mxb = -1
+        while h and h[0] < a:
+            mnb = heappop(h)
+
+        if h:
+            mxb = h[0]
+
+        if i < n - 1:
+            ans = min(ans, abs(mx[i] - a))
+        if mxb > mx[i]:
+            ans = min(ans, abs(mxb - a))
+        if mnb > mx[i]:
+            ans = min(ans, abs(mnb - a))
+
+        heappush(h, b)
+
+    print(ans)
+
+for _ in range(int(input())):
+    solve()

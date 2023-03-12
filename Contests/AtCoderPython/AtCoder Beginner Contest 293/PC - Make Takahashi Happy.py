@@ -1,12 +1,12 @@
+import bisect
+import collections
 import itertools
 import math
 import os
 import random
 import sys
-from bisect import bisect, bisect_left
-from collections import *
 from functools import reduce
-from heapq import heapify, heappop, heappush
+from heapq import *
 from io import BytesIO, IOBase
 from string import *
 
@@ -74,55 +74,34 @@ def printAns(ans) -> None:
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-class BIT:
-    def __init__(self, n: int):
-        self.nums = [0] * (n + 1)
-        self.n = n
-        self.BITree = [0] * (self.n + 1)
-        
-    def lowbit(self, x: int) -> int:
-        return x & -x
-    
-    def query(self, x: int) -> int:
-        ans = 0
-        while x:
-            ans += self.BITree[x]
-            x -= self.lowbit(x)
-        return ans
-
-    def add(self, x: int, val: int):
-        while x <= self.n:
-            self.BITree[x] += val
-            x += self.lowbit(x)
-
-    def update(self, x: int, val: int) -> None:
-        self.add(x + 1, val - self.nums[x])
-        self.nums[x] = val
-
 def solve() -> None:
-    n = int(input())
-    rng = []
+    n, m = map(int, input().split())
+    g = []
     for _ in range(n):
-        l, r = map(int, input().split())
-        rng.append((l, r))
-    
-    idx = sorted(range(n), key = lambda x: rng[x][1])
-    # discretization = {rng[idx[i]][1]:i for i in range(n)}
-    discretization = [0] * n
-    for i, pos in enumerate(idx):
-        discretization[pos] = i
-    # print(discretization)
-    bit = BIT(n)
-    ans = [0] * n
-    idx.sort(key = lambda x: -rng[x][0])
-    for i in idx:
-        # ans[i] = bit.query(discretization[rng[i][1]])
-        # bit.update(discretization[rng[i][1]], 1)
-        ans[i] = bit.query(discretization[i])
-        bit.update(discretization[i], 1)
+        g.append(ints())
 
-    for a in ans:
-        print(a)
+    ans = 0
+    s = set()
+    s.add(g[0][0])
 
-# for _ in range(int(input())):
+    def dfs(i: int, j: int):
+        if i == n - 1 and j == m - 1:
+            nonlocal ans
+            ans += 1
+            return
+        # print(i, j)
+        # print(s)
+        if i < n - 1 and g[i + 1][j] not in s:
+            s.add(g[i + 1][j])
+            dfs(i + 1, j)
+            s.discard(g[i + 1][j])
+        
+        if j < m - 1 and g[i][j + 1] not in s:
+            s.add(g[i][j + 1])
+            dfs(i, j + 1)
+            s.discard(g[i][j + 1])
+
+    dfs(0, 0)
+    print(ans)
+
 solve()
