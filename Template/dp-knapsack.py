@@ -20,6 +20,7 @@ https://en.wikipedia.org/wiki/Knapsack_problem
 '''
 from typing import List
 
+
 # 01背包
 class Solution:
     # LC416 https://leetcode.cn/problems/partition-equal-subset-sum/

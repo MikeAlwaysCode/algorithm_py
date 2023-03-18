@@ -76,6 +76,7 @@ def solve() -> None:
     n = int(input())
     arr = ints()
 
+    '''
     # 并查集
     fa = list(range(n))
     sz = [1] * n
@@ -101,6 +102,7 @@ def solve() -> None:
         ans[x - 1] = h[0][0]
 
     '''
+    
     # 单调栈
     left = [0] * n
     right = [0] * n
@@ -123,7 +125,6 @@ def solve() -> None:
         ans[i] = max(ans[i], ans[i + 1])
 
     print(*ans[1:])
-    '''
 
 # t = int(input())
 t = 1

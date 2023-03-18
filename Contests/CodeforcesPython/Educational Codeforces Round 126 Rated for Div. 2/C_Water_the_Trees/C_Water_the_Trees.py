@@ -91,7 +91,8 @@ def solve() -> None:
             ans += c2 // 3 * 4 + (c2 % 3) // 2 * 3 + (c2 % 3 % 2)
         return ans
 
-    print(min(cal(cnt01, cnt02), cal(cnt11, cnt12)))
+    ans = min(cal(cnt01, cnt02), cal(cnt11, cnt12))
+    print(ans)
 
 t = int(input())
 for _ in range(t):

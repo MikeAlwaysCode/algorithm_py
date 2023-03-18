@@ -68,7 +68,7 @@ func findTheString(lcp [][]int) string {
 	s := make([]byte, n)
 	for c := byte('a'); c <= 'z'; c++ {
 		i := bytes.IndexByte(s, 0)
-		if i < 0 { // 构造完毕
+		if i < 0 {
 			break
 		}
 		for j := i; j < n; j++ {
@@ -77,11 +77,10 @@ func findTheString(lcp [][]int) string {
 			}
 		}
 	}
-	if bytes.IndexByte(s, 0) >= 0 { // 没有构造完
+	if bytes.IndexByte(s, 0) >= 0 {
 		return ""
 	}
 
-	// 直接在原数组上验证
 	for i := n - 1; i >= 0; i-- {
 		for j := n - 1; j >= 0; j-- {
 			actualLCP := 0
