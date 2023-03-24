@@ -75,13 +75,26 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    u, v = map(int, input().split())
+    if u > v or (v - u) & 1:
+        print(-1)
+        return
+    if u == v:
+        if u == 0:
+            print(0)
+        else:
+            print(1)
+            print(u)
+        return
+    
+    x = (v - u) // 2
+    if u & x:
+        ans = [u, x, x]
+    else:
+        ans = [u | x, x]
 
-    return
+    print(len(ans))
+    print(*ans)
 
-
-for _ in range(int(input())):
-    solve()
+# for _ in range(int(input())):
+solve()

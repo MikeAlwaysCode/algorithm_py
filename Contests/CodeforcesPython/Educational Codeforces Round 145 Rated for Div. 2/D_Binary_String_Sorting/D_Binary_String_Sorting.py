@@ -75,13 +75,54 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    s = input()
+    n = len(s)
 
-    return
+    suff = [0] * n
+    cnt = 0
+    for i in range(n - 1, -1, -1):
+        suff[i] = cnt
+        if s[i] == '0':
+            cnt += 1
+            
+    ans = cnt * (10 ** 12 + 1)
+    cnt = 0
 
+    for i in range(n):
+        ans = min(ans, (cnt + suff[i]) * (10 ** 12 + 1))
+            
+        if i and s[i] == '0' and s[i - 1] == '1':
+            ans = min(ans, (cnt + suff[i] - 1) * (10 ** 12 + 1) + 10 ** 12)
+
+        if ans == 0:
+            break
+            
+        if s[i] == '1':
+            cnt += 1
+    
+    print(ans)
+    '''
+    dp = [[0] * 2 for _ in range(n)]
+    if s[0] == '0':
+        dp[0][1] = 10 ** 12 + 1
+    else:
+        dp[0][0] = 10 ** 12 + 1
+
+    for i in range(1, n):
+        if s[i] == '0':
+            dp[i][1] = min(dp[i-1][0], dp[i-1][1]) + 10 ** 12 + 1
+            if s[i - 1] == '1':
+                if i > 1:
+                    dp[i][1] = min(dp[i][1], dp[i-2][0] + 10 ** 12)
+                else:
+                    dp[i][1] = 10 ** 12
+            dp[i][0] = dp[i-1][0]
+        else:
+            dp[i][1] = min(dp[i-1][0], dp[i-1][1])
+            dp[i][0] = dp[i-1][0] + 10 ** 12 + 1
+    
+    print(min(dp[-1]))
+    '''
 
 for _ in range(int(input())):
     solve()

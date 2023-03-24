@@ -75,13 +75,15 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
-
-    return
-
+    s = input()
+    cnt = Counter(s)
+    col = list(cnt.keys())
+    if len(col) == 1:
+        print(-1)
+    elif len(col) == 2 and (cnt[col[0]] == 1 or cnt[col[1]] == 1):
+        print(6)
+    else:
+        print(4)
 
 for _ in range(int(input())):
     solve()

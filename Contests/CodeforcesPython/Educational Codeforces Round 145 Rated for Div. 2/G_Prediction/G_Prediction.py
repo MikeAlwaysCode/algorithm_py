@@ -82,6 +82,5 @@ def solve() -> None:
 
     return
 
-
 for _ in range(int(input())):
     solve()

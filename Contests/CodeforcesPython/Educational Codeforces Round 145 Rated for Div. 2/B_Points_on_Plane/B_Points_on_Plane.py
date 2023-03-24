@@ -75,13 +75,15 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
-
-    return
-
+    n = int(input())
+    ans = math.isqrt(n)
+    if ans * ans < n:
+        ans += 1
+    if ans & 1:
+        print(ans // 2 * 2)
+    else:
+        print((ans + 1) // 2 * 2 - 1)
+    
 
 for _ in range(int(input())):
     solve()

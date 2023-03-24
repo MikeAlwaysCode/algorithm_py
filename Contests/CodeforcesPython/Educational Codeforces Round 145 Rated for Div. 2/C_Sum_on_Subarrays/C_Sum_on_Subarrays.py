@@ -75,12 +75,24 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n, k = map(int, input().split())
+    if k == 0:
+        ans = [-1] * n
+        print(*ans)
+        return
+    
+    m = (math.isqrt(k * 8 + 1) - 1) // 2
+    s = m * (m + 1) // 2
+    if s == k:
+        ans = [1] * m + [-1000] * (n - m)
+        print(*ans)
+        return
+    
+    k -= s
+    ans = [2] * k + [1] * (m - k) + [k - m - 1] + [-1000] * (n - m - 1)
 
-    return
+    print(*ans)
+
 
 
 for _ in range(int(input())):
