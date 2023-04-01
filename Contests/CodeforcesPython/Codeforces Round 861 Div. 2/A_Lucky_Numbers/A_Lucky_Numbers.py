@@ -1,14 +1,16 @@
+import itertools
 import math
-import collections
+import os
 import random
-from heapq import heapify, heappush, heappop
-from functools import reduce
+import sys
 from bisect import bisect, bisect_left
-
-# Sample Inputs/Output 
-# region fastio
-import sys, os
+from collections import *
+from functools import reduce
+from heapq import heapify, heappop, heappush
 from io import BytesIO, IOBase
+from string import *
+
+# region fastio
 BUFSIZE = 8192
 class FastIO(IOBase):
     newlines = 0
@@ -55,7 +57,9 @@ class IOWrapper(IOBase):
 sys.stdin, sys.stdout = IOWrapper(sys.stdin), IOWrapper(sys.stdout)
 input = lambda: sys.stdin.readline().rstrip("\r\n")
 ints = lambda: list(map(int, input().split()))
+# endregion fastio
 
+# region interactive
 def printQry(a, b) -> None:
     sa = str(a)
     sb = str(b)
@@ -64,31 +68,38 @@ def printQry(a, b) -> None:
 def printAns(ans) -> None:
     s = str(ans)
     print(f"! {s}", flush = True)
+# endregion interactive
+
+# MOD = 998244353
+# MOD = 10 ** 9 + 7
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = int(input())
-    arr = ints()
-    mx = max(arr)
-    s = set(arr)
-    ans = []
-    for a in arr:
-        x = 1
-        for _ in range(32):
-            if a + x > mx:
-                break
-            if a + x in s and a + x * 2 in s:
-                print(3)
-                print(a, a + x, a + x * 2)
-                return
-            if not ans and a + x in s:
-                ans = [a, a + x]
-            x <<= 1
-    if ans:
-        print(2)
-        print(*ans)
-    else:
-        print(1)
-        print(arr[0])
+    l, r = map(int, input().split())
+    if l == r:
+        print(l)
+        return
 
-# for _ in range(int(input())):
-solve()
+    ans = l
+    if r - l >= 100:
+        ans = l // 100 * 100 + 90
+        if ans < l: ans += 100
+    else:
+        tmp = 0
+        for a in range(l, r+1):
+            x = a
+            mn = mx = x % 10
+            x //= 10
+            while x:
+                mn = min(mn, x % 10)
+                mx = max(mx, x % 10)
+                x //= 10
+            
+            if mx - mn > tmp:
+                tmp = mx - mn
+                ans = a
+
+    print(ans)
+
+for _ in range(int(input())):
+    solve()

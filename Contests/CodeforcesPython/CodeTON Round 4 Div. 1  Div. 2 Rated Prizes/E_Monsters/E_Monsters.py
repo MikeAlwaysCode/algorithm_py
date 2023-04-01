@@ -1,14 +1,16 @@
+import itertools
 import math
-import collections
+import os
 import random
-from heapq import heapify, heappush, heappop
-from functools import reduce
+import sys
 from bisect import bisect, bisect_left
-
-# Sample Inputs/Output 
-# region fastio
-import sys, os
+from collections import *
+from functools import reduce
+from heapq import heapify, heappop, heappush
 from io import BytesIO, IOBase
+from string import *
+
+# region fastio
 BUFSIZE = 8192
 class FastIO(IOBase):
     newlines = 0
@@ -55,7 +57,9 @@ class IOWrapper(IOBase):
 sys.stdin, sys.stdout = IOWrapper(sys.stdin), IOWrapper(sys.stdout)
 input = lambda: sys.stdin.readline().rstrip("\r\n")
 ints = lambda: list(map(int, input().split()))
+# endregion fastio
 
+# region interactive
 def printQry(a, b) -> None:
     sa = str(a)
     sb = str(b)
@@ -64,31 +68,64 @@ def printQry(a, b) -> None:
 def printAns(ans) -> None:
     s = str(ans)
     print(f"! {s}", flush = True)
+# endregion interactive
+
+# MOD = 998244353
+# MOD = 10 ** 9 + 7
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = int(input())
+    n, m = map(int, input().split())
     arr = ints()
-    mx = max(arr)
-    s = set(arr)
-    ans = []
-    for a in arr:
-        x = 1
-        for _ in range(32):
-            if a + x > mx:
-                break
-            if a + x in s and a + x * 2 in s:
-                print(3)
-                print(a, a + x, a + x * 2)
-                return
-            if not ans and a + x in s:
-                ans = [a, a + x]
-            x <<= 1
-    if ans:
-        print(2)
-        print(*ans)
-    else:
-        print(1)
-        print(arr[0])
+    g = [[] for _ in range(n)]
+    for _ in range(m):
+        u, v = map(int, input().split())
+        u -= 1
+        v -= 1
+        g[u].append(v)
+        g[v].append(u)
 
-# for _ in range(int(input())):
-solve()
+    fa = list(range(n))
+    sz = [1] * n
+    setcnt = n
+    def find(x: int):
+        cur = x
+        while x != fa[x]:
+            x = fa[x]
+        if cur != x:
+            fa[cur] = x
+        return x
+    
+    def union(u: int, v: int):
+        fu = find(u)
+        fv = find(v)
+        fa[fv] = fu
+        sz[fu] += sz[fv]
+        nonlocal setcnt
+        setcnt -= 1
+    
+    seen = [False] * n
+    for u, p in enumerate(arr):
+        if p != 0 or seen[u]: continue
+        seen[u] = True
+        h = []
+        q = deque([u])
+        while q:
+            u = q.popleft()
+            fu = find(u)
+            p = sz[fu]
+            for v in g[u]:
+                if seen[v]: continue
+                heappush(h, (arr[v], v))
+                seen[v] = True
+            while h and h[0][0] <= p:
+                v = heappop(h)[1]
+                union(u, v)
+                p = sz[fu]
+                q.append(v)
+
+    
+    print("YES" if setcnt == 1 else "NO")
+
+for _ in range(int(input())):
+    solve()

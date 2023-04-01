@@ -1,14 +1,16 @@
+import itertools
 import math
-import collections
+import os
 import random
-from heapq import heapify, heappush, heappop
-from functools import reduce
+import sys
 from bisect import bisect, bisect_left
-
-# Sample Inputs/Output 
-# region fastio
-import sys, os
+from collections import *
+from functools import reduce
+from heapq import heapify, heappop, heappush
 from io import BytesIO, IOBase
+from string import *
+
+# region fastio
 BUFSIZE = 8192
 class FastIO(IOBase):
     newlines = 0
@@ -55,7 +57,9 @@ class IOWrapper(IOBase):
 sys.stdin, sys.stdout = IOWrapper(sys.stdin), IOWrapper(sys.stdout)
 input = lambda: sys.stdin.readline().rstrip("\r\n")
 ints = lambda: list(map(int, input().split()))
+# endregion fastio
 
+# region interactive
 def printQry(a, b) -> None:
     sa = str(a)
     sb = str(b)
@@ -64,31 +68,68 @@ def printQry(a, b) -> None:
 def printAns(ans) -> None:
     s = str(ans)
     print(f"! {s}", flush = True)
+# endregion interactive
+
+# MOD = 998244353
+# MOD = 10 ** 9 + 7
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = int(input())
-    arr = ints()
-    mx = max(arr)
-    s = set(arr)
-    ans = []
-    for a in arr:
-        x = 1
-        for _ in range(32):
-            if a + x > mx:
-                break
-            if a + x in s and a + x * 2 in s:
-                print(3)
-                print(a, a + x, a + x * 2)
-                return
-            if not ans and a + x in s:
-                ans = [a, a + x]
-            x <<= 1
-    if ans:
-        print(2)
-        print(*ans)
-    else:
-        print(1)
-        print(arr[0])
+    l, r = map(int, input().split())
+    if l == r:
+        print(l)
+        return
 
-# for _ in range(int(input())):
-solve()
+    rs = str(r)
+    ls = str(l)
+    n = len(rs)
+    m = len(ls)
+
+    for d in digits[1:]:
+        if int(d) < int(ls[0]):
+            x = int(d * (m + 1))
+        elif int(d) >= int(ls[0]):
+            x = int(d * m)
+            
+        if l <= x <= r:
+            print(x)
+            return
+    
+    s = []
+    i = 0
+    mn, mx = 10, -1
+    while i < m and rs[i] == ls[i]:
+        mn = min(mn, int(rs[i]))
+        mx = max(mx, int(rs[i]))
+        s.append(rs[i])
+        i += 1
+    
+    if i == m - 1:
+        p = int(s[-1])
+        if int(rs[i]) < p:
+            print(r)
+            return
+        else:
+            print(l)
+            return
+
+    diff = 10
+    ans = l
+    left = m - i - 1
+
+    for k in range(int(ls[i]), int(rs[i]) + 1):
+        for d in digits:
+            cmn = min(mn, int(d), k)
+            cmx = max(mx, int(d), k)
+
+            x = int("".join(s) + str(k) + d * left)
+            
+            if l <= x <= r and cmx - cmn < diff:
+                diff = cmx - cmn
+                ans = x
+
+    print(ans)
+    
+
+for _ in range(int(input())):
+    solve()

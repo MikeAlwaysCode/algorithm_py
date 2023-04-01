@@ -1,14 +1,16 @@
+import itertools
 import math
-import collections
+import os
 import random
-from heapq import heapify, heappush, heappop
-from functools import reduce
+import sys
 from bisect import bisect, bisect_left
-
-# Sample Inputs/Output 
-# region fastio
-import sys, os
+from collections import *
+from functools import reduce
+from heapq import heapify, heappop, heappush
 from io import BytesIO, IOBase
+from string import *
+
+# region fastio
 BUFSIZE = 8192
 class FastIO(IOBase):
     newlines = 0
@@ -55,7 +57,9 @@ class IOWrapper(IOBase):
 sys.stdin, sys.stdout = IOWrapper(sys.stdin), IOWrapper(sys.stdout)
 input = lambda: sys.stdin.readline().rstrip("\r\n")
 ints = lambda: list(map(int, input().split()))
+# endregion fastio
 
+# region interactive
 def printQry(a, b) -> None:
     sa = str(a)
     sb = str(b)
@@ -64,31 +68,54 @@ def printQry(a, b) -> None:
 def printAns(ans) -> None:
     s = str(ans)
     print(f"! {s}", flush = True)
+# endregion interactive
+
+# MOD = 998244353
+# MOD = 10 ** 9 + 7
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
     n = int(input())
     arr = ints()
-    mx = max(arr)
-    s = set(arr)
-    ans = []
-    for a in arr:
-        x = 1
-        for _ in range(32):
-            if a + x > mx:
-                break
-            if a + x in s and a + x * 2 in s:
-                print(3)
-                print(a, a + x, a + x * 2)
-                return
-            if not ans and a + x in s:
-                ans = [a, a + x]
-            x <<= 1
-    if ans:
-        print(2)
-        print(*ans)
-    else:
+
+    if n == 1:
+        print(-1)
+        return
+
+    arr.sort()
+    if arr[0] == arr[-1]:
         print(1)
         print(arr[0])
+        return
+
+    ans = []
+
+    cnt = Counter()
+    diff = arr[1] - arr[0]
+    cnt[diff] += 1
+    tmp = -1
+    for j in range(2, n):
+        if arr[j] - arr[j - 1] != diff:
+            tmp = arr[j - 1]
+        cnt[arr[j] - arr[j - 1]] += 1
+
+    if len(cnt.keys()) == 1:
+        ans.append(arr[0] - diff)
+        ans.append(arr[-1] + diff)
+        if n == 2 and not (diff & 1):
+            ans.append(arr[0] + diff // 2)
+    elif len(cnt.keys()) == 2:
+        key = sorted(cnt.keys())
+        mn, mx = key[0], key[1]
+        if mx == mn * 2 and cnt[mx] == 1:
+            if mx == diff:
+                ans.append(arr[0] + mn)
+            else:
+                ans.append(tmp + mn)
+
+    ans.sort()
+    print(len(ans))
+    print(*ans)
 
 # for _ in range(int(input())):
 solve()
