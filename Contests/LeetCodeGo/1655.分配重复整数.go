@@ -77,12 +77,10 @@ func canDistribute(nums []int, quantity []int) bool {
 			}
 		}
 	}
-
 	cnt := map[int]int{}
 	for _, v := range nums {
 		cnt[v]++
 	}
-
 	dp := make([][]bool, len(cnt)+1)
 	for i := range dp {
 		dp[i] = make([]bool, 1<<n)

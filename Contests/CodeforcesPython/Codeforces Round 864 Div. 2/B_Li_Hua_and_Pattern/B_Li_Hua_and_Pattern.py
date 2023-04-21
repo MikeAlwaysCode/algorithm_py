@@ -75,12 +75,24 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n, k = map(int, input().split())
+    g = []
+    for _ in range(n):
+        g.append(ints())
 
-    return
+    ans = 0
+    for i in range(n // 2):
+        for j in range(n):
+            if g[i][j] != g[n - i - 1][n - 1 - j]:
+                ans += 1
+
+    if n & 1:
+        i = n // 2
+        for j in range(n // 2):
+            if g[i][j] != g[i][n - 1 - j]:
+                ans += 1
+                
+    print("NO" if ans > k or (not n & 1 and (k - ans)) & 1 else "YES")
 
 for _ in range(int(input())):
     solve()

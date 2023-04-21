@@ -71,16 +71,20 @@ def printAns(ans) -> None:
 # endregion interactive
 
 # MOD = 998244353
-# MOD = 10 ** 9 + 7
+MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n = int(input())
+    arr = ints()
 
-    return
+    dp = [0] * n
+    dp[0] = 1
+    s = set(arr[0])
+    # for a in arr[1:]:
+
+
+    print(dp[-1])
 
 for _ in range(int(input())):
     solve()

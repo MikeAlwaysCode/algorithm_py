@@ -75,12 +75,30 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n, m = map(int, input().split())
+    x1, y1, x2, y2 = map(int, input().split())
 
-    return
+    ans = 4
+    if x1 != x2:
+        ans = min(ans, m)
+    
+    if y1 != y2:
+        ans = min(ans, n)
+
+    def inCorner(x, y) -> bool:
+        if (x == 1 or x == n) and (y == 1 or y == m):
+            return True
+        return False
+    
+    if inCorner(x1, y1) or inCorner(x2, y2):
+        ans = min(ans, 2)
+        
+    for r, c in [(0, 0), (0, m + 1), (n + 1, 0), (n + 1, m + 1)]:
+        ans = min(ans, min(abs(x1 - r) + abs(y1 - c), abs(x2 - r) + abs(y2 - c)))
+        ans = min(ans, min(abs(x1 - r), abs(x2 - r)) * 2 + 1)
+        ans = min(ans, min(abs(y1 - c), abs(y2 - c)) * 2 + 1)
+    
+    print(ans)
 
 for _ in range(int(input())):
     solve()

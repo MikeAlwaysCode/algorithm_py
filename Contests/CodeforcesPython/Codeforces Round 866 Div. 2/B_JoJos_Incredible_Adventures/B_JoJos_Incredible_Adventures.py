@@ -75,12 +75,28 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
-
-    return
+    s = input()
+    n = len(s)
+    mx = cur = 0
+    for c in s:
+        if c == "0":
+            mx = max(mx, cur)
+            cur = 0
+        else:
+            cur += 1
+    mx = max(mx, cur)
+    if mx == n:
+        print(n * n)
+        return
+    i = 0
+    while i < n and s[i] == "1":
+        i += 1
+    j = n - 1
+    while j >= 0 and s[j] == "1":
+        j -= 1
+    mx = max(mx, i + n - j - 1)
+    m = (mx + 1) // 2
+    print(m * (mx + 1 - m))
 
 for _ in range(int(input())):
     solve()

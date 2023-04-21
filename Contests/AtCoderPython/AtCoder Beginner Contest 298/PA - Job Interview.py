@@ -1,12 +1,12 @@
+import bisect
+import collections
 import itertools
 import math
 import os
 import random
 import sys
-from bisect import bisect, bisect_left
-from collections import *
 from functools import reduce
-from heapq import heapify, heappop, heappush
+from heapq import *
 from io import BytesIO, IOBase
 from string import *
 
@@ -75,12 +75,9 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n = int(input())
+    s = input()
+    
+    print("Yes" if s.count("o") and s.count("x") == 0 else "No")
 
-    return
-
-for _ in range(int(input())):
-    solve()
+solve()

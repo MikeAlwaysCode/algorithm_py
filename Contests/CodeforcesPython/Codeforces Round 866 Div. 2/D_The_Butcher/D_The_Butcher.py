@@ -75,12 +75,40 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
-
-    return
+    n = int(input())
+    rect = []
+    for _ in range(n):
+        rect.append(tuple(map(int, input().split())))
+    # print(rect)
+    if n == 1:
+        print(1)
+        print(*rect[0])
+        return
+    
+    rect.sort()
+    ans = {(rect[0][0], rect[0][1])}
+    nxt = [set() for _ in range(n + 1)]
+    i = 1
+    while i < n:
+        a, b = rect[i][0], rect[i][1]
+        c, d = 0, 0
+        if i < n - 1:
+            c, d = rect[i + 1][0], rect[i + 1][1]
+        tmp = set()
+        for h, w in ans:
+            if h == a:
+                tmp.add((h, b + w))
+            if w == b:
+                tmp.add((a + h, w))
+            if a == c and w == b + d:
+                nxt[i + 2].add((a + h, w))
+            if b == d and h == a + c:
+                nxt[i + 2].add((h, b + w))
+        i += 1
+        ans = tmp.union(nxt[i])
+    print(len(ans))
+    for h, w in ans:
+        print(h, w)
 
 for _ in range(int(input())):
     solve()

@@ -75,12 +75,29 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n = int(input())
+    arr = ints()
 
-    return
+    left = dict()
+    right = dict()
+
+    for i, a in enumerate(arr):
+        if a not in left:
+            left[a] = i
+        right[a] = i
+    
+    x = 0
+    while x in left:
+        x += 1
+    if x + 1 not in left:
+        print("Yes" if x + 1 <= n else "No")
+        return
+    l, r = left[x + 1], right[x + 1]
+    for i in range(x):
+        if left[i] >= l and right[i] <= r:
+            print("No")
+            return
+    print("Yes")
 
 for _ in range(int(input())):
     solve()

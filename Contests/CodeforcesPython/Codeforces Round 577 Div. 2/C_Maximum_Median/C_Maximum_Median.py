@@ -75,12 +75,21 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
-
-    return
+    n, k = map(int, input().split())
+    arr = ints()
+ 
+    arr.sort()
+    m = n // 2
+    s = sum(arr[m:])
+    i = n - 1
+    while (ans := (s + k) // (i - m + 1)) < arr[i]:
+        s -= arr[i]
+        i -= 1
+    
+    if i < n - 1:
+        ans = min(ans, arr[i + 1])
+    
+    print(ans)
 
 for _ in range(int(input())):
     solve()

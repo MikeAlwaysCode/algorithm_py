@@ -75,12 +75,34 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n = int(input())
+    arr = ints()
 
-    return
+    s = sum(arr)
+    pres = [0] * n
+    suff = [0] * n
+    if n > 3:
+        pres[2] = arr[1]
+        suff[n - 3] = arr[-2]
+    for i in range(2, n - 2):
+        pres[i + 1] = max(pres[i], pres[i - 1] + arr[i])
+    for i in range(n - 4, 0, -1):
+        suff[i] = max(suff[i + 1], suff[i + 2] + arr[i])
+    print(pres)
+    print(suff)
 
-for _ in range(int(input())):
-    solve()
+    q = int(input())
+    for _ in range(q):
+        k, x = map(int, input().split())
+        s += x - arr[k - 1]
+        arr[k - 1] = x
+        ans = pres[k - 1] + suff[k]
+        if 1 < k < n - 1:
+            ans = max(ans, pres[k - 2] + max(suff[k], suff[k + 1] + x))
+            ans = max(ans, max(pres[k - 2] + x, pres[k - 1]) + suff[k + 2])
+        
+        ans = (s - ans + x - arr[k - 1]) * 2
+        print(ans)
+
+# for _ in range(int(input())):
+solve()

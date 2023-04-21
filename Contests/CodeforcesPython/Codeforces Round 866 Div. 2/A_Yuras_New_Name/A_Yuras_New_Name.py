@@ -75,12 +75,18 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    s = input()
+    ans = 0
+    for i, c in enumerate(s):
+        if c == "_" and (i == 0 or s[i - 1] == "_"):
+            ans += 1
 
-    return
+    if s[-1] == "_":
+        ans += 1
+    elif len(s) == 1:
+        ans += 1
+
+    print(ans) 
 
 for _ in range(int(input())):
     solve()

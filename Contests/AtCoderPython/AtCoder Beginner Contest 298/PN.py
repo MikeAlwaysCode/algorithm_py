@@ -1,12 +1,12 @@
+import bisect
+import collections
 import itertools
 import math
 import os
 import random
 import sys
-from bisect import bisect, bisect_left
-from collections import *
 from functools import reduce
-from heapq import heapify, heappop, heappush
+from heapq import *
 from io import BytesIO, IOBase
 from string import *
 
@@ -76,11 +76,12 @@ def printAns(ans) -> None:
 
 def solve() -> None:
     # n = int(input())
+    # n, m, k = map(int, input().split())
     # s = input()
-    # n, m = map(int, input().split())
     # arr = ints()
 
-    return
+    ans = 0
 
-for _ in range(int(input())):
-    solve()
+    print(ans)
+
+solve()

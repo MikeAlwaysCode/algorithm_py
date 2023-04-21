@@ -75,12 +75,26 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n, k = map(int, input().split())
+    L = ints()
+    R = ints()
+    
+    ans = math.inf
+    s = 0
+    h = []
+    for l, r in zip(L, R):
+        d = r - l + 1
+        if s + d == k:
+            ans = min(ans, len(h) * 2 + 2 + r)
+        elif s < k and s + d > k:
+            ans = min(ans, len(h) * 2 + 2 + l + k - s - 1)
+        while h and s + d - k >= h[0]:
+            s -= heappop(h)
+            ans = min(ans, len(h) * 2 + 2 + l + k - s - 1)
+        s += d
+        heappush(h, d)
 
-    return
+    print(-1 if ans == math.inf else ans)
 
 for _ in range(int(input())):
     solve()

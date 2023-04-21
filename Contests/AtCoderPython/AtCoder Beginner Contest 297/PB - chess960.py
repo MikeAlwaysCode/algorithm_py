@@ -1,12 +1,12 @@
+import bisect
+import collections
 import itertools
 import math
 import os
 import random
 import sys
-from bisect import bisect, bisect_left
-from collections import *
 from functools import reduce
-from heapq import heapify, heappop, heappush
+from heapq import *
 from io import BytesIO, IOBase
 from string import *
 
@@ -75,12 +75,18 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    s = input()
+    idx = collections.defaultdict(list)
+    for i, c in enumerate(s):
+        idx[c].append(i)
 
-    return
+    if idx["B"][0] & 1 == idx["B"][1] & 1:
+        print("No")
+        return
+    
+    if idx["R"][0] < idx["K"][0] < idx["R"][1]:
+        print("Yes")
+    else:
+        print("No")
 
-for _ in range(int(input())):
-    solve()
+solve()

@@ -74,13 +74,58 @@ def printAns(ans) -> None:
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    
+def getPrimes(n: int) -> Counter:
+    primes = Counter()
+    d = 2
+    while d * d <= n:
+        while n % d == 0:
+            primes[d] += 1
+            n //= d
+        if n == 1:
+            break
+        d += 1
+    if n > 1:
+        primes[n] += 1
+    return primes
 
-    return
+def solve() -> None:
+    p, q = map(int, input().split())
+    if p % q != 0:
+        print(p)
+        return
+    
+    '''
+    primes_q = getPrimes(q)
+    primes_p = getPrimes(p // q)
+    
+    ans = p
+    for k in primes_q.keys():
+        ans = min(ans, k * (primes_p[k] + 1))
+    '''
+        
+    ans, pq = p, p // q
+    d = 2
+    while d * d <= q:
+        if q % d == 0:
+            while q % d == 0:
+                q //= d
+            res = d
+            while pq % d == 0:
+                res *= d
+                pq //= d
+            ans = min(ans, res)
+        if q == 1:
+            break
+        d += 1
+    if q > 1:
+        res = q
+        while pq % q == 0:
+            res *= q
+            pq //= q
+        ans = min(ans, res)
+    
+    print(p // ans)
 
 for _ in range(int(input())):
     solve()

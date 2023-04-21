@@ -75,12 +75,29 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    # 1，22，33，32，322，332
+    n = int(input())
+    s = set()
+    s3 = set()
+    ans = False
+    for _ in range(n):
+        cur = input()
+        if not ans:
+            if len(cur) == 1 or cur[0] == cur[-1]:
+                ans = True
+            elif cur[::-1] in s or cur[::-1] in s3:
+                # 22, 33, 32
+                ans = True
+            elif len(cur) == 3:
+                if cur[:0:-1] in s:
+                    # 23
+                    ans = True
+                    
+                s3.add(cur[:2])
 
-    return
+            s.add(cur)
+        
+    print("YES" if ans else "NO")
 
 for _ in range(int(input())):
     solve()

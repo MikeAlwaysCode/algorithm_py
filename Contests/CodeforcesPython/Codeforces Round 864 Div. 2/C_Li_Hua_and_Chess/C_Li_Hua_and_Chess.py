@@ -65,9 +65,10 @@ def printQry(a, b) -> None:
     sb = str(b)
     print(f"? {sa} {sb}", flush = True)
 
-def printAns(ans) -> None:
-    s = str(ans)
-    print(f"! {s}", flush = True)
+def printAns(x, y) -> None:
+    sx = str(x)
+    sy = str(y)
+    print(f"! {sx} {sy}", flush = True)
 # endregion interactive
 
 # MOD = 998244353
@@ -75,12 +76,44 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
-
-    return
+    n, m = map(int, input().split())
+    # 1
+    r, c = 1, 1
+    printQry(r, c)
+    d1 = int(input())
+    if d1 == 0:
+        printAns(r, c)
+        return
+    
+    # 2
+    r = min(d1 + 1, n)
+    c = min(d1 + 1, m)
+    printQry(r, c)
+    d2 = int(input())
+    if d2 == 0:
+        printAns(r, c)
+        return
+    
+    # 3
+    if r - 1 < d1:
+        ar, ac = r - d2, c
+        c -= d2
+    elif c - 1 < d1:
+        ar, ac = r, c - d2
+        r -= d2
+    elif r > d2:
+        ar, ac = r, c - d2
+        r -= d2
+    else:
+        c -= d2
+        ar, ac = r - d2, c
+    printQry(r, c)
+    d = int(input())
+    if d == 0:
+        printAns(r, c)
+        return
+    else:
+        printAns(ar, ac)
 
 for _ in range(int(input())):
     solve()

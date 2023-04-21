@@ -72,32 +72,19 @@ from typing import List
 # @lc code=start
 class Solution:
     def maxScore(self, nums: List[int]) -> int:
-        n = len(nums)
-        nums.sort()
-        d = dict()
-        for i in range(n):
-            for j in range(i + 1, n):
-                d[(nums[i], nums[j])] = math.gcd(nums[i], nums[j])
-                d[(nums[j], nums[i])] = d[(nums[i], nums[j])]
-        
-        s = set()
-        ans = 0
-        for comb in itertools.combinations(range(n), n // 2):
-            if comb in s:
-                continue
-            left = []
-            cs = set(comb)
-            for i in range(n):
-                if i not in cs:
-                    left.append(i)
-            s.add(comb)
-            s.add(tuple(left))
-            for per in itertools.permutations(comb):
-                g = []
-                for i, j in enumerate(per):
-                    g.append(d[(nums[left[i]], nums[j])])
-                g.sort()
-                ans = max(ans, sum(i * k for i, k in enumerate(g, 1)))
-        return ans
+        m = len(nums)
+        g = [[0] * m for _ in range(m)]
+        for i in range(m):
+            for j in range(i + 1, m):
+                g[i][j] = gcd(nums[i], nums[j])
+        f = [0] * (1 << m)
+        for k in range(1 << m):
+            if (cnt := k.bit_count()) % 2 == 0:
+                for i in range(m):
+                    if k >> i & 1:
+                        for j in range(i + 1, m):
+                            if k >> j & 1:
+                                f[k] = max(f[k], f[k ^ (1 << i) ^ (1 << j)] + cnt // 2 * g[i][j])
+        return f[-1]
 # @lc code=end
 

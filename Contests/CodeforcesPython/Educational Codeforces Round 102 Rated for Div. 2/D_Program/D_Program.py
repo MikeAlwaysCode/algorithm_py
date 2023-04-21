@@ -75,12 +75,35 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
-
-    return
+    n, m = map(int, input().split())
+    s = input()
+    
+    pre = [0] * (n + 1)
+    pre_mx = [0] * (n + 1)
+    pre_mn = [0] * (n + 1)
+    for i, c in enumerate(s):
+        if c == "+":
+            pre[i + 1] = pre[i] + 1
+        else:
+            pre[i + 1] = pre[i] - 1
+        pre_mx[i + 1] = max(pre_mx[i], pre[i + 1])
+        pre_mn[i + 1] = min(pre_mn[i], pre[i + 1])
+    
+    suf_mx = [0] * (n + 1)
+    suf_mn = [0] * (n + 1)
+    mx = mn = pre[-1]
+    for i in range(n - 1, -1, -1):
+        mx = max(mx, pre[i])
+        mn = min(mn, pre[i])
+        suf_mx[i] = max(suf_mx[i], mx - pre[i])
+        suf_mn[i] = min(suf_mn[i], mn - pre[i])
+    
+    for _ in range(m):
+        l, r = map(int, input().split())
+        cmx = max(pre_mx[l - 1], pre[l - 1] + suf_mx[r])
+        cmn = min(pre_mn[l - 1], pre[l - 1] + suf_mn[r])
+        # print(cmx, cmn)
+        print(cmx - cmn + 1)
 
 for _ in range(int(input())):
     solve()

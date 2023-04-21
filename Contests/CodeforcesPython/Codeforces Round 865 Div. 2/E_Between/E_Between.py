@@ -75,12 +75,38 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n, m = map(int, input().split())
+    cs = [set() for _ in range(n + 1)]
+    to = [set() for _ in range(n + 1)]
+    cnt = [0] * (n + 1)
+    for _ in range(m):
+        a, b = map(int, input().split())
+        cs[a].add(b)
+        to[b].add(a)
+        cnt[a] += 1
+    
+    ans = []
+    for i in range(2, n + 1):
+        if not cs[i]:
+            print("INFINITE")
+            return
+        if 1 in cs[i]:
+            l1.append(i)
+            for x in to[i]:
+                cnt[x] -= 1
+                if cnt[x] == 0:
+                    l2.append(x)
+                    
+                    for y in to[x]:
+                        cnt[y] -= 1
+                        if cnt[y] == 0:
+                            l3.append(y)
 
-    return
+
+    print("FINITE")
+    ans = l3 + l2 + l1 + l3 + l2 + [1] + l1 + l3 + l2 + l3
+    print(len(ans))
+    print(*ans)
 
 for _ in range(int(input())):
     solve()

@@ -75,12 +75,28 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n, s1, s2 = map(int, input().split())
+    arr = ints()
 
-    return
+    ans = [[] for _ in range(2)]
+    t1 = t2 = 0
+    idx = sorted(range(1, n + 1), key = lambda x: -arr[x - 1])
+    for i in idx:
+        if t1 + s1 < t2 + s2:
+            t1 += s1
+            ans[0].append(i)
+        elif t1 + s1 > t2 + s2:
+            t2 += s2
+            ans[1].append(i)
+        elif s1 <= s2:
+            t1 += s1
+            ans[0].append(i)
+        else:
+            t2 += s2
+            ans[1].append(i)
+
+    print(len(ans[0]), *ans[0])
+    print(len(ans[1]), *ans[1])
 
 for _ in range(int(input())):
     solve()

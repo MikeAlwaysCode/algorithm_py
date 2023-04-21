@@ -75,12 +75,25 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n = int(input())
+    arr = ints()
 
-    return
+    ans = 2
+    cnt = 0
+    for i in range(1, n):
+        cnt += 1
+        if arr[i] == arr[i - 1]:
+            continue
+        j = i
+        while j < n:
+            cnt += 1
+            j = bisect_left(arr, arr[j] * 2 - arr[i - 1], j + 1)
+
+        ans = max(ans, cnt)
+        cnt = 0
+    ans = max(ans, cnt + 1)
+
+    print(n - ans)
 
 for _ in range(int(input())):
     solve()

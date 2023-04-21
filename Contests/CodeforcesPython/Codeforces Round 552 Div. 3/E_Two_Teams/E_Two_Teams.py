@@ -75,12 +75,52 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n, k = map(int, input().split())
+    arr = ints()
+    
+    ans = [0] * n
+    # idx = sorted(range(n), key = lambda x: -arr[x])
+    # prev = list(range(-1, n - 1))
+    # next = list(range(1, n + 1))
+    idx = [0] * n
+    prev = [0] * n
+    next = [0] * n
+    for i, a in enumerate(arr):
+        idx[a - 1] = i
+        prev[i] = i - 1
+        next[i] = i + 1
+    step = 1
+    # for x in idx:
+    for x in range(n - 1, -1, -1):
+        x = idx[x]
+        if ans[x]: continue
+        ans[x] = step
+        
+        i = j = x
+        for _ in range(k):
+            if i > 0:
+                i = prev[i]
+                if i >= 0:
+                    ans[i] = step
+            if j < n - 1:
+                j = next[j]
+                if j < n:
+                    ans[j] = step
+                    
+        if i >= 0 and prev[i] >= 0:
+            if j < n:
+                next[prev[i]] = next[j]
+            else:
+                next[prev[i]] = j
+        if j < n and next[j] < n:
+            if i >= 0:
+                prev[next[j]] = prev[i]
+            else:
+                prev[next[j]] = i
 
-    return
+        step ^= 3
 
-for _ in range(int(input())):
-    solve()
+    print(*ans, sep="")
+
+# for _ in range(int(input())):
+solve()

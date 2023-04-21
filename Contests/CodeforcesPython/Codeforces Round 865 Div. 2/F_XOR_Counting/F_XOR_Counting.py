@@ -75,12 +75,24 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
-
-    return
+    n = int(input())
+    l, r = n - 1, n * 2 - 3
+    ans = [[0] * n for _ in range(2)]
+ 
+    ans[0][0], ans[1][-1] = n * 2, n * 2 - 1
+ 
+    for i in range(1, n):
+        if i & 1:
+            ans[0][i] = l
+            ans[1][i - 1] = l + 1
+            l -= 2
+        else:
+            ans[0][i] = r
+            ans[1][i - 1] = r + 1
+            r -= 2
+ 
+    print(*ans[0])
+    print(*ans[1])
 
 for _ in range(int(input())):
     solve()

@@ -75,12 +75,22 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    a, b = map(int, input().split())
 
-    return
+    mx = max(a, b)
+    mn = min(a, b)
+
+    def f(x: int) -> int:
+        return x - 1 + (mx + x - 1) // x + (mn + x - 1) // x
+
+    ans = a + b
+    x = 1
+    k = max(1, math.isqrt(mx) // 2)
+    while x * k <= mx:
+        ans = min(ans, f(x))
+        x += 1
+
+    print(ans)
 
 for _ in range(int(input())):
     solve()

@@ -72,15 +72,34 @@ def printAns(ans) -> None:
 
 # MOD = 998244353
 # MOD = 10 ** 9 + 7
-# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
+DIR = {
+        "U": (-1, 0), 
+        "R": (0, 1), 
+        "D": (1, 0), 
+        "L": (0, -1)
+}
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n = int(input())
+    s = input()
+    mn = math.inf
+    d = dict()
+    d[(0, 0)] = 0
+    x = y = 0
+    l = r = 0
+    for i, c in enumerate(s, 1):
+        x, y = x + DIR[c][0], y + DIR[c][1]
+        if (x, y) in d and i - d[(x, y)] < mn:
+            mn = i - d[(x, y)]
+            l, r = d[(x, y)] + 1, i
+        d[(x, y)] = i
+    
+    
+    if mn == math.inf:
+        print(-1)
+    else:
+        print(l, r)
 
-    return
 
 for _ in range(int(input())):
     solve()

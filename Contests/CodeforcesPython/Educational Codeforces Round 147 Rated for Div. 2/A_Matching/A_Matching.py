@@ -75,12 +75,20 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    s = input()
 
-    return
+    if s[0] == "0":
+        print(0)
+        return
+
+    ans = 1
+    if s[0] == "?":
+        ans *= 9
+    for c in s[1:]:
+        if c == "?":
+            ans *= 10
+    
+    print(ans)
 
 for _ in range(int(input())):
     solve()

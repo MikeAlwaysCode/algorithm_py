@@ -75,12 +75,28 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
-
-    return
+    s = input()
+    d = [-1] * 26
+    last = [-1] * 26
+    for i, c in enumerate(s):
+        x = ord(c) - 97
+        d[x] = max(d[x], i - last[x] - 1)
+        last[x] = i
+    # print(d)
+    ans = n = len(s)
+    for i, v in enumerate(d):
+        if v == -1: continue
+        v = max(v, n - last[i] - 1)
+        if v == 0:
+            ans = 0
+        else:
+            res = 0
+            while v > 2:
+                res += 1
+                v //= 2
+            res += v
+            ans = min(ans, res)
+    print(ans)
 
 for _ in range(int(input())):
     solve()

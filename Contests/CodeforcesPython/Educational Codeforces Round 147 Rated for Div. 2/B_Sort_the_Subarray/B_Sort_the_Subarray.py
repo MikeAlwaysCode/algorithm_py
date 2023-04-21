@@ -75,12 +75,24 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
-
-    return
+    n = int(input())
+    a = ints()
+    b = ints()
+    
+    i, j = 0, n - 1
+    while a[i] == b[i]:
+        i += 1
+    
+    while a[j] == b[j]:
+        j -= 1
+    
+    while i > 0 and b[i - 1] <= b[i]:
+        i -= 1
+    
+    while j < n - 1 and b[j + 1] >= b[j]:
+        j += 1
+    
+    print(i + 1, j + 1)
 
 for _ in range(int(input())):
     solve()

@@ -75,12 +75,45 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n, a, b, da, db = map(int, input().split())
+    g = [[] for _ in range(n + 1)]
+    for _ in range(n - 1):
+        u, v = map(int, input().split())
+        g[u].append(v)
+        g[v].append(u)
+    
+    if da * 2 >= db:
+        print("Alice")
+        return
+    
+    r = n
+    q = deque([(a, 0, 0)])
+    L = a
+    while q:
+        u, f, d = q.popleft()
+        L = u
+        for v in g[u]:
+            if v == f: continue
+            if v == b:
+                r = d + 1
+            q.append((v, u, d + 1))
+    
+    if r <= da:
+        print("Alice")
+        return
 
-    return
+    q = deque([(L, 0, 0)])
+    mxd = 0
+    while q:
+        u, f, d = q.popleft()
+        mxd = d
+        for v in g[u]:
+            if v == f: continue
+            q.append((v, u, d + 1))
+    
+    # print("Alice" if r <= da or da * 2 >= db or da * 2 >= mxd else "Bob")
+    print("Alice" if da * 2 >= mxd else "Bob")
+            
 
 for _ in range(int(input())):
     solve()

@@ -75,12 +75,18 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n = int(input())
+    arr = ints()
 
-    return
+    visit = [False] * n
+    for i, a in enumerate(arr):
+        x = (a + i) % n
+        if visit[x]:
+            print("NO")
+            return
+        visit[x] = True
+    
+    print("YES")
 
 for _ in range(int(input())):
     solve()

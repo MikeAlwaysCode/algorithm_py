@@ -75,12 +75,29 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    k = int(input())
+    s = input()
 
-    return
+    n = len(s)
+    if k * 2 >= n:
+        print(0)
+        return
+        
+    cnt = [0] * n
+    inc = [0] * n
+    stk = []
+    for i, c in enumerate(s):
+        if c == "(":
+            stk.append(i)
+        else:
+            cnt[i] = inc[stk[-1]]
+            stk.pop()
+            if stk: inc[stk[-1]] += 1 + cnt[i]
+    
+    # print(inc)
+    # print(cnt)
+    cnt.sort(reverse=True)
+    print(sum(cnt[k:]))
 
 for _ in range(int(input())):
     solve()

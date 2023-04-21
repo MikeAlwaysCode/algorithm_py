@@ -75,12 +75,20 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n = int(input())
+    arr = ints()
 
-    return
+    if n & 1:
+        print("YES")
+        return
+
+    for i in range(n - 2):
+        if i & 1 == (n - 1) & 1:
+            arr[n - 1] += arr[i]
+        else:
+            arr[n - 2] += arr[i]
+    
+    print("YES" if arr[-1] >= arr[-2] else "NO")
 
 for _ in range(int(input())):
     solve()

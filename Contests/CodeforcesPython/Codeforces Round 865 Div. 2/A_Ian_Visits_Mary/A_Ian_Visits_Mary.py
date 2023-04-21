@@ -75,12 +75,15 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
-
-    return
+    a, b = map(int, input().split())
+    g = math.gcd(a, b)
+    if g == 1:
+        print(1)
+        print(a, b)
+    else:
+        print(2)
+        print(1, b - 1)
+        print(a, b)
 
 for _ in range(int(input())):
     solve()
