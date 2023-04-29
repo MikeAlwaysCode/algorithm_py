@@ -73,13 +73,29 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n = int(input())
+    arr = ints()
+    # c0 是严格递增的计数
+    # c1 是当a[i] > a[i-2]时，跳过a[i-1]的计数
+    # c2 是当a[i+1] > a[i-1]时，跳过a[i]的计数
+    ans = c0 = c1 = c2 = 1
+    for i in range(1, n):
+        if arr[i] > arr[i - 1]:
+            c0 += 1
+            c1 += 1
+            c2 += 1
+        else:
+            if i > 1 and arr[i] > arr[i - 2]:
+                c1 = c0
+            else:
+                c1 = 1
+            if i < n - 1 and arr[i + 1] > arr[i - 1]:
+                c2 = c0
+            else:
+                c2 = 1
+            c0 = 1
+        ans = max(ans, c0, c1, c2)
+    
+    print(ans)
 
-    return
-
-t = int(input())
-for _ in range(t):
-    solve()
+solve()

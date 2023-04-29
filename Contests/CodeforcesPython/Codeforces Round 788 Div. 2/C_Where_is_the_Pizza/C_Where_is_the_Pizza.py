@@ -71,62 +71,72 @@ def printAns(ans) -> None:
 # endregion interactive
 
 # MOD = 998244353
-# MOD = 10 ** 9 + 7
+MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-def solve() -> None:
-    n = int(input())
-    rect = [tuple(map(int, input().split())) for _ in range(n)]
+
+class UnionFind:
+    def __init__(self, n: int):
+        self.parent = list(range(n))
+        self.size = [1] * n
+        self.n = n
+        # 当前连通分量数目
+        self.setCount = n
     
-    ans = []
-    mxx = mxy = s = 0
-    hx = []
-    hy = []
-
-    for i, (x, y) in enumerate(rect):
-        mxx = max(mxx, x)
-        mxy = max(mxy, y)
-        hx.append((-x, i))
-        hy.append((-y, i))
-        s += x * y
+    def findset(self, x: int) -> int:
+        # if self.parent[x] == x:
+        #     return x
+        # self.parent[x] = self.findset(self.parent[x])
+        # return self.parent[x]
+        cur = x
+        while x != self.parent[x]:
+            x = self.parent[x]
+        if cur != x:
+            self.parent[cur] = x
+        return x
     
-    heapify(hx)
-    heapify(hy)
-
-    def check(x, y) -> bool:
-        vis = [False] * n
-        thx = hx.copy()
-        thy = hy.copy()
-        for _ in range(n):
-            while thx and vis[thx[0][1]]:
-                heappop(thx)
-            while thy and vis[thy[0][1]]:
-                heappop(thy)
-            
-            if thx[0][0] == - x:
-                vis[thx[0][1]] = True
-                y -= rect[thx[0][1]][1]
-                heappop(thx)
-                continue
-
-            if thy[0][0] == - y:
-                vis[thy[0][1]] = True
-                x -= rect[thy[0][1]][0]
-                heappop(thy)
-                continue
-
+    def unite(self, x: int, y: int) -> bool:
+        x, y = self.findset(x), self.findset(y)
+        if x == y:
             return False
-
+        if self.size[x] < self.size[y]:
+            x, y = y, x
+        self.parent[y] = x
+        self.size[x] += self.size[y]
+        self.setCount -= 1
         return True
 
-    if s % mxx == 0 and check(mxx, s // mxx):
-        ans.append((mxx, s // mxx))
-    if mxx * mxy != s and s % mxy == 0 and check(s // mxy, mxy):
-        ans.append((s // mxy, mxy))
+    def connected(self, x: int, y: int) -> bool:
+        x, y = self.findset(x), self.findset(y)
+        return x == y
+    
+def solve() -> None:
+    n = int(input())
+    arr = []
+    arr.append(ints())
+    arr.append(ints())
 
-    print(len(ans))
-    for h, w in ans:
-        print(h, w)
+    s = set(ints())
+
+    uf = UnionFind(n + 1)
+    for i in range(n):
+        uf.unite(arr[0][i], arr[1][i])
+    
+    for a in s:
+        uf.unite(0, a)
+    
+    ans = 1
+    for i in range(1, n + 1):
+        fi = uf.findset(i)
+        if fi == uf.findset(0) or fi != i:
+            continue
+        # print(i, uf.findset(i))
+        if uf.size[fi] > 1:
+            ans *= 2
+            ans %= MOD
+
+    print(ans)
+
 
 for _ in range(int(input())):
     solve()

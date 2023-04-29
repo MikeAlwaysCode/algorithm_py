@@ -73,13 +73,34 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n, k = map(int, input().split())
+    if n < k:
+        print("NO")
+        return
+    
+    ans = collections.deque()
+    p = 1
+    while n:
+        if n & p:
+            ans.append(p)
+            n ^= p
+        p <<= 1
+    
+    if len(ans) > k:
+        print("NO")
+        return
+    
+    for _ in range(k - len(ans)):
+        m = ans[-1] // 2
+        if m == 1:
+            ans.appendleft(1)
+            ans.appendleft(1)
+            ans.pop()
+        else:
+            ans[-1] = m
+            ans.append(m)
 
-    return
+    print("YES")
+    print(*ans)
 
-t = int(input())
-for _ in range(t):
-    solve()
+solve()

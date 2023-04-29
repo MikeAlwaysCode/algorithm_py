@@ -75,58 +75,46 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = int(input())
-    rect = [tuple(map(int, input().split())) for _ in range(n)]
+    n, k, c = map(int, input().split())
+    g = [[] for _ in range(n)]
+    for _ in range(n - 1):
+        u, v = map(int, input().split())
+        u -= 1
+        v -= 1
+        g[u].append(v)
+        g[v].append(u)
+
+    end_point = []
     
-    ans = []
-    mxx = mxy = s = 0
-    hx = []
-    hy = []
-
-    for i, (x, y) in enumerate(rect):
-        mxx = max(mxx, x)
-        mxy = max(mxy, y)
-        hx.append((-x, i))
-        hy.append((-y, i))
-        s += x * y
+    def bfs(x: int) -> list[int]:
+        dis = [-1] * n
+        dis[x] = 0
+        q = deque([x])
+        L = -1
+        while q:
+            u = q.popleft()
+            L = u
+            for v in g[u]:
+                if dis[v] != -1: continue
+                dis[v] = dis[u] + 1
+                q.append(v)
+        end_point.append(L)
+        return dis
     
-    heapify(hx)
-    heapify(hy)
+    dis1 = bfs(0)
+    
+    if c >= k:
+        print(dis1[end_point[-1]] * k)
+        return
+    
+    dis2 = bfs(end_point[-1])
+    dis3 = bfs(end_point[-1])
 
-    def check(x, y) -> bool:
-        vis = [False] * n
-        thx = hx.copy()
-        thy = hy.copy()
-        for _ in range(n):
-            while thx and vis[thx[0][1]]:
-                heappop(thx)
-            while thy and vis[thy[0][1]]:
-                heappop(thy)
-            
-            if thx[0][0] == - x:
-                vis[thx[0][1]] = True
-                y -= rect[thx[0][1]][1]
-                heappop(thx)
-                continue
+    ans = 0
+    for i in range(n):
+        ans = max(ans, k * max(dis2[i], dis3[i]) - c * dis1[i])
 
-            if thy[0][0] == - y:
-                vis[thy[0][1]] = True
-                x -= rect[thy[0][1]][0]
-                heappop(thy)
-                continue
-
-            return False
-
-        return True
-
-    if s % mxx == 0 and check(mxx, s // mxx):
-        ans.append((mxx, s // mxx))
-    if mxx * mxy != s and s % mxy == 0 and check(s // mxy, mxy):
-        ans.append((s // mxy, mxy))
-
-    print(len(ans))
-    for h, w in ans:
-        print(h, w)
+    print(ans)
 
 for _ in range(int(input())):
     solve()

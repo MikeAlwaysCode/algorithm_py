@@ -75,58 +75,57 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = int(input())
-    rect = [tuple(map(int, input().split())) for _ in range(n)]
+    n, m = map(int, input().split())
+    g = [set() for _ in range(n)]
+    gv = [set() for _ in range(n)]
+    outcnt = [0] * n
+    edge_cnt = Counter()
+    for _ in range(m):
+        u, v = map(int, input().split())
+        u -= 1
+        v -= 1
+        g[u].add(v)
+        gv[v].add(u)
+        outcnt[u] += 1
+        edge_cnt[(u, v)] += 1
     
-    ans = []
-    mxx = mxy = s = 0
-    hx = []
-    hy = []
-
-    for i, (x, y) in enumerate(rect):
-        mxx = max(mxx, x)
-        mxy = max(mxy, y)
-        hx.append((-x, i))
-        hy.append((-y, i))
-        s += x * y
+    dis = [math.inf] * n
+    dis[n - 1] = 0
+    q = [(0, n - 1)]
+    while q:
+        d, u = heappop(q)
+        for v in gv[u]:
+            nd = d + 1
+            if dis[v] <= nd: continue
+            dis[v] = nd
+            heappush(q, (dis[v], v))
     
-    heapify(hx)
-    heapify(hy)
+    dis2 = [math.inf] * n
+    # dis2[0] = 0
 
-    def check(x, y) -> bool:
-        vis = [False] * n
-        thx = hx.copy()
-        thy = hy.copy()
-        for _ in range(n):
-            while thx and vis[thx[0][1]]:
-                heappop(thx)
-            while thy and vis[thy[0][1]]:
-                heappop(thy)
-            
-            if thx[0][0] == - x:
-                vis[thx[0][1]] = True
-                y -= rect[thx[0][1]][1]
-                heappop(thx)
+    q = [(0, 0)]
+    while q:
+        d, u = heappop(q)
+        mx = 0
+        cnt = 0
+        for v in g[u]:
+            if dis[v] > dis[u]:
+                cnt += edge_cnt[(u, v)]
                 continue
+            mx = max(mx, dis[v])
 
-            if thy[0][0] == - y:
-                vis[thy[0][1]] = True
-                x -= rect[thy[0][1]][0]
-                heappop(thy)
-                continue
+        for v in g[u]:
+            if dis[v] != mx: continue
+            # if mx - dis[v] <= outcnt[u] - edge_cnt[(u, v)]:
+            #     nd = d + 1
+            # else:
+            #     nd = d + 1 + outcnt[u] - edge_cnt[(u, v)]
+            nd = d + 1 + cnt
+            if dis2[v] <= nd: continue
+            dis2[v] = nd
+            heappush(q, (dis2[v], v))
 
-            return False
+    print(dis2[-1])
 
-        return True
-
-    if s % mxx == 0 and check(mxx, s // mxx):
-        ans.append((mxx, s // mxx))
-    if mxx * mxy != s and s % mxy == 0 and check(s // mxy, mxy):
-        ans.append((s // mxy, mxy))
-
-    print(len(ans))
-    for h, w in ans:
-        print(h, w)
-
-for _ in range(int(input())):
-    solve()
+# for _ in range(int(input())):
+solve()

@@ -71,62 +71,47 @@ def printAns(ans) -> None:
 # endregion interactive
 
 # MOD = 998244353
-# MOD = 10 ** 9 + 7
+MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
+
 def solve() -> None:
-    n = int(input())
-    rect = [tuple(map(int, input().split())) for _ in range(n)]
-    
-    ans = []
-    mxx = mxy = s = 0
-    hx = []
-    hy = []
+    s = input()
+    n = len(s)
+    dp = [[[0] * 9 for _ in range(n)] for _ in range(n)]
+    stk = []
+    left = [-1] * n
+    for i, c in enumerate(s):
+        if c == "(":
+            stk.append(i)
+        else:
+            j = stk.pop()
+            for k in range(9):
+                c1, c2 = divmod(k, 3)
+                if c1 == c2 or (c1 and c2): continue
 
-    for i, (x, y) in enumerate(rect):
-        mxx = max(mxx, x)
-        mxy = max(mxy, y)
-        hx.append((-x, i))
-        hy.append((-y, i))
-        s += x * y
-    
-    heapify(hx)
-    heapify(hy)
+                # (0, 1), (0, 2), (1, 0), (2, 0)
+                if i - j == 1:
+                    dp[j][i][k] = 1
+                else:
+                    for m in range(9):
+                        c3, c4 = divmod(m, 3)
+                        if (c1 and c1 == c3) or (c2 and c2 == c4): continue
+                        dp[j][i][k] += dp[j + 1][i - 1][m]
+                        dp[j][i][k] %= MOD
+            while j > 0 and left[j - 1] != -1: # 左边有其他括号对
+                l, r = left[j - 1], j - 1
+                for k in range(9):
+                    c1, c2 = divmod(k, 3)
+                    for m in range(9):
+                        c3, c4 = divmod(m, 3)
+                        if c2 and c2 == c3: continue
+                        dp[l][i][c1 * 3 + c4] += dp[l][r][k] * dp[j][i][m]
+                        dp[l][i][c1 * 3 + c4] %= MOD
+                left[i] = j = l
+            left[i] = j
 
-    def check(x, y) -> bool:
-        vis = [False] * n
-        thx = hx.copy()
-        thy = hy.copy()
-        for _ in range(n):
-            while thx and vis[thx[0][1]]:
-                heappop(thx)
-            while thy and vis[thy[0][1]]:
-                heappop(thy)
-            
-            if thx[0][0] == - x:
-                vis[thx[0][1]] = True
-                y -= rect[thx[0][1]][1]
-                heappop(thx)
-                continue
+    print(sum(dp[0][-1]) % MOD)
 
-            if thy[0][0] == - y:
-                vis[thy[0][1]] = True
-                x -= rect[thy[0][1]][0]
-                heappop(thy)
-                continue
-
-            return False
-
-        return True
-
-    if s % mxx == 0 and check(mxx, s // mxx):
-        ans.append((mxx, s // mxx))
-    if mxx * mxy != s and s % mxy == 0 and check(s // mxy, mxy):
-        ans.append((s // mxy, mxy))
-
-    print(len(ans))
-    for h, w in ans:
-        print(h, w)
-
-for _ in range(int(input())):
-    solve()
+# for _ in range(int(input())):
+solve()

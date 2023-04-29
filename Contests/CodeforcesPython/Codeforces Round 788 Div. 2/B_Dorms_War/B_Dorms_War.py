@@ -76,57 +76,36 @@ def printAns(ans) -> None:
 
 def solve() -> None:
     n = int(input())
-    rect = [tuple(map(int, input().split())) for _ in range(n)]
+    s = input()
+    spec = set(input()[2:].split())
+
+    i = n - 1
+    while i >= 0 and s[i] not in spec:
+        i -= 1
     
-    ans = []
-    mxx = mxy = s = 0
-    hx = []
-    hy = []
+    if i < 0:
+        print(0)
+        return
+    ans = need = 0
+    pre = i
+    i -= 1
+    while i >= 0:
+        if s[i] not in spec:
+            if need >= 0:
+                ans += 1
+            else:
+                need += 1
+        else:
+            if need >= 0:
+                ans += 1
+            else:
+                need += 1
+            need -= pre - i
+            pre = i
+        i -= 1
 
-    for i, (x, y) in enumerate(rect):
-        mxx = max(mxx, x)
-        mxy = max(mxy, y)
-        hx.append((-x, i))
-        hy.append((-y, i))
-        s += x * y
-    
-    heapify(hx)
-    heapify(hy)
+    print(ans)
 
-    def check(x, y) -> bool:
-        vis = [False] * n
-        thx = hx.copy()
-        thy = hy.copy()
-        for _ in range(n):
-            while thx and vis[thx[0][1]]:
-                heappop(thx)
-            while thy and vis[thy[0][1]]:
-                heappop(thy)
-            
-            if thx[0][0] == - x:
-                vis[thx[0][1]] = True
-                y -= rect[thx[0][1]][1]
-                heappop(thx)
-                continue
-
-            if thy[0][0] == - y:
-                vis[thy[0][1]] = True
-                x -= rect[thy[0][1]][0]
-                heappop(thy)
-                continue
-
-            return False
-
-        return True
-
-    if s % mxx == 0 and check(mxx, s // mxx):
-        ans.append((mxx, s // mxx))
-    if mxx * mxy != s and s % mxy == 0 and check(s // mxy, mxy):
-        ans.append((s // mxy, mxy))
-
-    print(len(ans))
-    for h, w in ans:
-        print(h, w)
 
 for _ in range(int(input())):
     solve()

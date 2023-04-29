@@ -3,6 +3,7 @@ import math
 import os
 import random
 import sys
+import threading
 from bisect import bisect, bisect_left
 from collections import *
 from functools import reduce
@@ -75,58 +76,12 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = int(input())
-    rect = [tuple(map(int, input().split())) for _ in range(n)]
-    
-    ans = []
-    mxx = mxy = s = 0
-    hx = []
-    hy = []
+    # n = int(input())
+    # s = input()
+    # n, m = map(int, input().split())
+    # arr = ints()
 
-    for i, (x, y) in enumerate(rect):
-        mxx = max(mxx, x)
-        mxy = max(mxy, y)
-        hx.append((-x, i))
-        hy.append((-y, i))
-        s += x * y
-    
-    heapify(hx)
-    heapify(hy)
-
-    def check(x, y) -> bool:
-        vis = [False] * n
-        thx = hx.copy()
-        thy = hy.copy()
-        for _ in range(n):
-            while thx and vis[thx[0][1]]:
-                heappop(thx)
-            while thy and vis[thy[0][1]]:
-                heappop(thy)
-            
-            if thx[0][0] == - x:
-                vis[thx[0][1]] = True
-                y -= rect[thx[0][1]][1]
-                heappop(thx)
-                continue
-
-            if thy[0][0] == - y:
-                vis[thy[0][1]] = True
-                x -= rect[thy[0][1]][0]
-                heappop(thy)
-                continue
-
-            return False
-
-        return True
-
-    if s % mxx == 0 and check(mxx, s // mxx):
-        ans.append((mxx, s // mxx))
-    if mxx * mxy != s and s % mxy == 0 and check(s // mxy, mxy):
-        ans.append((s // mxy, mxy))
-
-    print(len(ans))
-    for h, w in ans:
-        print(h, w)
+    return
 
 for _ in range(int(input())):
     solve()

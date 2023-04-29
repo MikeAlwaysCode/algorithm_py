@@ -76,57 +76,31 @@ def printAns(ans) -> None:
 
 def solve() -> None:
     n = int(input())
-    rect = [tuple(map(int, input().split())) for _ in range(n)]
+    p = ints()
+    l = [0] * n
+    r = [0] * n
+    incnt = [0] * n
+    for i in range(n):
+        l[i], r[i] = map(int, input().split())
+        if i < n - 1:
+            incnt[p[i] - 1] += 1
     
-    ans = []
-    mxx = mxy = s = 0
-    hx = []
-    hy = []
-
-    for i, (x, y) in enumerate(rect):
-        mxx = max(mxx, x)
-        mxy = max(mxy, y)
-        hx.append((-x, i))
-        hy.append((-y, i))
-        s += x * y
+    vals = [0] * n
     
-    heapify(hx)
-    heapify(hy)
+    ans = 0
+    q = deque([i for i in range(n) if incnt[i] == 0])
+    while q:
+        u = q.popleft()
+        if vals[u] < l[u]:
+            ans += 1
+            vals[u] = r[u]
+        if u:
+            vals[p[u - 1] - 1] += min(vals[u], r[u])
+            incnt[p[u - 1] - 1] -= 1
+            if incnt[p[u - 1] - 1] == 0:
+                q.append(p[u - 1] - 1)
+    print(ans)
 
-    def check(x, y) -> bool:
-        vis = [False] * n
-        thx = hx.copy()
-        thy = hy.copy()
-        for _ in range(n):
-            while thx and vis[thx[0][1]]:
-                heappop(thx)
-            while thy and vis[thy[0][1]]:
-                heappop(thy)
-            
-            if thx[0][0] == - x:
-                vis[thx[0][1]] = True
-                y -= rect[thx[0][1]][1]
-                heappop(thx)
-                continue
-
-            if thy[0][0] == - y:
-                vis[thy[0][1]] = True
-                x -= rect[thy[0][1]][0]
-                heappop(thy)
-                continue
-
-            return False
-
-        return True
-
-    if s % mxx == 0 and check(mxx, s // mxx):
-        ans.append((mxx, s // mxx))
-    if mxx * mxy != s and s % mxy == 0 and check(s // mxy, mxy):
-        ans.append((s // mxy, mxy))
-
-    print(len(ans))
-    for h, w in ans:
-        print(h, w)
 
 for _ in range(int(input())):
     solve()
