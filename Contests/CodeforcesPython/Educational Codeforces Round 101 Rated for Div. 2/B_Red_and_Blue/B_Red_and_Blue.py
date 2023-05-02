@@ -74,13 +74,21 @@ def printAns(ans) -> None:
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+def f(arr: list) -> int:
+    res = cur = 0
+    for a in arr:
+        cur += a
+        res = max(res, cur)
+    return res
 
-    return
+def solve() -> None:
+    n = int(input())
+    ans = f(ints())
+
+    m = int(input())
+    ans += f(ints())
+    
+    print(ans)
 
 for _ in range(int(input())):
     solve()

@@ -72,14 +72,64 @@ def printAns(ans) -> None:
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
+from types import GeneratorType
+def bootstrap(f, stack=[]):
+    def wrappedfunc(*args, **kwargs):
+        if stack:
+            return f(*args, **kwargs)
+        else:
+            to = f(*args, **kwargs)
+            while True:
+                if type(to) is GeneratorType:
+                    stack.append(to)
+                    to = next(to)
+                else:
+                    stack.pop()
+                    if not stack:
+                        break
+                    to = stack[-1].send(to)
+            return to
+    return wrappedfunc
+
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n = int(input())
+    g = [[] for _ in range(n)]
+    for _ in range(n - 1):
+        u, v = map(int, input().split())
+        u -= 1
+        v -= 1
+        g[u].append(v)
+        g[v].append(u)
+    
+    if n == 1:
+        print(0)
+        return
+    
+    max_deg = max(len(g[u]) for u in range(n))
 
-    return
+    if max_deg < 3:
+        print(1)
+        return
+    
+    @bootstrap
+    def dfs(u, f) -> int:
+        sm = z = 0
+        for v in g[u]:
+            if v == f: continue
+            x = yield dfs(v, u)
+            sm += x
+            if x == 0: z += 1
+        
+        # return sm + max(0, z - 1)
+        yield sm + max(0, z - 1)
+    
+    for i in range(n):
+        if len(g[i]) >= 3:
+            ans = dfs(i, i)
+            break
 
-t = int(input())
-for _ in range(t):
+    print(ans)
+
+for _ in range(int(input())):
     solve()
+    

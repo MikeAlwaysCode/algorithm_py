@@ -68,6 +68,25 @@ def printAns(ans) -> None:
     print(f"! {s}", flush = True)
 # endregion interactive
 
+from types import GeneratorType
+def bootstrap(f, stack=[]):
+    def wrappedfunc(*args, **kwargs):
+        if stack:
+            return f(*args, **kwargs)
+        else:
+            to = f(*args, **kwargs)
+            while True:
+                if type(to) is GeneratorType:
+                    stack.append(to)
+                    to = next(to)
+                else:
+                    stack.pop()
+                    if not stack:
+                        break
+                    to = stack[-1].send(to)
+            return to
+    return wrappedfunc
+
 # MOD = 998244353
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
@@ -85,11 +104,13 @@ def solve() -> None:
         if arr[i] < 0: arr[i] = n
         p[arr[i]].append(i)
         
+    @bootstrap
     def dfs(u: int) -> None:
         v[u] = 1
         for x in p[u]:
-            dfs(x)
+            yield dfs(x)
             s[u] += s[x]
+        yield
     dfs(n)
 
     # q = collections.deque([n])

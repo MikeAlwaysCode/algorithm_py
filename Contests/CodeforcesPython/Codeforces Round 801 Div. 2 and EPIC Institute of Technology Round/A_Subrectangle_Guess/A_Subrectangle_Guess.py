@@ -73,13 +73,18 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n, m = map(int, input().split())
+    grid = []
+    x, y, mx = -1, -1, -math.inf
+    for i in range(n):
+        grid.append(ints())
+        for j in range(m):
+            if grid[-1][j] > mx:
+                mx = grid[-1][j]
+                x, y = i, j
+    
+    ans = max((x + 1) * (y + 1), (x + 1) * (m - y), (n - x) * (y + 1), (n - x) * (m - y))
+    print(ans)
 
-    return
-
-t = int(input())
-for _ in range(t):
+for _ in range(int(input())):
     solve()

@@ -72,6 +72,7 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
+    # n = int(input())
     s = input()
     
     print(int(s[0]) + int(s[2]))

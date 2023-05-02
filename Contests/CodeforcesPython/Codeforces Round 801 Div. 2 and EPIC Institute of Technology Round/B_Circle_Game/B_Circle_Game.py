@@ -73,13 +73,24 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n = int(input())
+    arr = ints()
 
-    return
+    if n & 1:
+        print("Mike")
+    else:
+        ma = mb = math.inf
+        ai = bi = -1
 
-t = int(input())
-for _ in range(t):
+        for i, a in enumerate(arr):
+            if i & 1:
+                if a < mb:
+                    mb, bi = a, i
+            else:
+                if a < ma:
+                    ma, ai = a, i
+
+        print("Mike" if ma > mb or (ma == mb and ai > bi) else "Joe")
+
+for _ in range(int(input())):
     solve()
