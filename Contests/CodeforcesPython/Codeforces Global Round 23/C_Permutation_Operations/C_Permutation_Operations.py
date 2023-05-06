@@ -1,14 +1,16 @@
+import itertools
 import math
-import collections
+import os
 import random
-from heapq import heapify, heappush, heappop
-from functools import reduce
+import sys
 from bisect import bisect, bisect_left
-
-# Sample Inputs/Output 
-# region fastio
-import sys, os
+from collections import *
+from functools import reduce
+from heapq import heapify, heappop, heappush
 from io import BytesIO, IOBase
+from string import *
+
+# region fastio
 BUFSIZE = 8192
 class FastIO(IOBase):
     newlines = 0
@@ -55,7 +57,9 @@ class IOWrapper(IOBase):
 sys.stdin, sys.stdout = IOWrapper(sys.stdin), IOWrapper(sys.stdout)
 input = lambda: sys.stdin.readline().rstrip("\r\n")
 ints = lambda: list(map(int, input().split()))
+# endregion fastio
 
+# region interactive
 def printQry(a, b) -> None:
     sa = str(a)
     sb = str(b)
@@ -64,18 +68,37 @@ def printQry(a, b) -> None:
 def printAns(ans) -> None:
     s = str(ans)
     print(f"! {s}", flush = True)
+# endregion interactive
+
+# from types import GeneratorType
+# def bootstrap(f, stack=[]):
+#     def wrappedfunc(*args, **kwargs):
+#         if stack:
+#             return f(*args, **kwargs)
+#         else:
+#             to = f(*args, **kwargs)
+#             while True:
+#                 if type(to) is GeneratorType:
+#                     stack.append(to)
+#                     to = next(to)
+#                 else:
+#                     stack.pop()
+#                     if not stack:
+#                         break
+#                     to = stack[-1].send(to)
+#             return to
+#     return wrappedfunc
+
+# MOD = 998244353
+# MOD = 10 ** 9 + 7
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
     n = int(input())
     arr = ints()
-
-    ans = [n] * n
     
-    for i in range(n):
-        ans[i-1] = i + 1
-
+    ans = sorted(range(1, n + 1), key = lambda x: -arr[x - 1])
     print(*ans)
 
-t = int(input())
-for _ in range(t):
+for _ in range(int(input())):
     solve()

@@ -94,12 +94,57 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n, m = map(int, input().split())
+    s = []
+    for _ in range(n):
+        s.append(input())
+    
+    ans = list(s[0])
+    err = [0] * m
+    for i in range(m):
+        for j in range(n):
+            if ans[i] != s[j][i]:
+                err[i] |= 1 << j
+    
+    for i, c in enumerate(ans):
+        for d in ascii_lowercase:
+            ans[i] = d
+            flag = True
+            mask = 0
+            for j in range(n):
+                if ans[i] != s[j][i]:
+                    mask |= 1 << j
+            for j in range(m):
+                if j == i: continue
+                if mask & err[j]:
+                    flag = False
+                    break
+                mask |= err[j]
+            if flag:
+                print("".join(ans))
+                return
 
-    return
+        ans[i] = c
+
+    '''
+    for i, c in enumerate(ans):
+        for d in ascii_lowercase:
+            ans[i] = d
+            flag = True
+            for j in range(n):
+                err = 0
+                for k in range(m):
+                    if s[j][k] != ans[k]:
+                        err += 1
+                if err > 1:
+                    flag = False
+                    break
+            if flag:
+                print("".join(ans))
+                return
+        ans[i] = c
+    '''
+    print(-1)
 
 for _ in range(int(input())):
     solve()

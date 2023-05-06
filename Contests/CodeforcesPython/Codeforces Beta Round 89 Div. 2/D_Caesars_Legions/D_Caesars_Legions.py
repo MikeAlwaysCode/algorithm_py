@@ -73,14 +73,33 @@ def printAns(ans) -> None:
 # MOD = 998244353
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
+MOD = 10 ** 8
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n1, n2, k1, k2 = map(int, input().split())
+    dp = [[[[0] * 2 for _ in range(11)] for _ in range(n1 + 1)] for _ in range(n1 + n2 + 1)]    # total,cnta,consecutive,a or b
+    dp[0][0][0][0] = 1
+    for i in range(1, n1 + n2 + 1):
+        for j in range(1, n1 + 1):
+            for k in range(1, k1 + 1):
+                dp[i][j][k][0] = (dp[i][j][k][0] + dp[i - 1][j - 1][k - 1][0]) % MOD
+            for k in range(k2 + 1):
+                dp[i][j][1][0] = (dp[i][j][1][0] + dp[i - 1][j - 1][k][1]) % MOD
+        
+        for j in range(n1 + 1):
+            for k in range(1, k2 + 1):
+                dp[i][j][k][1] = (dp[i][j][k][1] + dp[i - 1][j][k - 1][1]) % MOD
+            for k in range(k1 + 1):
+                dp[i][j][1][1] = (dp[i][j][1][1] + dp[i - 1][j][k][0]) % MOD
 
-    return
+    ans = 0
+    for k in range(1, k1 + 1):
+        ans = (ans + dp[n1 + n2][n1][k][0]) % MOD
 
-for _ in range(int(input())):
-    solve()
+    for k in range(1, k2 + 1):
+        ans = (ans + dp[n1 + n2][n1][k][1]) % MOD
+
+    print(ans)
+
+# for _ in range(int(input())):
+solve()

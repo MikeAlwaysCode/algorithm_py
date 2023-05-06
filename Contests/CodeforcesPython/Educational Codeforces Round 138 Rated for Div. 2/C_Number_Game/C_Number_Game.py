@@ -1,15 +1,16 @@
-from itertools import accumulate, count
+import itertools
 import math
-import collections
+import os
 import random
-from heapq import heapify, heappush, heappop
-from functools import reduce
+import sys
 from bisect import bisect, bisect_left
-
-# Sample Inputs/Output 
-# region fastio
-import sys, os
+from collections import *
+from functools import reduce
+from heapq import heapify, heappop, heappush
 from io import BytesIO, IOBase
+from string import *
+
+# region fastio
 BUFSIZE = 8192
 class FastIO(IOBase):
     newlines = 0
@@ -56,10 +57,9 @@ class IOWrapper(IOBase):
 sys.stdin, sys.stdout = IOWrapper(sys.stdin), IOWrapper(sys.stdout)
 input = lambda: sys.stdin.readline().rstrip("\r\n")
 ints = lambda: list(map(int, input().split()))
+# endregion fastio
 
-# MOD = 998244353
-# MOD = 10 ** 9 + 7
-
+# region interactive
 def printQry(a, b) -> None:
     sa = str(a)
     sb = str(b)
@@ -68,39 +68,49 @@ def printQry(a, b) -> None:
 def printAns(ans) -> None:
     s = str(ans)
     print(f"! {s}", flush = True)
+# endregion interactive
+
+# from types import GeneratorType
+# def bootstrap(f, stack=[]):
+#     def wrappedfunc(*args, **kwargs):
+#         if stack:
+#             return f(*args, **kwargs)
+#         else:
+#             to = f(*args, **kwargs)
+#             while True:
+#                 if type(to) is GeneratorType:
+#                     stack.append(to)
+#                     to = next(to)
+#                 else:
+#                     stack.pop()
+#                     if not stack:
+#                         break
+#                     to = stack[-1].send(to)
+#             return to
+#     return wrappedfunc
+
+# MOD = 998244353
+# MOD = 10 ** 9 + 7
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
     n = int(input())
     arr = ints()
-    # cnt = collections.Counter(arr)
-    # cnt = list(collections.Counter(arr).items())
-    # cnt.sort()
-    # if 1 not in cnt:
-    #     print(0)
-    #     return
     arr.sort()
-    k = sum(a == 1 for a in arr)
-    while k >= 0:
-        cur = arr.copy()
-        j = k
-        s = 0
-        for i in range(n - 1, -1, -1):
-            if cur[i] <= j and s:
-                cur[i] += s
-                s = 0
-            if cur[i] <= j:
-                s += cur[i]
-                j -= 1
-                if j == 0:
-                    break
-        if j == 0:
-            ans = k
-            break
-        k -= 1
+    def check(x: int) -> bool:
+        for i in range(x - 1, 2 * x - 1):
+            if i >= n or arr[i] > i - x + 2:
+                return False
+        return True
     
-    print(ans)
+    ok, ng = 0, n + 1
+    while ng - ok >= 2:
+        mid = ng + ok >> 1
+        if check(mid):
+            ok = mid
+        else:
+            ng = mid
+    print(ok)
 
-
-t = int(input())
-for _ in range(t):
+for _ in range(int(input())):
     solve()

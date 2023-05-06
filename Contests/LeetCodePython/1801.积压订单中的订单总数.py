@@ -79,8 +79,10 @@
 # 
 # 
 #
-from typing import List
 from heapq import heappop, heappush
+from typing import List
+
+
 # @lc code=start
 class Solution:
     def getNumberOfBacklogOrders(self, orders: List[List[int]]) -> int:

@@ -94,12 +94,32 @@ def printAns(ans) -> None:
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n = int(input())
+    c = ints()
+    pre0, pre1 = 0, c[0]
+    s = input()
+    for i in range(1, n):
+        t = input()
+        if pre0 == pre1 == math.inf:
+            continue
 
-    return
+        tmp0 = tmp1 = math.inf
+        if t >= s and pre0 != math.inf:
+            tmp0 = pre0
+        if t >= s[::-1] and pre1 != math.inf:
+            tmp0 = min(tmp0, pre1)
+        if t[::-1] >= s and pre0 != math.inf:
+            tmp1 = pre0 + c[i]
+        if t[::-1] >= s[::-1] and pre1 != math.inf:
+            tmp1 = min(tmp1, pre1 + c[i])
 
-for _ in range(int(input())):
-    solve()
+        pre0, pre1 = tmp0, tmp1
+        s = t
+
+    if pre0 == pre1 == math.inf:
+        print(-1)
+    else:
+        print(min(pre0, pre1))
+
+# for _ in range(int(input())):
+solve()
