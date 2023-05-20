@@ -1,76 +1,35 @@
-import itertools
+from contextlib import AsyncExitStack
 import math
-import os
-import random
 import sys
-from bisect import bisect, bisect_left
+from bisect import *
 from collections import *
-from functools import reduce
-from heapq import heapify, heappop, heappush
-from io import BytesIO, IOBase
+from functools import *
+from heapq import *
+from itertools import *
+from random import *
 from string import *
+from types import GeneratorType
 
 # region fastio
-BUFSIZE = 8192
-class FastIO(IOBase):
-    newlines = 0
-
-    def __init__(self, file):
-        self._fd = file.fileno()
-        self.buffer = BytesIO()
-        self.writable = "x" in file.mode or "r" not in file.mode
-        self.write = self.buffer.write if self.writable else None
-
-    def read(self):
-        while True:
-            b = os.read(self._fd, max(os.fstat(self._fd).st_size, BUFSIZE))
-            if not b:
-                break
-            ptr = self.buffer.tell()
-            self.buffer.seek(0, 2), self.buffer.write(b), self.buffer.seek(ptr)
-        self.newlines = 0
-        return self.buffer.read()
-
-    def readline(self):
-        while self.newlines == 0:
-            b = os.read(self._fd, max(os.fstat(self._fd).st_size, BUFSIZE))
-            self.newlines = b.count(b"\n") + (not b)
-            ptr = self.buffer.tell()
-            self.buffer.seek(0, 2), self.buffer.write(b), self.buffer.seek(ptr)
-        self.newlines -= 1
-        return self.buffer.readline()
-
-    def flush(self):
-        if self.writable:
-            os.write(self._fd, self.buffer.getvalue())
-            self.buffer.truncate(0), self.buffer.seek(0)
-
-class IOWrapper(IOBase):
-    def __init__(self, file):
-        self.buffer = FastIO(file)
-        self.flush = self.buffer.flush
-        self.writable = self.buffer.writable
-        self.write = lambda s: self.buffer.write(s.encode("ascii"))
-        self.read = lambda: self.buffer.read().decode("ascii")
-        self.readline = lambda: self.buffer.readline().decode("ascii")
-        
-sys.stdin, sys.stdout = IOWrapper(sys.stdin), IOWrapper(sys.stdout)
-input = lambda: sys.stdin.readline().rstrip("\r\n")
+input = lambda: sys.stdin.readline().rstrip()
+sint = lambda: int(input())
+mint = lambda: map(int, input().split())
 ints = lambda: list(map(int, input().split()))
+# print = lambda d: sys.stdout.write(str(d) + "\n")
 # endregion fastio
 
-# region interactive
-def printQry(a, b) -> None:
-    sa = str(a)
-    sb = str(b)
-    print(f"? {sa} {sb}", flush = True)
+# # region interactive
+# def printQry(a, b) -> None:
+#     sa = str(a)
+#     sb = str(b)
+#     print(f"? {sa} {sb}", flush = True)
 
-def printAns(ans) -> None:
-    s = str(ans)
-    print(f"! {s}", flush = True)
-# endregion interactive
+# def printAns(ans) -> None:
+#     s = str(ans)
+#     print(f"! {s}", flush = True)
+# # endregion interactive
 
-# from types import GeneratorType
+# # region dfsconvert
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -88,18 +47,50 @@ def printAns(ans) -> None:
 #                     to = stack[-1].send(to)
 #             return to
 #     return wrappedfunc
+# # endregion dfsconvert
 
 # MOD = 998244353
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
+def bit_count(x):
+    x = (x & 0x55555555) + ((x >> 1) & 0x55555555)
+    x = (x & 0x33333333) + ((x >> 2) & 0x33333333)
+    x = (x & 0x0f0f0f0f) + ((x >> 4) & 0x0f0f0f0f)
+    x = (x & 0x00ff00ff) + ((x >> 8) & 0x00ff00ff)
+    x = (x & 0x0000ffff) + ((x >> 16) & 0x0000ffff)
+    return x
+
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n, m, k = mint()
+    arr = ints()
+    c = [[0] * n for _ in range(n)]
+    for _ in range(k):
+        x, y, z = mint()
+        c[x - 1][y - 1] = z
+    
+    b = [1]
+    for _ in range(n):
+        b.append(2 * b[-1])
+    
+    dp = [[0] * n for _ in range(b[-1])]
+    for mask in range(b[-1] - 1):
+        for x in range(n):
+            if not mask & b[x]: continue
+            for y in range(n):
+                if mask & b[y]: continue
+                dp[mask|b[y]][y] = max(dp[mask|b[y]][y], dp[mask][x] + c[x][y])
+    
+    ans = 0
+    for mask in range(b[-1]):
+        # if mask.bit_count() != m: continue
+        if bit_count(mask) ^ m: continue
+        s1 = s2 = 0
+        for i in range(n):
+            s1 = max(s1, dp[mask][i])
+            if mask & b[i]: s2 += arr[i]
+        ans = max(ans, s1 + s2)
+    print(ans)
 
-    return
-
-for _ in range(int(input())):
-    solve()
+# for _ in range(int(input())):
+solve()

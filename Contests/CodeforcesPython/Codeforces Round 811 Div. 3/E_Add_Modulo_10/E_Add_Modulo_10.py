@@ -1,38 +1,46 @@
-def check1(n: int, arr: list[int]) -> bool:
-    for i in range(n):
-        arr[i] += arr[i] % 10
-        if i > 0 and arr[i] != arr[i-1]:
-            return False
-    return True
-    
-def check2(n: int, arr: list[int]) -> bool:
-    for i in range(n):
-        while arr[i] % 10 != 2:
-            arr[i] += arr[i] % 10
-        if i > 0 and abs(arr[i] - arr[i-1]) % 20 != 0:
-            return False
-    return True
+import math
+import sys
+from bisect import *
+from collections import *
+from functools import *
+from heapq import *
+from itertools import *
+from random import *
+from string import *
+from types import GeneratorType
+
+# region fastio
+input = lambda: sys.stdin.readline().rstrip()
+sint = lambda: int(input())
+mint = lambda: map(int, input().split())
+ints = lambda: list(map(int, input().split()))
+# print = lambda d: sys.stdout.write(str(d) + "\n")
+# endregion fastio
 
 def solve() -> None:
-    n = int(input())
-    arr = list(map(int, input().split()))
-    type1, type2 = False, False
+    n = sint()
+    arr = ints()
+    type1, type2, chk = False, False, True
 
-    for a in arr:
+    for i, a in enumerate(arr):
         if a % 5 == 0:
             type1 = True
+            arr[i] += arr[i] % 10
+            if i > 0 and arr[i] != arr[i-1]:
+                chk = False
+                break
         else:
             type2 = True
+            while arr[i] % 10 != 2:
+                arr[i] += arr[i] % 10
+            if i > 0 and abs(arr[i] - arr[i-1]) % 20 != 0:
+                chk = False
+                break
+        if type1 and type2:
+            chk = False
+            break
     
-    chk = False
-    if type1 and type2:
-        chk = False
-    elif type1:
-        chk = check1(n, arr)
-    elif type2:
-        chk = check2(n, arr)
     print('Yes' if chk else 'No')
 
-t = int(input())
-for _ in range(t):
+for _ in range(sint()):
     solve()
