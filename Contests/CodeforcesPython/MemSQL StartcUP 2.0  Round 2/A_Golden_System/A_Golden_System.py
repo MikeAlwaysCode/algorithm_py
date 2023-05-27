@@ -53,57 +53,42 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
-    arr = ints()
+    s1 = list(map(int, list(input())))
+    s2 = list(map(int, list(input())))
 
-    ans = 0
-    p = pt = -1
-    left = [0] * 2
-    border = []
-    cnt = [[] for _ in range(2)]
+    n = max(len(s1), len(s2))
 
-    for i, a in enumerate(arr):
-        left[(i + 1) & 1] += 1
+    if n == 1:
+        print(">" if s1[0] > s2[0] else "=" if s1[0] == s2[0] else "<")
+        return
 
-        if a == 0: continue
+    if len(s1) < n: s1 = [0] * (n - len(s1)) + s1
+    if len(s2) < n: s2 = [0] * (n - len(s2)) + s2
 
-        left[a & 1] -= 1
-        
-        if p == -1:
-            if i: border.append((i, a & 1))
-        elif i - p - 1:
-            if a & 1 == pt:
-                cnt[pt].append(i - p - 1)
-            else:
-                # 两边奇偶性不同，是否填充无意义，+1
-                ans += 1
-        else:
-            # 相邻且奇偶不同，必定+1
-            ans += int(a & 1 != pt)
+    for i in range(n - 2):
+        mn = min(s1[i], s2[i])
+        s1[i] -= mn
+        s2[i] -= mn
 
-        p, pt = i, a & 1
-        
-    if p != n - 1: border.append((n - 1 - p, pt & 1))
+        s1[i + 1] += s1[i]
+        s1[i + 2] += s1[i]
+        s2[i + 1] += s2[i]
+        s2[i + 2] += s2[i]
 
-    # 优先填充两边奇偶性相同的段
-    for i in range(2):
-        cnt[i].sort()
-        for x in cnt[i]:
-            if left[i] >= x:
-                left[i] -= x
-            else:
-                ans += 2
+        s1[i] = 0
+        s2[i] = 0
 
-    # 填充两边的段
-    border.sort()
-    for x, t in border:
-        if left[t] >= x:
-            left[t] -= x
-        else:
-            ans += 1
-    
-    print(ans)
-        
+    x, y = s1[-2] - s2[-2], s1[-1] - s2[-1]
+
+    if x == 0:
+        print(">" if y > 0 else "=" if y == 0 else "<")
+    elif x * y > 0:
+        print(">" if x > 0 else "<")
+    else:
+        l = 5 * x * x
+        r = (- 2 * y - x) * (- 2 * y - x)
+        if x < 0: l, r = r, l
+        print(">" if l > r else "=" if l == r else "<")
 
 # for _ in range(int(input())):
 solve()

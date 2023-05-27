@@ -51,59 +51,29 @@ ints = lambda: list(map(int, input().split()))
 # MOD = 998244353
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
+DIR = {"L":(-1, 0), 
+       "U":(0, 1), 
+       "R":(1, 0), 
+       "D":(0, -1)}
 
 def solve() -> None:
-    n = sint()
-    arr = ints()
-
-    ans = 0
-    p = pt = -1
-    left = [0] * 2
-    border = []
-    cnt = [[] for _ in range(2)]
-
-    for i, a in enumerate(arr):
-        left[(i + 1) & 1] += 1
-
-        if a == 0: continue
-
-        left[a & 1] -= 1
-        
-        if p == -1:
-            if i: border.append((i, a & 1))
-        elif i - p - 1:
-            if a & 1 == pt:
-                cnt[pt].append(i - p - 1)
-            else:
-                # 两边奇偶性不同，是否填充无意义，+1
-                ans += 1
-        else:
-            # 相邻且奇偶不同，必定+1
-            ans += int(a & 1 != pt)
-
-        p, pt = i, a & 1
-        
-    if p != n - 1: border.append((n - 1 - p, pt & 1))
-
-    # 优先填充两边奇偶性相同的段
-    for i in range(2):
-        cnt[i].sort()
-        for x in cnt[i]:
-            if left[i] >= x:
-                left[i] -= x
-            else:
-                ans += 2
-
-    # 填充两边的段
-    border.sort()
-    for x, t in border:
-        if left[t] >= x:
-            left[t] -= x
-        else:
-            ans += 1
+    n, m, h, k = mint()
+    s = input()
+    item = set()
+    for _ in range(m):
+        item.add(tuple(mint()))
     
-    print(ans)
-        
+    x = y = 0
+    for c in s:
+        h -= 1
+        if h < 0:
+            print("No")
+            return
+        x, y = x + DIR[c][0], y + DIR[c][1]
+        if h < k and (x, y) in item:
+            h = k
+            item.remove((x, y))
 
-# for _ in range(int(input())):
+    print("Yes")
+
 solve()

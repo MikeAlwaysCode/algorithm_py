@@ -53,57 +53,52 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
-    arr = ints()
+    n, m = mint()
+    perm = []
+    for _ in range(m):
+        perm.append(ints())
 
-    ans = 0
-    p = pt = -1
-    left = [0] * 2
-    border = []
-    cnt = [[] for _ in range(2)]
-
-    for i, a in enumerate(arr):
-        left[(i + 1) & 1] += 1
-
-        if a == 0: continue
-
-        left[a & 1] -= 1
-        
-        if p == -1:
-            if i: border.append((i, a & 1))
-        elif i - p - 1:
-            if a & 1 == pt:
-                cnt[pt].append(i - p - 1)
-            else:
-                # 两边奇偶性不同，是否填充无意义，+1
-                ans += 1
-        else:
-            # 相邻且奇偶不同，必定+1
-            ans += int(a & 1 != pt)
-
-        p, pt = i, a & 1
-        
-    if p != n - 1: border.append((n - 1 - p, pt & 1))
-
-    # 优先填充两边奇偶性相同的段
-    for i in range(2):
-        cnt[i].sort()
-        for x in cnt[i]:
-            if left[i] >= x:
-                left[i] -= x
-            else:
-                ans += 2
-
-    # 填充两边的段
-    border.sort()
-    for x, t in border:
-        if left[t] >= x:
-            left[t] -= x
-        else:
-            ans += 1
+    pos = [0] * n
+    for i in range(n):
+        pos[perm[0][i] - 1] = i
     
+    mn = [n] * n
+    
+    for i in range(m):
+        dp = [1] * n
+        for j in range(n - 1, -1, -1):
+            perm[i][j] = pos[perm[i][j] - 1]
+            if j < n - 1 and perm[i][j] == perm[i][j + 1] - 1:
+                dp[j] = dp[j + 1] + 1
+            mn[perm[i][j]] = min(mn[perm[i][j]], dp[j])
+            
+    ans = cur = 0
+    while cur < n:
+        ans += mn[cur] * (mn[cur] + 1) // 2
+        cur += mn[cur]
+
+    '''
+    for i in range(m):
+        for j in range(n):
+            perm[i][j] = pos[perm[i][j] - 1]
+    
+    mn = [n] * n
+    for i in range(m):
+        cur = 0
+        for j in range(n):
+            if cur < j: cur += 1
+            while cur < n - 1 and perm[i][cur + 1] == perm[i][cur] + 1:
+                cur += 1
+            mn[perm[i][j]] = min(mn[perm[i][j]], perm[i][cur])
+    
+    ans = cur = 0
+    while cur < n:
+        l = mn[cur] - cur + 1
+        ans += l * (l + 1) // 2
+        cur = mn[cur] + 1
+    '''
+
     print(ans)
-        
 
 # for _ in range(int(input())):
 solve()

@@ -76,56 +76,32 @@ def printAns(ans) -> None:
 
 def solve() -> None:
     n, m = map(int, input().split())
-    g = [set() for _ in range(n)]
-    gv = [set() for _ in range(n)]
-    outcnt = [0] * n
-    edge_cnt = Counter()
+    
+    rg = [[] for _ in range(n)]
+    deg = [0] * n
+    
     for _ in range(m):
         u, v = map(int, input().split())
         u -= 1
         v -= 1
-        g[u].add(v)
-        gv[v].add(u)
-        outcnt[u] += 1
-        edge_cnt[(u, v)] += 1
+        
+        rg[v].append(u)
+        deg[u] += 1
     
     dis = [math.inf] * n
     dis[n - 1] = 0
     q = [(0, n - 1)]
     while q:
         d, u = heappop(q)
-        for v in gv[u]:
-            nd = d + 1
+        if d > dis[u]: continue
+        for v in rg[u]:
+            nd = d + deg[v]
+            deg[v] -= 1
             if dis[v] <= nd: continue
             dis[v] = nd
             heappush(q, (dis[v], v))
     
-    dis2 = [math.inf] * n
-    # dis2[0] = 0
-
-    q = [(0, 0)]
-    while q:
-        d, u = heappop(q)
-        mx = 0
-        cnt = 0
-        for v in g[u]:
-            if dis[v] > dis[u]:
-                cnt += edge_cnt[(u, v)]
-                continue
-            mx = max(mx, dis[v])
-
-        for v in g[u]:
-            if dis[v] != mx: continue
-            # if mx - dis[v] <= outcnt[u] - edge_cnt[(u, v)]:
-            #     nd = d + 1
-            # else:
-            #     nd = d + 1 + outcnt[u] - edge_cnt[(u, v)]
-            nd = d + 1 + cnt
-            if dis2[v] <= nd: continue
-            dis2[v] = nd
-            heappush(q, (dis2[v], v))
-
-    print(dis2[-1])
+    print(dis[0])
 
 # for _ in range(int(input())):
 solve()

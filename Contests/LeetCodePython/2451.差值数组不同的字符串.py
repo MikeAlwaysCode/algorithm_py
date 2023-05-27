@@ -63,6 +63,8 @@
 #
 import collections
 from typing import List
+
+
 # @lc code=start
 class Solution:
     def oddString(self, words: List[str]) -> str:

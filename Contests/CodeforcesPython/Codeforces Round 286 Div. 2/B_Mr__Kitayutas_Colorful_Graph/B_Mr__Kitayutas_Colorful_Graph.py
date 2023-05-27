@@ -53,57 +53,53 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
-    arr = ints()
+    n, m = mint()
+    edges = []
+    for _ in range(m):
+        u, v, c = mint()
+        edges.append((u, v, c))
 
-    ans = 0
-    p = pt = -1
-    left = [0] * 2
-    border = []
-    cnt = [[] for _ in range(2)]
+    cnt = Counter()
+    fa = list(range(n + 1))
+    def find(x: int):
+        cur = x
+        while x != fa[x]:
+            x = fa[x]
+        while fa[cur] != x:
+            tmp = fa[cur]
+            fa[cur] = x
+            cur = tmp
+        return x
 
-    for i, a in enumerate(arr):
-        left[(i + 1) & 1] += 1
+    edges.append((n, n, m + 1))
+    edges.sort(key = lambda x: x[2])
+    prec = 0
+    vs = set()
+    for u, v, c in edges:
+        if c != prec:
+            # 计数 & 重置并查集
+            vl = sorted(vs)
+            for i, x in enumerate(vl):
+                for j in range(i + 1, len(vl)):
+                    y = vl[j]
+                    if find(x) == find(y):
+                        cnt[(x, y)] += 1
+                fa[x] = x
 
-        if a == 0: continue
+            prec = c
+            vs.clear()
 
-        left[a & 1] -= 1
-        
-        if p == -1:
-            if i: border.append((i, a & 1))
-        elif i - p - 1:
-            if a & 1 == pt:
-                cnt[pt].append(i - p - 1)
-            else:
-                # 两边奇偶性不同，是否填充无意义，+1
-                ans += 1
-        else:
-            # 相邻且奇偶不同，必定+1
-            ans += int(a & 1 != pt)
+        fu = find(u)
+        fv = find(v)
+        fa[fv] = fu
+        vs.add(u)
+        vs.add(v)
 
-        p, pt = i, a & 1
-        
-    if p != n - 1: border.append((n - 1 - p, pt & 1))
-
-    # 优先填充两边奇偶性相同的段
-    for i in range(2):
-        cnt[i].sort()
-        for x in cnt[i]:
-            if left[i] >= x:
-                left[i] -= x
-            else:
-                ans += 2
-
-    # 填充两边的段
-    border.sort()
-    for x, t in border:
-        if left[t] >= x:
-            left[t] -= x
-        else:
-            ans += 1
-    
-    print(ans)
-        
+    q = sint()
+    for _ in range(q):
+        u, v = mint()
+        if u > v: u, v = v, u
+        print(cnt[(u, v)])
 
 # for _ in range(int(input())):
 solve()

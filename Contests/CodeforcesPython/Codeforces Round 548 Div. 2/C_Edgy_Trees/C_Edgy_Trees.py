@@ -49,61 +49,37 @@ ints = lambda: list(map(int, input().split()))
 # # endregion dfsconvert
 
 # MOD = 998244353
-# MOD = 10 ** 9 + 7
+MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
-    arr = ints()
+    n, k = mint()
 
-    ans = 0
-    p = pt = -1
-    left = [0] * 2
-    border = []
-    cnt = [[] for _ in range(2)]
-
-    for i, a in enumerate(arr):
-        left[(i + 1) & 1] += 1
-
-        if a == 0: continue
-
-        left[a & 1] -= 1
-        
-        if p == -1:
-            if i: border.append((i, a & 1))
-        elif i - p - 1:
-            if a & 1 == pt:
-                cnt[pt].append(i - p - 1)
-            else:
-                # 两边奇偶性不同，是否填充无意义，+1
-                ans += 1
-        else:
-            # 相邻且奇偶不同，必定+1
-            ans += int(a & 1 != pt)
-
-        p, pt = i, a & 1
-        
-    if p != n - 1: border.append((n - 1 - p, pt & 1))
-
-    # 优先填充两边奇偶性相同的段
-    for i in range(2):
-        cnt[i].sort()
-        for x in cnt[i]:
-            if left[i] >= x:
-                left[i] -= x
-            else:
-                ans += 2
-
-    # 填充两边的段
-    border.sort()
-    for x, t in border:
-        if left[t] >= x:
-            left[t] -= x
-        else:
-            ans += 1
+    fa = list(range(n + 1))
+    sz = [1] * (n + 1)
+    def find(x: int) -> int:
+        cur = x
+        while x != fa[x]:
+            x = fa[x]
+        while fa[cur] != x:
+            tmp = fa[cur]
+            fa[cur] = x
+            cur = tmp
+        return x
     
+    for _ in range(n - 1):
+        u, v, c = mint()
+        if c == 0:
+            fu = find(u)
+            fv = find(v)
+            if fu != fv:
+                sz[fu] += sz[fv]
+                fa[fv] = fu
+    
+    ans = pow(n, k, MOD)
+    for i in range(1, n + 1):
+        if i == find(i): ans = (ans - pow(sz[i], k, MOD)) % MOD
     print(ans)
-        
 
 # for _ in range(int(input())):
 solve()

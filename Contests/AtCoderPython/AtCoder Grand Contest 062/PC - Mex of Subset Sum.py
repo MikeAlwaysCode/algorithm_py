@@ -58,18 +58,35 @@ def solve() -> None:
     nums.sort()
     ans = set()
     s = 0
-    for i, x in enumerate(nums):
-        mx = math.inf
-        if i < n - 1 and nums[i + 1] > x:
-            mx = nums[i + 1] - x
-        for a in sorted(ans):
-            if a >= mx: break
-            ans.add(x + a)
-        if x > s + 1:
-            ans |= set(range(s + 1, x))
-        s += x
-        if len(ans) >= k:
+    for x in nums:
+        cnt = 0
+        # 小于当前数的missing才是准确的
+        for a in ans:
+            if a < x: cnt += 1
+        if cnt >= k:
             break
+        
+        if x > s:
+            # x很大时这里直接添加range可能会TLE
+            for a in range(s + 1, x):
+                ans.add(a)
+                if len(ans) == k: break
+
+            # x跟前面的missing会产生新的missing
+            for a in sorted(ans):
+                if a <= s: ans.add(x + a)
+            # ans |= set(range(s + 1, x))
+        else:
+            ns = set()
+            for a in ans:
+                # 过滤前面的数产生的missing可能会被当前数填充掉
+                if a < x or a - x in ans:
+                    ns.add(a)
+                if a + x > s or x + a in ans:
+                    ns.add(x + a)
+            ans = ns
+
+        s += x
     # print(s)
     if len(ans) < k:
         ans |= set(range(s + 1, s + k - len(ans) + 1))

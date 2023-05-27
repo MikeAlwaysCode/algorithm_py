@@ -53,57 +53,50 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
-    arr = ints()
+    n, mod = mint()
+    nums = ints()
 
-    ans = 0
-    p = pt = -1
-    left = [0] * 2
-    border = []
-    cnt = [[] for _ in range(2)]
-
-    for i, a in enumerate(arr):
-        left[(i + 1) & 1] += 1
-
-        if a == 0: continue
-
-        left[a & 1] -= 1
-        
-        if p == -1:
-            if i: border.append((i, a & 1))
-        elif i - p - 1:
-            if a & 1 == pt:
-                cnt[pt].append(i - p - 1)
-            else:
-                # 两边奇偶性不同，是否填充无意义，+1
-                ans += 1
-        else:
-            # 相邻且奇偶不同，必定+1
-            ans += int(a & 1 != pt)
-
-        p, pt = i, a & 1
-        
-    if p != n - 1: border.append((n - 1 - p, pt & 1))
-
-    # 优先填充两边奇偶性相同的段
-    for i in range(2):
-        cnt[i].sort()
-        for x in cnt[i]:
-            if left[i] >= x:
-                left[i] -= x
-            else:
-                ans += 2
-
-    # 填充两边的段
-    border.sort()
-    for x, t in border:
-        if left[t] >= x:
-            left[t] -= x
-        else:
-            ans += 1
+    # meet-in-the-middle
+    m = (n + 1) >> 1
+    # 单独选前m个数的值
+    bit = {1 << i:nums[i] % mod for i in range(m)}
+    dp = [0] * (1 << m)
+    for mask in range(1, 1 << m):
+        # 从不包含lb元素的子集 + lb元素转移
+        dp[mask] = (dp[mask ^ mask & -mask] + bit[mask & -mask]) % mod
     
+    res1 = sorted(list(set(dp)))
+
+    k = n - m
+    bit = {1 << i:nums[i + m] % mod for i in range(k)}
+    dp = [0] * (1 << k)
+
+    # 双指针 265 ms
+    for mask in range(1, 1 << k):
+        dp[mask] = (dp[mask ^ mask & -mask] + bit[mask & -mask]) % mod
+    res2 = sorted(list(set(dp)))
+    
+    ans = (res1[-1] + res2[-1]) % mod
+    i, j = 0, len(res2) - 1
+    while i < len(res1) and j >= 0:
+        while res1[i] + res2[j] >= mod:
+            j -= 1
+        ans = max(ans, res1[i] + res2[j] % mod)
+        i += 1
+
+    '''
+    # 二分 233 ms
+    ans = res1[-1]
+    for mask in range(1, 1 << k):
+        dp[mask] = (dp[mask ^ mask & -mask] + bit[mask & -mask]) % mod
+        # 两个小于mod的最大数相加<2mod 可能是答案
+        ans = max(ans, (res1[-1] + dp[mask]) % mod)
+        # 查找小于且最接近mod - s的数
+        j = bisect(res1, mod - dp[mask] - 1)
+        if j: ans = max(ans, (res1[j - 1] + dp[mask]) % mod)
+    '''
+
     print(ans)
-        
 
 # for _ in range(int(input())):
 solve()

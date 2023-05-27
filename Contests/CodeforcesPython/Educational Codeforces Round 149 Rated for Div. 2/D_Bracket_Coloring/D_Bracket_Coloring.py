@@ -54,56 +54,36 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n = sint()
-    arr = ints()
+    s = input()
 
-    ans = 0
-    p = pt = -1
-    left = [0] * 2
-    border = []
-    cnt = [[] for _ in range(2)]
+    if n & 1:
+        print(-1)
+        return
 
-    for i, a in enumerate(arr):
-        left[(i + 1) & 1] += 1
+    k = 1
+    ans = [1] * n
 
-        if a == 0: continue
-
-        left[a & 1] -= 1
-        
-        if p == -1:
-            if i: border.append((i, a & 1))
-        elif i - p - 1:
-            if a & 1 == pt:
-                cnt[pt].append(i - p - 1)
-            else:
-                # 两边奇偶性不同，是否填充无意义，+1
-                ans += 1
+    cur = 0
+    p = 1
+    t = 1 if s[0] == "(" else -1
+    for i, c in enumerate(s):
+        if c == "(":
+            cur += 1
         else:
-            # 相邻且奇偶不同，必定+1
-            ans += int(a & 1 != pt)
-
-        p, pt = i, a & 1
+            cur -= 1
         
-    if p != n - 1: border.append((n - 1 - p, pt & 1))
-
-    # 优先填充两边奇偶性相同的段
-    for i in range(2):
-        cnt[i].sort()
-        for x in cnt[i]:
-            if left[i] >= x:
-                left[i] -= x
-            else:
-                ans += 2
-
-    # 填充两边的段
-    border.sort()
-    for x, t in border:
-        if left[t] >= x:
-            left[t] -= x
-        else:
-            ans += 1
+        if cur * t < 0:
+            t = - t
+            p ^= 3
+            if k == 1: k += 1
+        
+        ans[i] = p
     
-    print(ans)
-        
+    if cur != 0:
+        print(-1)
+    else:
+        print(k)
+        print(*ans)
 
-# for _ in range(int(input())):
-solve()
+for _ in range(int(input())):
+    solve()
