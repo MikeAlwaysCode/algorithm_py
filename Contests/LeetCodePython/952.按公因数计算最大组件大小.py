@@ -68,6 +68,54 @@
 from collections import Counter
 from typing import List
 # @lc code=start
+C = 10 ** 5
+isprime = [True] * (C + 1)
+primes = list()
+for i in range(2, C + 1):
+    if isprime[i]:
+        primes.append(i)
+    for prime in primes:
+        if i * prime > C:
+            break
+        isprime[i * prime] = False
+        if i % prime == 0:
+            break
+class Solution:
+    def largestComponentSize(self, nums: List[int]) -> int:
+        n = len(nums)
+        fa = list(range(n))
+        sz = [1] * n
+        def find(x: int):
+            cur = x
+            while x != fa[x]:
+                x = fa[x]
+            while fa[cur] != x:
+                tmp = fa[cur]
+                fa[cur] = x
+                cur = tmp
+            return x
+        pd = dict()
+        def union(d: int, i: int):
+            if d not in pd:
+                pd[d] = i
+            else:
+                fd = find(pd[d])
+                fi = find(i)
+                if fd != fi:
+                    sz[fd] += sz[fi]
+                    fa[fi] = fd
+
+        for i, x in enumerate(nums):
+            for p in primes:
+                if p * p > x: break
+                if x % p == 0:
+                    union(p, i)
+                    while x % p == 0:
+                        x //= p
+            if x > 1: union(x, i)
+
+        return max(sz)
+'''
 class UnionFind:
     def __init__(self, n: int):
         self.parent = list(range(n))
@@ -101,5 +149,6 @@ class Solution:
                     uf.merge(num, num // i)
                 i += 1
         return max(Counter(uf.find(num) for num in nums).values())
+'''
 # @lc code=end
 

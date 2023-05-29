@@ -46,6 +46,8 @@
 # 
 #
 from typing import List
+
+
 # @lc code=start
 class Solution:
     def averageValue(self, nums: List[int]) -> int:
