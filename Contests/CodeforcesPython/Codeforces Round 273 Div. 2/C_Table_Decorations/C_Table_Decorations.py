@@ -53,35 +53,18 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, k = mint()
     nums = ints()
+    nums.sort()
 
-    tot = n * (n + 1) // 2
-    dp = [[0] * n for _ in range(n)]
-    for i in range(n):
-        for j in range(i + 1, n):
-            dp[i][j] = int(nums[i] > nums[j])
-
-    for _ in range(k):
-        ndp = [[0] * n for _ in range(n)]
-        for i in range(n):
-            for j in range(i + 1, n):
-                for l in range(n):
-                    for r in range(l, n):
-                        ni = l + r - i if l <= i <= r else i
-                        nj = l + r - j if l <= j <= r else j
-                        if ni < nj:
-                            ndp[i][j] += dp[ni][nj] / tot
-                        else:
-                            ndp[i][j] += (1 - dp[nj][ni]) / tot
-        dp = ndp
-    
-    ans = 0
-    for i in range(n):
-        for j in range(n):
-            ans += dp[i][j]
-
-    print(ans)
+    print(min(sum(nums) // 3, nums[0] + nums[1]))
+    '''
+    if (nums[0] + nums[1]) * 2 <= nums[2]:
+        print(nums[0] + nums[1])
+    elif nums[0] * 2 >= nums[1] + nums[2]:
+        print((nums[1] + nums[2]) // 2)
+    else:
+        print(nums[0] + (nums[1] + nums[2] - 2 * nums[0]) // 3)
+    '''
 
 # for _ in range(int(input())):
 solve()

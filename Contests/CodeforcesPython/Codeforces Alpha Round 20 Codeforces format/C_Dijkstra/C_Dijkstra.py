@@ -53,35 +53,57 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, k = mint()
-    nums = ints()
-
-    tot = n * (n + 1) // 2
-    dp = [[0] * n for _ in range(n)]
-    for i in range(n):
-        for j in range(i + 1, n):
-            dp[i][j] = int(nums[i] > nums[j])
-
-    for _ in range(k):
-        ndp = [[0] * n for _ in range(n)]
-        for i in range(n):
-            for j in range(i + 1, n):
-                for l in range(n):
-                    for r in range(l, n):
-                        ni = l + r - i if l <= i <= r else i
-                        nj = l + r - j if l <= j <= r else j
-                        if ni < nj:
-                            ndp[i][j] += dp[ni][nj] / tot
-                        else:
-                            ndp[i][j] += (1 - dp[nj][ni]) / tot
-        dp = ndp
+    n, m = mint()
+    g = [[] for _ in range(n + 1)]
+    for _ in range(m):
+        u, v, w = mint()
+        g[u].append((v, w))
+        g[v].append((u, w))
     
-    ans = 0
-    for i in range(n):
-        for j in range(n):
-            ans += dp[i][j]
-
-    print(ans)
+    dis = [math.inf] * (n + 1)
+    nxt = [-1] * (n + 1)
+    dis[n] = 0
+    q = [(0 , n )]
+    while q:
+        d, u = heappop(q)
+        if d > dis[u]: continue
+        for v, w in g[u]:
+            if d + w > dis[v]: continue
+            nxt[v] = u
+            dis[v] = d + w
+            heappush(q, (dis[v], v))
+            
+    if dis[1] == math.inf:
+        print(-1)
+    else:
+        ans = [1]
+        while ans[-1] != n:
+            ans.append(nxt[ans[-1]])
+        print(*ans)
+        
+    '''
+    dis = [math.inf] * (n + 1)
+    dis[n] = 0
+    q = [(0 , n )]
+    while q:
+        d, u = heappop(q)
+        if d > dis[u]: continue
+        for v, w in g[u]:
+            if d + w > dis[v]: continue
+            dis[v] = d + w
+            heappush(q, (dis[v], v))
+            
+    if dis[1] == math.inf:
+        print(-1)
+    else:
+        ans = [1]
+        while ans[-1] != n:
+            for u, w in g[ans[-1]]:
+                if dis[u] + w == dis[ans[-1]]:
+                    ans.append(u)
+                    break
+        print(*ans)
+    '''
 
 # for _ in range(int(input())):
 solve()
