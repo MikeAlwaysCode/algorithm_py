@@ -53,22 +53,32 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = int(input())
-    a = ints()
-    b = ints()
+    n = sint()
+    nums = ints()
 
-    # 奇数时中间位置的数无法移动
-    if n & 1 and a[n//2] != b[n//2]:
-        print("No")
+    if nums[-1] == 1:
+        print("NO")
         return
-
-    # 中心对称的数对及个数
-    cnt = Counter()
-    for i in range(n//2):
-        cnt[(min(a[i], a[n-i-1]), max(a[i], a[n-i-1]))] += 1
-        cnt[(min(b[i], b[n-i-1]), max(b[i], b[n-i-1]))] -= 1
     
-    print("No" if any(v != 0 for v in cnt.values()) else "Yes")
+    ans = []
+    zero = one = 0
+    for i in range(n - 1, -1, -1):
+        if nums[i] == 0:
+            if one:
+                ans.extend([0] * (zero + one - 1))
+                ans.append(one)
+                zero = one = 0
+            zero += 1
+        else:
+            one += 1
+    
+    if one:
+        ans.extend([0] * (zero + one - 1))
+        ans.append(one)
+    else:
+        ans.extend([0] * zero)
+    print("Yes")
+    print(*ans)
 
 for _ in range(int(input())):
     solve()

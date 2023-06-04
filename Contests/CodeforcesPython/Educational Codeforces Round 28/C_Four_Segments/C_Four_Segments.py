@@ -53,22 +53,35 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = int(input())
-    a = ints()
-    b = ints()
+    n = sint()
+    nums = ints()
 
-    # 奇数时中间位置的数无法移动
-    if n & 1 and a[n//2] != b[n//2]:
-        print("No")
-        return
-
-    # 中心对称的数对及个数
-    cnt = Counter()
-    for i in range(n//2):
-        cnt[(min(a[i], a[n-i-1]), max(a[i], a[n-i-1]))] += 1
-        cnt[(min(b[i], b[n-i-1]), max(b[i], b[n-i-1]))] -= 1
+    # 1. 计算后缀最小和及下标k
+    suff = [(0, n)] * (n + 1)
+    s = 0
+    for i in range(n - 1, -1, -1):
+        s += nums[i]
+        suff[i] = suff[i + 1]
+        if s < suff[i][0]:
+            suff[i] = (s, i)
     
-    print("No" if any(v != 0 for v in cnt.values()) else "Yes")
+    # 2. 计算最小子数组和及下标i, j
+    ans, ai, aj, ak = 0, 0, 0, suff[0][1]
+    mn = pre = i = j = mi = mj = 0
+    
+    for j in range(n):
+        # 当前最小的s[i:j]
+        pre += nums[j]
+        if nums[j] < pre:
+            pre, i = nums[j], j
+        # 前缀最小的s[i:j]
+        if pre < mn:
+            mn, mi, mj = pre, i, j + 1
+        # 最小的s[i:j] + s[k:n]
+        if mn + suff[j + 1][0] < ans:
+            ans = mn + suff[j + 1][0]
+            ai, aj, ak = mi, mj, suff[j + 1][1]
+    print(ai, aj, ak)
 
-for _ in range(int(input())):
-    solve()
+# for _ in range(int(input())):
+solve()

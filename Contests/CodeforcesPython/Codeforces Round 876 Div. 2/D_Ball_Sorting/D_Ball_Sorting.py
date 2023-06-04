@@ -53,22 +53,34 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = int(input())
-    a = ints()
-    b = ints()
-
-    # 奇数时中间位置的数无法移动
-    if n & 1 and a[n//2] != b[n//2]:
-        print("No")
-        return
-
-    # 中心对称的数对及个数
-    cnt = Counter()
-    for i in range(n//2):
-        cnt[(min(a[i], a[n-i-1]), max(a[i], a[n-i-1]))] += 1
-        cnt[(min(b[i], b[n-i-1]), max(b[i], b[n-i-1]))] -= 1
+    n = sint()
+    nums = ints()
     
-    print("No" if any(v != 0 for v in cnt.values()) else "Yes")
+    ans = [n] * n
+
+    mx = n
+    @cache
+    def dfs(i, j, x):
+        while i < n - 1 and nums[i + 1] > nums[i]:
+            i += 1
+        while j > 0 and nums[j - 1] < nums[j]:
+            j -= 1
+        res = j - i
+
+        if j > i and nums[j] > nums[i]: res -= 1
+        ans[x] = min(ans[x], x + max(0, res))
+        if ans[x] == 3:
+            print(i, j, x)
+        if res <= 0:
+            nonlocal mx
+            mx = min(mx, x)
+        else:
+            dfs(i + 1, j, x + 1)
+            dfs(i, j - 1, x + 1)
+    dfs(0, n - 1, 0)
+    for i in range(mx, n):
+        ans[i] = mx
+    print(*ans)
 
 for _ in range(int(input())):
     solve()

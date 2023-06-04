@@ -53,22 +53,47 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = int(input())
-    a = ints()
-    b = ints()
+    n, k = mint()
+    # nums = input().split()
+    nums = ints()
 
-    # 奇数时中间位置的数无法移动
-    if n & 1 and a[n//2] != b[n//2]:
-        print("No")
-        return
-
-    # 中心对称的数对及个数
+    # 592 ms
     cnt = Counter()
-    for i in range(n//2):
-        cnt[(min(a[i], a[n-i-1]), max(a[i], a[n-i-1]))] += 1
-        cnt[(min(b[i], b[n-i-1]), max(b[i], b[n-i-1]))] -= 1
-    
-    print("No" if any(v != 0 for v in cnt.values()) else "Yes")
+    ans = l = 0
+    for x in nums:
+        cnt[x] += 1
+        while cnt[x] >= k:
+            cnt[nums[l]] -= 1
+            l += 1
+        ans += l
 
-for _ in range(int(input())):
-    solve()
+    '''
+    # 810 ms
+    pos = defaultdict(list)
+
+    ans, p = 0, -1
+    for i, x in enumerate(nums):
+        pos[x].append(i)
+        if len(pos[x]) >= k and pos[x][-k] > p:
+            ans += (pos[x][-k] - p) * (n - i)
+            p = pos[x][-k]
+    '''
+    
+    '''
+    # 904 ms
+    d = {v:i for i, v in enumerate(set(nums))}
+    pos = [[] for _ in range(len(d))]
+    ans, p = 0, -1
+    for i, x in enumerate(nums):
+        x = d[x]
+        pos[x].append(i)
+        if len(pos[x]) >= k and pos[x][-k] > p:
+            ans += (pos[x][-k] - p) * (n - i)
+            p = pos[x][-k]
+    '''
+
+    print(ans)
+
+
+# for _ in range(int(input())):
+solve()

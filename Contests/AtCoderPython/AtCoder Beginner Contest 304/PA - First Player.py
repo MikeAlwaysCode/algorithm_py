@@ -53,22 +53,19 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = int(input())
-    a = ints()
-    b = ints()
+    n = sint()
+    names = []
+    pos = mx = math.inf
+    for i in range(n):
+        name, age = input().split()
+        names.append(name)
+        age = int(age)
+        if age < mx:
+            mx = age
+            pos = i
 
-    # 奇数时中间位置的数无法移动
-    if n & 1 and a[n//2] != b[n//2]:
-        print("No")
-        return
+    for _ in range(n):
+        print(names[pos])
+        pos = (pos + 1) % n
 
-    # 中心对称的数对及个数
-    cnt = Counter()
-    for i in range(n//2):
-        cnt[(min(a[i], a[n-i-1]), max(a[i], a[n-i-1]))] += 1
-        cnt[(min(b[i], b[n-i-1]), max(b[i], b[n-i-1]))] -= 1
-    
-    print("No" if any(v != 0 for v in cnt.values()) else "Yes")
-
-for _ in range(int(input())):
-    solve()
+solve()

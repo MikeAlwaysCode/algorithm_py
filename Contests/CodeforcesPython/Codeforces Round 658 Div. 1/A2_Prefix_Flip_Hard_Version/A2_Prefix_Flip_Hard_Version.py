@@ -53,7 +53,24 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    return
+    n = sint()
+    A = input()
+    B = input()
+    ans = []
+    j = n - 1
+    idx = [0, n - 1]
+    step = [1, -1]
+    p = 0
+    while j >= 0:
+        b = int(B[j])
+        a = int(A[idx[p]])
+        if a ^ p == b:
+            ans.append(1)
+        ans.append(j + 1)
+        idx[p] += step[p]
+        p ^= 1
+        j -= 1
+    print(len(ans), *ans)
 
 for _ in range(int(input())):
     solve()
