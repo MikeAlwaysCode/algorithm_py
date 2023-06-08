@@ -17,16 +17,15 @@ ints = lambda: list(map(int, input().split()))
 # print = lambda d: sys.stdout.write(str(d) + "\n")
 # endregion fastio
 
-# # region interactive
-# def printQry(a, b) -> None:
-#     sa = str(a)
-#     sb = str(b)
-#     print(f"? {sa} {sb}", flush = True)
+# region interactive
+def printQry(k) -> None:
+    s = str(k)
+    print(f"+ {s}", flush = True)
 
-# def printAns(ans) -> None:
-#     s = str(ans)
-#     print(f"! {s}", flush = True)
-# # endregion interactive
+def printAns(ans) -> None:
+    s = str(ans)
+    print(f"! {s}", flush = True)
+# endregion interactive
 
 # # region dfsconvert
 # def bootstrap(f, stack=[]):
@@ -53,24 +52,23 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
+    time = dict()
+    x = sint()
+    time[x] = 0
+    for t in range(1, 1001):
+        printQry(1)
+        x = sint()
+        if x in time:
+            printAns(t)
+            return
+        time[x] = t
 
-    '''
-    1. 若n是非2的幂的偶数必赢，因为永远可以减去一个奇数因子，给对方一个奇数，如果这个奇数是质数，对方输，否则对方只能减去一个奇数因子，给回来一个不是2的幂的偶数；
-    2. 由1可知，若n是奇数，必输；
-    3. 若n是2的幂，若减去一个2的倍数但给对方一个非2的幂的偶数，则必输，所以只能减去一个2的倍数给对方仍然是一个2的幂，等价于>>1，所以计算log2(n)，若为偶数则赢（给对方2）；
-    '''
+    for t in range(1, 1001):
+        printQry(1000)
+        x = sint()
+        if x in time:
+            printAns((t + 1) * 1000 - time[x])
+            return
 
-    if n & 1:
-        print("Bob")
-        return
-    
-    cnt = 0
-    while n % 2 == 0:
-        cnt += 1
-        n >>= 1
-    
-    print("Bob" if n == 1 and cnt & 1 else "Alice")
-
-for _ in range(int(input())):
-    solve()
+# for _ in range(int(input())):
+solve()

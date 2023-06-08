@@ -29,6 +29,7 @@
 *   双向BFS
 *   [最近公共祖先(Least Common Ancestors)](/Template/lca.py)
 *   [树哈希(Hash of root trees)](/Template/hash-tree.py)
+*   [强连通分量(Strongly Connected Components)](/Template/scc.py)
 
 </details>
 

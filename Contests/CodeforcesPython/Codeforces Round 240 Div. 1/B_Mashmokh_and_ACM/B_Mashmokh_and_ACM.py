@@ -49,28 +49,43 @@ ints = lambda: list(map(int, input().split()))
 # # endregion dfsconvert
 
 # MOD = 998244353
-# MOD = 10 ** 9 + 7
+MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
+    k, n = mint()
+    ks = [[] for _ in range(k + 1)]  # ks[x] 为 x 分解质因数后，每个质因数的个数列表
+    for i in range(2, k + 1):
+        p, x = 2, i
+        while p * p <= x:
+            if x % p == 0:
+                c = 1
+                x //= p
+                while x % p == 0:
+                    c += 1
+                    x //= p
+                ks[i].append(c)
+            p += 1
+        if x > 1: ks[i].append(1)
+    
+    ans = 0
+    for x in range(1, k + 1):
+        mul = 1
+        for c in ks[x]:
+            mul = mul * math.comb(n + c - 1, c) % MOD
+        ans = (ans + mul) % MOD
+    print(ans)
 
     '''
-    1. 若n是非2的幂的偶数必赢，因为永远可以减去一个奇数因子，给对方一个奇数，如果这个奇数是质数，对方输，否则对方只能减去一个奇数因子，给回来一个不是2的幂的偶数；
-    2. 由1可知，若n是奇数，必输；
-    3. 若n是2的幂，若减去一个2的倍数但给对方一个非2的幂的偶数，则必输，所以只能减去一个2的倍数给对方仍然是一个2的幂，等价于>>1，所以计算log2(n)，若为偶数则赢（给对方2）；
+    dp = [1] * (k + 1)
+    dp[0] = 0
+    for _ in range(n - 1):
+        for i in range(k, 0, -1):
+            for j in range(i * 2, k + 1, i):
+                dp[j] = (dp[j] + dp[i]) % MOD
+    
+    print(sum(dp) % MOD)
     '''
 
-    if n & 1:
-        print("Bob")
-        return
-    
-    cnt = 0
-    while n % 2 == 0:
-        cnt += 1
-        n >>= 1
-    
-    print("Bob" if n == 1 and cnt & 1 else "Alice")
-
-for _ in range(int(input())):
-    solve()
+# for _ in range(int(input())):
+solve()

@@ -54,9 +54,14 @@
 # 
 # 
 #
+from collections import Counter
+from typing import List
+
 
 # @lc code=start
 class Solution:
     def equalPairs(self, grid: List[List[int]]) -> int:
+        ct = Counter(tuple(row) for row in grid)
+        return sum(ct[col] for col in zip(*grid))
 # @lc code=end
 

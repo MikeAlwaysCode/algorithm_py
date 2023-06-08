@@ -54,23 +54,15 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n = sint()
-
-    '''
-    1. 若n是非2的幂的偶数必赢，因为永远可以减去一个奇数因子，给对方一个奇数，如果这个奇数是质数，对方输，否则对方只能减去一个奇数因子，给回来一个不是2的幂的偶数；
-    2. 由1可知，若n是奇数，必输；
-    3. 若n是2的幂，若减去一个2的倍数但给对方一个非2的幂的偶数，则必输，所以只能减去一个2的倍数给对方仍然是一个2的幂，等价于>>1，所以计算log2(n)，若为偶数则赢（给对方2）；
-    '''
-
-    if n & 1:
-        print("Bob")
-        return
-    
-    cnt = 0
-    while n % 2 == 0:
-        cnt += 1
-        n >>= 1
-    
-    print("Bob" if n == 1 and cnt & 1 else "Alice")
+    s = input()
+    ans = []
+    p = ""
+    for c in s:
+        if not p: p = c
+        elif p == c:
+            ans.append(p)
+            p = ""
+    print("".join(ans))
 
 for _ in range(int(input())):
     solve()

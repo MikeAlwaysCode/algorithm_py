@@ -54,23 +54,32 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n = sint()
-
-    '''
-    1. 若n是非2的幂的偶数必赢，因为永远可以减去一个奇数因子，给对方一个奇数，如果这个奇数是质数，对方输，否则对方只能减去一个奇数因子，给回来一个不是2的幂的偶数；
-    2. 由1可知，若n是奇数，必输；
-    3. 若n是2的幂，若减去一个2的倍数但给对方一个非2的幂的偶数，则必输，所以只能减去一个2的倍数给对方仍然是一个2的幂，等价于>>1，所以计算log2(n)，若为偶数则赢（给对方2）；
-    '''
-
-    if n & 1:
-        print("Bob")
-        return
-    
-    cnt = 0
-    while n % 2 == 0:
-        cnt += 1
-        n >>= 1
-    
-    print("Bob" if n == 1 and cnt & 1 else "Alice")
+    nums = ints()
+    nums.sort()
+    cnt = Counter(nums)
+    for i in range(n * 2 - 1):
+        # 确定第一个大数必定是最大数，逐一尝试所有其他较小数
+        d = cnt.copy()
+        j = n * 2 - 1
+        x = nums[i] + nums[j]
+        ans = []
+        for _ in range(n):
+            while j > 0 and d[nums[j]] == 0:
+                j -= 1
+            d[nums[j]] -= 1
+            d[x - nums[j]] -= 1
+            if d[nums[j]] < 0 or d[x - nums[j]] < 0:
+                break
+            ans.append((nums[j], x - nums[j]))
+            x = max(nums[j], x - nums[j])
+        if len(ans) == n:
+            print("YES")
+            print(sum(ans[0]))
+            for p in ans:
+                print(*p)
+            return
+            
+    print("NO")
 
 for _ in range(int(input())):
     solve()

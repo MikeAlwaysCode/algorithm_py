@@ -53,24 +53,70 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
+    s = input()
+    t = input()
+
+    # 342 ms
+    nxt = [[-1] * 26 for _ in range(len(s))]
+    pos = [-1] * 26
+    for i in range(len(s) - 1, -1, -1):
+        pos[ord(s[i]) - 97] = i
+    for i in range(len(s) - 1, -1, -1):
+        # for j in range(26):
+        #     nxt[i][j] = pos[j]
+        nxt[i] = pos[:]
+        pos[ord(s[i]) - 97] = i
+    
+    # print(nxt)
+
+    ans, pre = 0, len(s) - 1
+    for c in t:
+        d = ord(c) - 97
+        np = nxt[pre][d]
+        if np == -1:
+            print(-1)
+            return
+        if np <= pre:
+            ans += 1
+        pre = np
+    '''
+    # 496 ms
+    pos = [[] for _ in range(26)]
+    for i, c in enumerate(s):
+        pos[ord(c) - 97].append(i)
+
+    ans, pre = 0, len(s)
+    for c in t:
+        d = ord(c) - 97
+        if not pos[d]:
+            print(-1)
+            return
+        if pre >= pos[d][-1]:
+            ans += 1
+            pre = pos[d][0]
+        else:
+            pre = pos[d][bisect_right(pos[d], pre)]
+    '''
 
     '''
-    1. 若n是非2的幂的偶数必赢，因为永远可以减去一个奇数因子，给对方一个奇数，如果这个奇数是质数，对方输，否则对方只能减去一个奇数因子，给回来一个不是2的幂的偶数；
-    2. 由1可知，若n是奇数，必输；
-    3. 若n是2的幂，若减去一个2的倍数但给对方一个非2的幂的偶数，则必输，所以只能减去一个2的倍数给对方仍然是一个2的幂，等价于>>1，所以计算log2(n)，若为偶数则赢（给对方2）；
+    # 622 ms
+    pos = defaultdict(list)
+    for i, c in enumerate(s):
+        pos[c].append(i)
+
+    ans, pre = 0, len(s)
+    for c in t:
+        if c not in pos:
+            print(-1)
+            return
+        if pre >= pos[c][-1]:
+            ans += 1
+            pre = pos[c][0]
+        else:
+            pre = pos[c][bisect_right(pos[c], pre)]
     '''
 
-    if n & 1:
-        print("Bob")
-        return
-    
-    cnt = 0
-    while n % 2 == 0:
-        cnt += 1
-        n >>= 1
-    
-    print("Bob" if n == 1 and cnt & 1 else "Alice")
+    print(ans)
 
-for _ in range(int(input())):
-    solve()
+# for _ in range(int(input())):
+solve()

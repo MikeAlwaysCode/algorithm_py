@@ -49,28 +49,57 @@ ints = lambda: list(map(int, input().split()))
 # # endregion dfsconvert
 
 # MOD = 998244353
-# MOD = 10 ** 9 + 7
+MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
+
+def find_SCC(graph):
+    SCC, S, P = [], [], []
+    depth = [0] * len(graph)
+ 
+    stack = list(range(len(graph)))
+    while stack:
+        node = stack.pop()
+        if node < 0:
+            d = depth[~node] - 1
+            if P[-1] > d:
+                SCC.append(S[d:])
+                del S[d:], P[-1]
+                for node in SCC[-1]:
+                    depth[node] = -1
+        elif depth[node] > 0:
+            while P[-1] > depth[node]:
+                P.pop()
+        elif depth[node] == 0:
+            S.append(node)
+            P.append(len(S))
+            depth[node] = len(S)
+            stack.append(~node)
+            stack += graph[node]
+    return SCC[::-1]
 
 def solve() -> None:
     n = sint()
-
-    '''
-    1. 若n是非2的幂的偶数必赢，因为永远可以减去一个奇数因子，给对方一个奇数，如果这个奇数是质数，对方输，否则对方只能减去一个奇数因子，给回来一个不是2的幂的偶数；
-    2. 由1可知，若n是奇数，必输；
-    3. 若n是2的幂，若减去一个2的倍数但给对方一个非2的幂的偶数，则必输，所以只能减去一个2的倍数给对方仍然是一个2的幂，等价于>>1，所以计算log2(n)，若为偶数则赢（给对方2）；
-    '''
-
-    if n & 1:
-        print("Bob")
-        return
+    cost = ints()
+    g = [[] for _ in range(n)]
+    for _ in range(sint()):
+        u, v = mint()
+        u -= 1
+        v -= 1
+        g[u].append(v)
     
-    cnt = 0
-    while n % 2 == 0:
-        cnt += 1
-        n >>= 1
-    
-    print("Bob" if n == 1 and cnt & 1 else "Alice")
+    scc = find_SCC(g)
+    a, b = 0, 1
+    for s in scc:
+        mn, cnt = math.inf, 0
+        for i in s:
+            if cost[i] < mn:
+                mn = cost[i]
+                cnt = 1
+            elif cost[i] == mn:
+                cnt += 1
+        a += mn
+        b = b * cnt % MOD
+    print(a, b)
 
-for _ in range(int(input())):
-    solve()
+# for _ in range(int(input())):
+solve()

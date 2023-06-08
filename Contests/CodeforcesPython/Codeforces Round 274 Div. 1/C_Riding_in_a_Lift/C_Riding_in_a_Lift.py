@@ -49,28 +49,47 @@ ints = lambda: list(map(int, input().split()))
 # # endregion dfsconvert
 
 # MOD = 998244353
-# MOD = 10 ** 9 + 7
+MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
+    n, a, b, k = mint()
+    # 1. 1 ≤ y ≤ n
+    # 2. y ≠ x
+    # 3. y ≠ b
+    # 4. |x - y| < |x - b|
+
+    # 使得计算1, a, b
+    if a > b: a, b = n + 1 - a, n + 1 - b
 
     '''
-    1. 若n是非2的幂的偶数必赢，因为永远可以减去一个奇数因子，给对方一个奇数，如果这个奇数是质数，对方输，否则对方只能减去一个奇数因子，给回来一个不是2的幂的偶数；
-    2. 由1可知，若n是奇数，必输；
-    3. 若n是2的幂，若减去一个2的倍数但给对方一个非2的幂的偶数，则必输，所以只能减去一个2的倍数给对方仍然是一个2的幂，等价于>>1，所以计算log2(n)，若为偶数则赢（给对方2）；
+    # k等于1的情况下，b+n有(n - 1) * 2个方案
+    @cache
+    def dfs(a: int, k: int) -> int:
+        nonlocal b
+        l, r = a - 1, n - a
+
+        if k == 1:
+            c = abs(a - b) - 1
+            return min(r, c) + min(l, c)
+
+        res = 0
+        for i in range(1, abs(a - b)):
+            if a - i >= 1:
+                res += dfs(a - i, k - 1)
+            if a + i <= n:
+                res += dfs(a + i, k - 1)
+        return res
+    print(dfs(a, k))
     '''
+    dp = [0] * b
+    dp[a] = 1
+    for _ in range(k):
+        pres = list(accumulate(dp))
+        for i in range(1, b):
+            # x <= (b + y - 1) // 2
+            dp[i] = (pres[(b + i - 1) // 2] - dp[i]) % MOD
+    print(sum(dp) % MOD)
 
-    if n & 1:
-        print("Bob")
-        return
-    
-    cnt = 0
-    while n % 2 == 0:
-        cnt += 1
-        n >>= 1
-    
-    print("Bob" if n == 1 and cnt & 1 else "Alice")
-
-for _ in range(int(input())):
-    solve()
+# for _ in range(int(input())):
+solve()
