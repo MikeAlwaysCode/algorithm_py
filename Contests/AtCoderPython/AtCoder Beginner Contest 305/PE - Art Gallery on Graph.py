@@ -53,40 +53,36 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    lens = ints()
-    nums = []
-    for _ in range(3):
-        nums.append(ints())
-        nums[-1].sort(reverse = True)
-        
-    ans = math.inf
+    n, m, k = mint()
+    g = [[] for _ in range(n)]
+    for _ in range(m):
+        u, v = mint()
+        u -= 1
+        v -= 1
+        g[u].append(v)
+        g[v].append(u)
     
-    idx = [0] * 3
-    while all(idx[i] < lens[i] for i in range(3)):
-        ans = min(ans, sum((nums[i][idx[i]] - nums[j][idx[j]]) * (nums[i][idx[i]] - nums[j][idx[j]]) for i in range(3) for j in range(i + 1, 3)))
-        mn = min(nums[i][idx[i]] for i in range(3))
-        mx = -1
-        # 需要先判断是否存在最小值不变的情况下，减小最大值和中间值，使得计算结果更小，并且需要优先减小最大值
-        for i in range(3):
-            if idx[i] == lens[i] - 1 or nums[i][idx[i] + 1] < mn: continue
-            if mx == -1 or nums[i][idx[i]] > nums[mx][idx[mx]]:
-                mx = i
+    dis = [0] * n
+    h = []
+    for _ in range(k):
+        u, d = mint()
+        u -= 1
+        dis[u] = d + 1
+        h.append((-dis[u], u))
 
-        if mx != -1:
-            idx[mx] += 1
-            continue
-        
-        # 否则贪心的将最大值变小，注意，此时可能会得到一个更小的最小值
-        for i in range(3):
-            if idx[i] == lens[i] - 1: continue
-            if mx == -1 or nums[i][idx[i]] > nums[mx][idx[mx]]:
-                mx = i
-        
-        # 最大值以及中间值均无法变小，将最小值变小无意义，此时直接退出循环
-        if mx == -1 or nums[mx][idx[mx]] == min(nums[i][idx[i]] for i in range(3)): break
-        
-        idx[mx] += 1
-    print(ans)
+    heapify(h)
+    while h:
+        d, u = heappop(h)
+        d = -d
+        if d < dis[u]: continue
+        d -= 1
+        for v in g[u]:
+            if d <= dis[v]: continue
+            dis[v] = d
+            if d > 1: heappush(h, (-d, v))
+    
+    ans = [i + 1 for i in range(n) if dis[i]]
+    print(len(ans))
+    print(*ans)
 
-for _ in range(int(input())):
-    solve()
+solve()

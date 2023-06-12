@@ -53,56 +53,46 @@ MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, a, b, k = mint()
-    # 1. 1 ≤ y ≤ n
-    # 2. y ≠ x
-    # 3. y ≠ b
-    # 4. |x - y| < |x - b|
+    n, m = mint()
+    g = []
+    for _ in range(n):
+        g.append(list(input()))
+    
+    if g[0][0] != g[-1][-1]:
+        print(0)
+        return
 
-    # 使得计算1, a, b
-    if a > b: a, b = n + 1 - a, n + 1 - b
+    dp = [[0] * (n + 2) for _ in range(n + 1)]
+    dp[1][n] = 1
+    for i in range(1, (n + m - 2) // 2 + 1):    # step: i
+        for r1 in range(min(n, i + 1), max(0, i - m + 1), -1):
+            c1 = i + 2 - r1
+            for r2 in range(max(1, n - i), min(n + 1, n - i + m)):
+                c2 = m - i + n - r2
+                if g[r1 - 1][c1 - 1] == g[r2 - 1][c2 - 1]:
+                    dp[r1][r2] = (dp[r1][r2] + dp[r1][r2 + 1] + dp[r1 - 1][r2] + dp[r1 - 1][r2 + 1]) % MOD
+                else:
+                    dp[r1][r2] = 0
+    
+    if (n + m) & 1:
+        ans = sum(dp[i][i] + dp[i][i + 1] for i in range(1, n + 1)) % MOD
+    else:
+        ans = sum(dp[i][i] for i in range(1, n + 1)) % MOD
 
     '''
-    # k等于1的情况下，b+n有(n - 1) * 2个方案
-    @cache
-    def dfs(a: int, k: int) -> int:
-        nonlocal b
-        l, r = a - 1, n - a
+    ans = 0
 
-        if k == 1:
-            c = abs(a - b) - 1
-            return min(r, c) + min(l, c)
-
-        res = 0
-        for i in range(1, abs(a - b)):
-            if a - i >= 1:
-                res += dfs(a - i, k - 1)
-            if a + i <= n:
-                res += dfs(a + i, k - 1)
-        return res
-    print(dfs(a, k))
+    q = deque([(0, 0, n - 1, m - 1)])
+    while q:
+        x1, y1, x2, y2 = q.popleft()
+        for nx1, ny1 in (x1 + 1, y1), (x1, y1 + 1):
+            for nx2, ny2 in (x2 - 1, y2), (x2, y2 - 1):
+                if nx1 > nx2 or ny1 > ny2 or g[nx1][ny1] != g[nx2][ny2]: continue
+                if (nx1 == nx2 and ny1 == ny2) or (nx1 == nx2 and ny1 + 1 == ny2) or (nx1 + 1 == nx2 and ny1 == ny2): ans = (ans + 1) % MOD
+                else: q.append((nx1, ny1, nx2, ny2))
     '''
-    dp = [0] * b
-    dp[a] = 1
-    pres = list(accumulate(dp))
-    for _ in range(k):
-        '''
-        pres = list(accumulate(dp))
-        j = (b - 1) // 2
-        for i in range(1, b):
-            # x <= (b + y - 1) // 2
-            # dp[i] = (pres[(b + i - 1) // 2] - dp[i]) % MOD
-            if i & 1 != b & 1: j += 1
-            dp[i] = (pres[j] - dp[i]) % MOD
-        '''
-        j = (b - 1) // 2
-        for i in range(1, b):
-            if i & 1 != b & 1: j += 1
-            dp[i] = (pres[j] - dp[i]) % MOD
-            pres[i] = pres[i - 1] + dp[i]
 
-    # print(sum(dp) % MOD)
-    print(pres[-1] % MOD)
+    print(ans)
 
 # for _ in range(int(input())):
 solve()

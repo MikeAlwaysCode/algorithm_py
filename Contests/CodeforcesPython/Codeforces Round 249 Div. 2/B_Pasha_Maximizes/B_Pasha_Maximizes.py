@@ -49,60 +49,24 @@ ints = lambda: list(map(int, input().split()))
 # # endregion dfsconvert
 
 # MOD = 998244353
-MOD = 10 ** 9 + 7
+# MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, a, b, k = mint()
-    # 1. 1 ≤ y ≤ n
-    # 2. y ≠ x
-    # 3. y ≠ b
-    # 4. |x - y| < |x - b|
-
-    # 使得计算1, a, b
-    if a > b: a, b = n + 1 - a, n + 1 - b
-
-    '''
-    # k等于1的情况下，b+n有(n - 1) * 2个方案
-    @cache
-    def dfs(a: int, k: int) -> int:
-        nonlocal b
-        l, r = a - 1, n - a
-
-        if k == 1:
-            c = abs(a - b) - 1
-            return min(r, c) + min(l, c)
-
-        res = 0
-        for i in range(1, abs(a - b)):
-            if a - i >= 1:
-                res += dfs(a - i, k - 1)
-            if a + i <= n:
-                res += dfs(a + i, k - 1)
-        return res
-    print(dfs(a, k))
-    '''
-    dp = [0] * b
-    dp[a] = 1
-    pres = list(accumulate(dp))
-    for _ in range(k):
-        '''
-        pres = list(accumulate(dp))
-        j = (b - 1) // 2
-        for i in range(1, b):
-            # x <= (b + y - 1) // 2
-            # dp[i] = (pres[(b + i - 1) // 2] - dp[i]) % MOD
-            if i & 1 != b & 1: j += 1
-            dp[i] = (pres[j] - dp[i]) % MOD
-        '''
-        j = (b - 1) // 2
-        for i in range(1, b):
-            if i & 1 != b & 1: j += 1
-            dp[i] = (pres[j] - dp[i]) % MOD
-            pres[i] = pres[i - 1] + dp[i]
-
-    # print(sum(dp) % MOD)
-    print(pres[-1] % MOD)
+    s, k = input().split()
+    k = int(k)
+    s = list(s)
+    n = len(s)
+    for i in range(n):
+        idx = i
+        for j in range(i + 1, min(n, i + k + 1)):
+            if s[j] > s[idx]: idx = j
+            
+        for j in range(idx, i, -1):
+            s[j], s[j - 1] = s[j - 1], s[j]
+        k -= idx - i
+        if k == 0: break
+    print("".join(s))
 
 # for _ in range(int(input())):
 solve()

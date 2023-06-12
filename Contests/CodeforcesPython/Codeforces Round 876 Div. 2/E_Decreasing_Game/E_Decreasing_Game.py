@@ -53,7 +53,54 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    return
+    n = sint()
+    nums = [0] + ints()
+    s = sum(nums)
+    # 01背包
+    target = s // 2
+    dp = [0] * (s + 1)
+    if not s & 1:
+        dp[0] = 1
+        for i, x in enumerate(nums[1:], 1):
+            for j in range(target, x - 1, -1):
+                if dp[j] == 0 and dp[j - x]:
+                    dp[j] = i
+    if s & 1 or not dp[target]: # 无法均分，先手必胜
+        print("First", flush = True)
+        si = set(range(1, n + 1))
+        while True:
+            x = si.pop()
+            print(x, flush = True)
+            y = sint()
+            if not y: break
+            si.remove(y)
+            mn = min(nums[x], nums[y])
+            nums[x] -= mn
+            nums[y] -= mn
+            if nums[x]: si.add(x)
+            if nums[y]: si.add(y)
+    else:
+        si = [set(), set()]  # 构成target分两部分
+        while target:
+            si[0].add(dp[target])
+            target -= nums[dp[target]]
+        for i in range(1, n + 1):
+            if i not in si[0]: si[1].add(i)
+        print("Second", flush = True)
+        while True:
+            x = sint()
+            if not x: break
+            i = 1 if x in si[0] else 0
+            si[i^1].remove(x)
+            y = si[i].pop()
+            mn = min(nums[x], nums[y])
+            nums[x] -= mn
+            nums[y] -= mn
+            if nums[x]: si[i^1].add(x)
+            if nums[y]: si[i].add(y)
+            
+            print(y, flush = True)
+        
 
-for _ in range(int(input())):
-    solve()
+# for _ in range(int(input())):
+solve()
