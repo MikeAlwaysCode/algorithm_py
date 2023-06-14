@@ -53,16 +53,22 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    a, b, c = mint()
-    ans = []
-    for x in range(1, 82):
-        y = b * pow(x, a) + c
-        if y <= 0 or y >= 10 ** 9: continue
-        if sum(map(int, list(str(y)))) == x:
-            ans.append(y)
-    ans.sort()
-    print(len(ans))
-    print(*ans)
+    n = sint()
+    seg = []
+    for _ in range(n):
+        l, r = mint()
+        seg.append((l, r))
+    
+    seg.sort()
+    dp = [0] * (n + 1)
+    for i in range(n):
+        if i: dp[i] = max(dp[i], dp[i - 1])
+        for j in range(i + 1, n):
+            if seg[j][0] > seg[i][1]: break
+            k = bisect_left(seg, (max(seg[i][1], seg[j][1]) + 1,))
+            dp[k] = max(dp[k], dp[i] + 2)
+    
+    print(n - max(dp[n - 1], dp[n]))
 
-# for _ in range(int(input())):
-solve()
+for _ in range(int(input())):
+    solve()

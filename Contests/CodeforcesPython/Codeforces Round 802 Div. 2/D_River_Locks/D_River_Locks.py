@@ -53,16 +53,7 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    a, b, c = mint()
-    ans = []
-    for x in range(1, 82):
-        y = b * pow(x, a) + c
-        if y <= 0 or y >= 10 ** 9: continue
-        if sum(map(int, list(str(y)))) == x:
-            ans.append(y)
-    ans.sort()
-    print(len(ans))
-    print(*ans)
+    return
 
-# for _ in range(int(input())):
-solve()
+for _ in range(int(input())):
+    solve()

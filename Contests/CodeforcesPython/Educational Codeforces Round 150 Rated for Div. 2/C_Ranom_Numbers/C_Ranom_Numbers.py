@@ -52,17 +52,40 @@ ints = lambda: list(map(int, input().split()))
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-def solve() -> None:
-    a, b, c = mint()
-    ans = []
-    for x in range(1, 82):
-        y = b * pow(x, a) + c
-        if y <= 0 or y >= 10 ** 9: continue
-        if sum(map(int, list(str(y)))) == x:
-            ans.append(y)
-    ans.sort()
-    print(len(ans))
-    print(*ans)
+v = list(pow(10, i) for i in range(5))
 
-# for _ in range(int(input())):
-solve()
+def solve() -> None:
+    s = list(ord(c) - 65 for c in input())
+    s.reverse()
+    n = len(s)
+    first = [-1] * 5
+    last = [-1] * 5
+    for i, x in enumerate(s):
+        if first[x] == -1: first[x] = i
+        last[x] = i
+
+    def f(nums: list) -> int:
+        res = mx = 0
+        for x in nums:
+            if mx > x:
+                res = res - v[x]
+            else:
+                res = res + v[x]
+            mx = max(mx, x)
+        return res
+    ans = - math.inf
+
+    for x in range(5):
+        if first[x] == -1: continue
+        for k in range(5):
+            s[first[x]] = k
+            ans = max(ans, f(s))
+            s[first[x]] = x
+            s[last[x]] = k
+            ans = max(ans, f(s))
+            s[last[x]] = x
+
+    print(ans)
+
+for _ in range(int(input())):
+    solve()

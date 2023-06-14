@@ -53,16 +53,56 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    a, b, c = mint()
-    ans = []
-    for x in range(1, 82):
-        y = b * pow(x, a) + c
-        if y <= 0 or y >= 10 ** 9: continue
-        if sum(map(int, list(str(y)))) == x:
-            ans.append(y)
-    ans.sort()
-    print(len(ans))
-    print(*ans)
+    n = sint()
+    nums = ints()
+    m = sint()
 
-# for _ in range(int(input())):
-solve()
+    # 单调栈计算切割点的左右边界
+    left = [-1] * n
+    right = [n] * n
+    stk = []
+    for i, x in enumerate(nums):
+        while stk and x > nums[stk[-1]]:
+            right[stk.pop()] = i
+        if stk: left[i] = stk[-1]
+        # if stk and nums[stk[-1]] == x:
+        #     right[stk.pop()] = i
+        #     stk.pop()
+        stk.append(i)
+
+    # 计算每一段的个数，初始时是n个n
+    cnt = Counter()
+    cnt[n] = n
+    # 从高到低切割
+    idx = sorted(range(n), key = lambda x: - nums[x])
+    for i in idx:
+        x = nums[i]
+        pre = right[i] - left[i] - 1
+        l, r = i - left[i] - 1, right[i] - i - 1
+        cnt[pre] -= x
+        if l: cnt[l] += x
+        if r: cnt[r] += x
+    
+    # print(cnt)
+    ans = 0
+    # 从最长的段开始计算答案
+    # for i in range(n, 1, -1):
+    #     k = min(m // i, cnt[i])
+    #     ans += k * (i - 1)
+    #     m -= k * i
+    #     if m == 0: break
+    #     if k < cnt[i]:
+    #         ans += m - 1
+    #         break
+    for i, v in sorted(cnt.items(), reverse = True):
+        k = min(m // i, v)
+        ans += k * (i - 1)
+        m -= k * i
+        if m == 0: break
+        if k < cnt[i]:
+            ans += m - 1
+            break
+    print(ans)
+
+for _ in range(int(input())):
+    solve()

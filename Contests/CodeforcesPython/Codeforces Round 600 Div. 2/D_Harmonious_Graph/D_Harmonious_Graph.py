@@ -53,16 +53,47 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    a, b, c = mint()
-    ans = []
-    for x in range(1, 82):
-        y = b * pow(x, a) + c
-        if y <= 0 or y >= 10 ** 9: continue
-        if sum(map(int, list(str(y)))) == x:
-            ans.append(y)
-    ans.sort()
-    print(len(ans))
-    print(*ans)
+    n, m = mint()
+
+    fa = list(range(n))
+    mx = list(range(n))
+
+    def find(x: int):
+        cur = x
+        while x != fa[x]:
+            x = fa[x]
+        while fa[cur] != x:
+            # fa[cur], cur = x, fa[cur]
+            tmp = fa[cur]
+            fa[cur] = x
+            cur = tmp
+        return x
+    def union(x: int, y: int):
+        x, y = find(x), find(y)
+        if x == y: return
+        # 往较小的点合并
+        if x > y: x, y = y, x
+        fa[y] = x
+        # 保存整个连通块中的最大点
+        mx[x] = max(mx[x], mx[y])
+
+    for _ in range(m):
+        u, v = mint()
+        u -= 1
+        v -= 1
+        union(u, v)
+    
+    ans = i = 0
+    while i < n:
+        j = i + 1
+        while j < mx[i]:
+            if find(j) != i:
+                # 发现一个范围内的不连通点，则加一条边，如果有新的更大点，会更新至mx[i]
+                union(i, j)
+                ans += 1
+            j += 1
+        i = mx[i] + 1
+    print(ans)
 
 # for _ in range(int(input())):
 solve()
