@@ -1,13 +1,5 @@
-# import math
 import sys
-# from bisect import *
-# from collections import *
-# from functools import *
-# from heapq import *
-# from itertools import *
-# from random import *
-# from string import *
-# from types import GeneratorType
+from collections import Counter
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -29,6 +21,7 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
+# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -52,30 +45,19 @@ ints = lambda: list(map(int, input().split()))
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-def solve() -> None:
-    # 1，22，33，32，322，332
+def solve() -> None: 
     n = sint()
-    s = set()
-    s3 = set()
-    ans = False
-    for _ in range(n):
-        cur = input()
-        if not ans:
-            if len(cur) == 1 or cur[0] == cur[-1]:
-                ans = True
-            elif cur[::-1] in s or cur[::-1] in s3:
-                # 22, 33, 32
-                ans = True
-            elif len(cur) == 3:
-                if cur[:0:-1] in s:
-                    # 23
-                    ans = True
-                    
-                s3.add(cur[:2])
+    nums = ints()
+    cnt = Counter()
+    ans = l = k = 0
+    for r in range(n):
+        cnt[nums[r]] += 1
+        if cnt[nums[r]] == 1: k += 1
+        while k > 2:
+            cnt[nums[l]] -= 1
+            if cnt[nums[l]] == 0: k -= 1
+            l += 1
+        ans = max(ans, r - l + 1)
+    print(ans)   
 
-            s.add(cur)
-        
-    print("YES" if ans else "NO")
-
-for _ in range(int(input())):
-    solve()
+solve()

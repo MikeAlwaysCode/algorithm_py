@@ -1,13 +1,4 @@
-# import math
 import sys
-# from bisect import *
-# from collections import *
-# from functools import *
-# from heapq import *
-# from itertools import *
-# from random import *
-# from string import *
-# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -53,29 +44,24 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # 1，22，33，32，322，332
-    n = sint()
-    s = set()
-    s3 = set()
-    ans = False
-    for _ in range(n):
-        cur = input()
-        if not ans:
-            if len(cur) == 1 or cur[0] == cur[-1]:
-                ans = True
-            elif cur[::-1] in s or cur[::-1] in s3:
-                # 22, 33, 32
-                ans = True
-            elif len(cur) == 3:
-                if cur[:0:-1] in s:
-                    # 23
-                    ans = True
-                    
-                s3.add(cur[:2])
+    s = input()
+    t = input()
+    nums = ints()
+    time = {p - 1:i for i, p in enumerate(nums)}
 
-            s.add(cur)
-        
-    print("YES" if ans else "NO")
+    def check(x: int) -> bool:
+        i = j = 0
+        while i < len(s) and j < len(t):
+            if time[i] >= x and s[i] == t[j]: j += 1
+            i += 1
+        return j == len(t)
+    l, r = 0, len(s) - len(t)
+    while l < r:
+        mid = l + r + 1 >> 1
+        if check(mid):
+            l = mid
+        else:
+            r = mid - 1
+    print(l)
 
-for _ in range(int(input())):
-    solve()
+solve()

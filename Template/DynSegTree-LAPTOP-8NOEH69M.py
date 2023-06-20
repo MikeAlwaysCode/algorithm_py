@@ -1,6 +1,4 @@
 class Node:
-    __slots__ = ("left", "right", "l", "r", "mid", "v")
-    
     def __init__(self, l, r):
         self.left = None
         self.right = None
@@ -8,7 +6,6 @@ class Node:
         self.r = r
         self.mid = (l + r) >> 1
         self.v = -1
-        self.add = 0
 
 class SegmentTree:
     def __init__(self):
@@ -52,9 +49,3 @@ class SegmentTree:
             node.left = Node(node.l, node.mid)
         if node.right is None:
             node.right = Node(node.mid + 1, node.r)
-        if node.add:
-            node.left.v = node.add
-            node.right.v = node.add
-            node.left.add = node.add
-            node.right.add = node.add
-            node.add = 0

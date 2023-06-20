@@ -1,13 +1,4 @@
-# import math
 import sys
-# from bisect import *
-# from collections import *
-# from functools import *
-# from heapq import *
-# from itertools import *
-# from random import *
-# from string import *
-# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -29,6 +20,7 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
+# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -53,29 +45,17 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # 1，22，33，32，322，332
-    n = sint()
-    s = set()
-    s3 = set()
-    ans = False
-    for _ in range(n):
-        cur = input()
-        if not ans:
-            if len(cur) == 1 or cur[0] == cur[-1]:
-                ans = True
-            elif cur[::-1] in s or cur[::-1] in s3:
-                # 22, 33, 32
-                ans = True
-            elif len(cur) == 3:
-                if cur[:0:-1] in s:
-                    # 23
-                    ans = True
-                    
-                s3.add(cur[:2])
+    l, r = input().split()
+    ln, rn = len(l), len(r)
+    if ln < rn:
+        l = "0" * (rn - ln) + l
+    ans = 0
+    for i, (a, b) in enumerate(zip(l, r)):
+        if a != b:
+            ans = int(b) - int(a) + 9 * (rn - 1 - i)
+            break
+    print(ans)
 
-            s.add(cur)
-        
-    print("YES" if ans else "NO")
 
 for _ in range(int(input())):
     solve()

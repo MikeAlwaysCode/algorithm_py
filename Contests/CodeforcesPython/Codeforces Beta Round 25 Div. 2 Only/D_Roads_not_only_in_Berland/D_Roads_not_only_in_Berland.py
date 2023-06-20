@@ -1,13 +1,4 @@
-# import math
 import sys
-# from bisect import *
-# from collections import *
-# from functools import *
-# from heapq import *
-# from itertools import *
-# from random import *
-# from string import *
-# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -53,29 +44,39 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # 1，22，33，32，322，332
     n = sint()
-    s = set()
-    s3 = set()
-    ans = False
-    for _ in range(n):
-        cur = input()
-        if not ans:
-            if len(cur) == 1 or cur[0] == cur[-1]:
-                ans = True
-            elif cur[::-1] in s or cur[::-1] in s3:
-                # 22, 33, 32
-                ans = True
-            elif len(cur) == 3:
-                if cur[:0:-1] in s:
-                    # 23
-                    ans = True
-                    
-                s3.add(cur[:2])
+    fa = list(range(n + 1))
+    def find(x: int) -> int:
+        cur = x
+        while x != fa[x]:
+            x = fa[x]
+        while cur != x:
+            fa[cur], cur = x, fa[cur]
+        return x
+    
+    def union(x: int, y: int):
+        x, y = find(x), find(y)
+        if x == y: return
+        if x > y: x, y = y, x
+        fa[y] = x
+    
+    d, a = [], []
+    for _ in range(n - 1):
+        u, v = mint()
+        fu, fv = find(u), find(v)
+        if fu == fv:
+            d.append((u, v))
+        else:
+            union(fu, fv)
+    f1 = find(1)
+    for i in range(2, n + 1):
+        fi = find(i)
+        if fi != f1:
+            a.append((1, i))
+            union(f1, fi)
+    
+    print(len(d))
+    for (u1, v1), (u2, v2) in zip(d, a):
+        print(u1, v1, u2, v2)
 
-            s.add(cur)
-        
-    print("YES" if ans else "NO")
-
-for _ in range(int(input())):
-    solve()
+solve()

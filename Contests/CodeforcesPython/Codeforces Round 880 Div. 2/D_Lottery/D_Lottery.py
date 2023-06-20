@@ -1,13 +1,5 @@
-# import math
+from collections import Counter
 import sys
-# from bisect import *
-# from collections import *
-# from functools import *
-# from heapq import *
-# from itertools import *
-# from random import *
-# from string import *
-# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -29,6 +21,7 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
+# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -53,29 +46,34 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    # 1，22，33，32，322，332
-    n = sint()
-    s = set()
-    s3 = set()
-    ans = False
-    for _ in range(n):
-        cur = input()
-        if not ans:
-            if len(cur) == 1 or cur[0] == cur[-1]:
-                ans = True
-            elif cur[::-1] in s or cur[::-1] in s3:
-                # 22, 33, 32
-                ans = True
-            elif len(cur) == 3:
-                if cur[:0:-1] in s:
-                    # 23
-                    ans = True
-                    
-                s3.add(cur[:2])
+    n, m, k = mint()
+    nums = ints()
+    nums.sort()
+    if k == 1:
+        cur = 0
+        for x in nums:
+            if x > cur:
+                break
+            else:
+                cur = x + 1
+        if cur > m:
+            print(0, 0)
+        else:
+            print(1, cur)
+        return
+    
+    if n < k:
+        print(m + 1, 0)
+        return
+    if n == k:
+        print(m + 1, nums[0] + 1)
+        return
+    
+    cnt = Counter(nums)
+    mx, x = nums[k - 1] // 2 + 1, 0
+    lst = sorted(cnt.items())
+    s = l = 0
+    for r in range(len(lst)):
+        # if s + lst[r][1] >= k:
 
-            s.add(cur)
-        
-    print("YES" if ans else "NO")
-
-for _ in range(int(input())):
-    solve()
+solve()

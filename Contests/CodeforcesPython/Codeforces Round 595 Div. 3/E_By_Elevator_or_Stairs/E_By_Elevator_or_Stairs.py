@@ -1,13 +1,13 @@
-import math
+# import math
 import sys
-from bisect import *
-from collections import *
-from functools import *
-from heapq import *
-from itertools import *
-from random import *
-from string import *
-from types import GeneratorType
+# from bisect import *
+# from collections import *
+# from functools import *
+# from heapq import *
+# from itertools import *
+# from random import *
+# from string import *
+# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -53,7 +53,17 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    return
+    n, c = mint()
+    A = ints()
+    B = ints()
+    ans = [0] * n
+    dp = [[0] * 2 for _ in range(n)]
+    dp[0][1] = c
+    for i, (a, b) in enumerate(zip(A, B), 1):
+        dp[i][0] = min(dp[i - 1]) + a
+        dp[i][1] = min(dp[i - 1][0] + b + c, dp[i - 1][1] + b)
+        ans[i] = min(dp[i])
+    # print(dp)
+    print(*ans)
 
-for _ in range(int(input())):
-    solve()
+solve()
