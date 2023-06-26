@@ -48,8 +48,6 @@ def solve() -> None:
     n, k, g = mint()
     if g == 2:
         ans = 0
-    # elif g == 4:
-    #     ans = min(n // 4, k) * g
     else:
         m = (g - 1) // 2
         ans = m * n // g * g

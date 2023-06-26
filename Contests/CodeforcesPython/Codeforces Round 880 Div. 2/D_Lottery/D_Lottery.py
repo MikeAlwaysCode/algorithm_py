@@ -73,7 +73,5 @@ def solve() -> None:
     mx, x = nums[k - 1] // 2 + 1, 0
     lst = sorted(cnt.items())
     s = l = 0
-    for r in range(len(lst)):
-        # if s + lst[r][1] >= k:
 
 solve()

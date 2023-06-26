@@ -45,37 +45,24 @@ ints = lambda: list(map(int, input().split()))
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-mxn = 2 * 10 ** 5
-factor = [1] * (mxn + 1)
-
-def init():
-    for i in range(2, mxn + 1):
-        if factor[i] != 1:
-            continue
-        for j in range(i, mxn + 1, i):
-            factor[j] = i
-
 def solve() -> None:
     n = sint()
     nums = ints()
-    s = set(nums)
-    left = dict()
-    right = dict()
-    for i in range(n):
-        if nums[i] not in left:
-            left[nums[i]] = i - 1
-            right[nums[i]] = i + 1
-
+    mx = 40 * n
+    s, f = set(), set()
+    for x in nums:
+        g = set()
+        for a in f:
+            m = math.lcm(x, a)
+            if m < mx:
+                s.add(m)
+                g.add(m)
+        s.add(x)
+        g.add(x)
+        f = g
     ans = 1
-    while True:
-        if ans not in s:
-            p = factor[ans]
-            if p == 1: break
-            # while p in left and left[p] >= 0:
-
-        ans += 1
+    while ans in s: ans += 1
     print(ans)
 
-init()
 for _ in range(int(input())):
     solve()

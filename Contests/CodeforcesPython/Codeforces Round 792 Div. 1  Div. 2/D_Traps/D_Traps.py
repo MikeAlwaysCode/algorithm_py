@@ -45,7 +45,15 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    return
+    n, k = mint()
+    nums = ints()
+    ans = - k * (k - 1) // 2
+    for i, a in enumerate(nums):
+        ans += a
+        nums[i] += i + 1 - n
+    nums.sort(reverse = True)
+    ans -= sum(nums[:k])
+    print(ans)
 
 for _ in range(int(input())):
     solve()

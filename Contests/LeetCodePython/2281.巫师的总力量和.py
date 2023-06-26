@@ -71,37 +71,29 @@
 # 
 # 
 #
+from itertools import accumulate
 from typing import List
 
 
 # @lc code=start
 class Solution:
     def totalStrength(self, strength: List[int]) -> int:
-        MOD = 10 ** 9 + 7
         n = len(strength)
-        stk = []
-        # s = strength[:]
-        s = [0] * n
+        # left[i] 为左侧严格小于 strength[i] 的最近元素位置（不存在时为 -1）
+        # right[i] 为右侧小于等于 strength[i] 的最近元素位置（不存在时为 n）
+        left, right, st = [-1] * n, [n] * n, []
+        for i, v in enumerate(strength):
+            while st and strength[st[-1]] >= v: right[st.pop()] = i
+            if st: left[i] = st[-1]
+            st.append(i)
+
+        ss = list(accumulate(accumulate(strength, initial=0), initial=0))  # 前缀和的前缀和
+
         ans = 0
-        for i in range(n):
-            cus = strength[i]
-            ans += cus * cus
-            while stk and stk[-1][0] >= cus:
-                strength[i] += strength[stk[-1][1]]
-                s[i] += strength[i]
-                ans += cus * s[i]
-                stk.pop()
-            stk.append((cus, i))
-        print(ans)
-        print(strength)
-        print(s)
-        print(stk)
-        pres = prest = s[stk.pop()[1]]
-        while stk:
-            cus, i = stk.pop()
-            prest += s[i]
-            pres += prest
-            ans += cus * pres
-        return ans % MOD
+        for i, v in enumerate(strength):
+            l, r = left[i] + 1, right[i] - 1  # [l, r]  左闭右闭
+            tot = (i - l + 1) * (ss[r + 2] - ss[i + 1]) - (r - i + 1) * (ss[i + 1] - ss[l])
+            ans += v * tot  # 累加贡献
+        return ans % (10 ** 9 + 7)
 # @lc code=end
 
