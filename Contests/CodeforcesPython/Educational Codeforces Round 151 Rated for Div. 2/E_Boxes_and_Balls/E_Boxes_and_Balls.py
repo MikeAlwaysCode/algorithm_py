@@ -1,10 +1,10 @@
+from bisect import bisect, bisect_left
 import sys
 
 # import itertools
 # import math
 # import os
 # import random
-# from bisect import bisect, bisect_left
 # from collections import *
 # from functools import reduce
 # from heapq import heapify, heappop, heappush
@@ -52,29 +52,23 @@ ints = lambda: list(map(int, input().split()))
 # # endregion dfsconvert
 
 # MOD = 998244353
-# MOD = 10 ** 9 + 7
+MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
-    mx = [0] * (n + 2)
-    mn = [0] * (n + 2)
-    emx = [0] * (n + 2)
-    emn = [0] * (n + 2)
-    mx[1] = emx[1] = 1
-    cur = 2
-    for _ in range(n):
-        qry = input().split()
-        if qry[0] == "+":
-            u, x = int(qry[1]), int(qry[2])
-            emx[cur] = max(emx[u] + x, x)
-            emn[cur] = min(emn[u] + x, x)
-            mx[cur] = max(mx[u], emx[cur])
-            mn[cur] = min(mn[u], emn[cur])
-            cur += 1
-        else:
-            u, v, x = int(qry[1]), int(qry[2]), int(qry[3])
-            print("YES" if mn[v] <= x <= mx[v] else "NO")
+    n, k = mint()
+    nums = ints()
+    less = sum(nums) <= n // 2
+    pos = [i for i, x in enumerate(nums) if x == less]
+    dp = [[0] * (k + 1) for _ in range(len(pos) + 1)]
+    dp[0][0] = 1
+    for i in range(n):
+        j0 = bisect_left(pos, i)
+        for j in range(min(i + 1, len(pos), j0 + 40), max(0, j0 - 40), -1):
+            d = abs(pos[j - 1] - i)
+            for t in range(k, d - 1, -1):
+                dp[j][t] = (dp[j][t] + dp[j - 1][t - d]) % MOD
+    print(sum(dp[-1][i] for i in range(k, -1, -2)) % MOD)
 
-for _ in range(int(input())):
-    solve()
+# for _ in range(int(input())):
+solve()

@@ -48,18 +48,25 @@
 # 
 # 
 #
+import bisect
+
 
 # @lc code=start
+mx = 5 * 10 ** 6
+isprime = [True] * (mx)
+primes = list()
+for i in range(2, mx):
+    if isprime[i]:
+        primes.append(i)
+    for prime in primes:
+        if i * prime >= mx:
+            break
+        isprime[i * prime] = False
+        if i % prime == 0:
+            break
+            
 class Solution:
     def countPrimes(self, n: int) -> int:
-        isprime = [True] * (n + 1)
-        primes = list()
-        # 埃拉托斯特尼筛法
-        for i in range(2, n + 1):
-            if isprime[i]:
-                primes.append(i)
-            for j in range(i + i, n + 1, i):
-                isprime[j] = False
-        return len(primes)
+        return bisect.bisect_left(primes, n)
 # @lc code=end
 

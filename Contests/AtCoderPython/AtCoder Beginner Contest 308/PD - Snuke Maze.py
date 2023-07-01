@@ -1,15 +1,13 @@
+import math
 import sys
-
-# import itertools
-# import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
-# from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
-# from string import *
+from bisect import *
+from collections import *
+from functools import *
+from heapq import *
+from itertools import *
+from random import *
+from string import *
+from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +29,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -56,25 +53,29 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
-    mx = [0] * (n + 2)
-    mn = [0] * (n + 2)
-    emx = [0] * (n + 2)
-    emn = [0] * (n + 2)
-    mx[1] = emx[1] = 1
-    cur = 2
-    for _ in range(n):
-        qry = input().split()
-        if qry[0] == "+":
-            u, x = int(qry[1]), int(qry[2])
-            emx[cur] = max(emx[u] + x, x)
-            emn[cur] = min(emn[u] + x, x)
-            mx[cur] = max(mx[u], emx[cur])
-            mn[cur] = min(mn[u], emn[cur])
-            cur += 1
-        else:
-            u, v, x = int(qry[1]), int(qry[2]), int(qry[3])
-            print("YES" if mn[v] <= x <= mx[v] else "NO")
+    h, w = mint()
+    maze = []
+    for _ in range(h):
+        maze.append(input())
+    
+    if maze[0][0] != "s":
+        print("No")
+        return
+    
+    seen = [[False] * w for _ in range(h)]
+    seen[0][0] = True
+    t = "snuke"
+    q = deque([(0, 0, 0)])
+    while q:
+        x, y, d = q.popleft()
+        for nx, ny in (x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1):
+            if nx < 0 or nx >= h or ny < 0 or ny >= w or seen[nx][ny]: continue
+            if maze[nx][ny] != t[(d + 1) % 5]: continue
+            if nx == h - 1 and ny == w - 1:
+                print("Yes")
+                return
+            seen[nx][ny] = True
+            q.append((nx, ny, (d + 1) % 5))
+    print("No")
 
-for _ in range(int(input())):
-    solve()
+solve()

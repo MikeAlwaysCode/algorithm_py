@@ -67,6 +67,7 @@
 #
 from collections import Counter
 from typing import List
+
 # @lc code=start
 C = 10 ** 5
 isprime = [True] * (C + 1)

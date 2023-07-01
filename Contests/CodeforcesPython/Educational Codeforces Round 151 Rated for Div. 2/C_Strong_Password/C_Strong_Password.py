@@ -56,25 +56,30 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
-    mx = [0] * (n + 2)
-    mn = [0] * (n + 2)
-    emx = [0] * (n + 2)
-    emn = [0] * (n + 2)
-    mx[1] = emx[1] = 1
-    cur = 2
-    for _ in range(n):
-        qry = input().split()
-        if qry[0] == "+":
-            u, x = int(qry[1]), int(qry[2])
-            emx[cur] = max(emx[u] + x, x)
-            emn[cur] = min(emn[u] + x, x)
-            mx[cur] = max(mx[u], emx[cur])
-            mn[cur] = min(mn[u], emn[cur])
-            cur += 1
-        else:
-            u, v, x = int(qry[1]), int(qry[2]), int(qry[3])
-            print("YES" if mn[v] <= x <= mx[v] else "NO")
+    s = input()
+    m = sint()
+    l = input()
+    r = input()
+    n = len(s)
+    prev = [[-1] * 10 for _ in range(n + 1)]
+    p = [-1] * 10
+    for i, c in enumerate(s):
+        c = int(c)
+        prev[i] = p.copy()
+        p[c] = i
+    prev[-1] = p.copy()
+    # print(prev)
+    dp = [n] * 10
+    for i in range(m - 1, -1, -1):
+        tmp = [n] * 10
+        for d in range(int(l[i]), int(r[i]) + 1):
+            for nxt in range(10):
+                tmp[d] = min(tmp[d], prev[dp[nxt]][d])
+                if tmp[d] < 0:
+                    print("YES")
+                    return
+        dp = tmp
+    print("NO")
 
 for _ in range(int(input())):
     solve()

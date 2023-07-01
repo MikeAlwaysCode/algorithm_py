@@ -56,25 +56,19 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
-    mx = [0] * (n + 2)
-    mn = [0] * (n + 2)
-    emx = [0] * (n + 2)
-    emn = [0] * (n + 2)
-    mx[1] = emx[1] = 1
-    cur = 2
-    for _ in range(n):
-        qry = input().split()
-        if qry[0] == "+":
-            u, x = int(qry[1]), int(qry[2])
-            emx[cur] = max(emx[u] + x, x)
-            emn[cur] = min(emn[u] + x, x)
-            mx[cur] = max(mx[u], emx[cur])
-            mn[cur] = min(mn[u], emn[cur])
-            cur += 1
-        else:
-            u, v, x = int(qry[1]), int(qry[2]), int(qry[3])
-            print("YES" if mn[v] <= x <= mx[v] else "NO")
+    l, r = mint()
+    ans = 0
+    for i in range(60, -1, -1):
+        if r >> i & 1:
+            if l >> i & 1:
+                ans |= 1 << i
+            else:
+                if ans | ((1 << (i + 1)) - 1) == r:
+                    ans = r
+                else:
+                    ans |= (1 << i) - 1
+                break
+    print(ans)
 
 for _ in range(int(input())):
     solve()

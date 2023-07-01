@@ -56,25 +56,52 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
-    mx = [0] * (n + 2)
-    mn = [0] * (n + 2)
-    emx = [0] * (n + 2)
-    emn = [0] * (n + 2)
-    mx[1] = emx[1] = 1
-    cur = 2
-    for _ in range(n):
-        qry = input().split()
-        if qry[0] == "+":
-            u, x = int(qry[1]), int(qry[2])
-            emx[cur] = max(emx[u] + x, x)
-            emn[cur] = min(emn[u] + x, x)
-            mx[cur] = max(mx[u], emx[cur])
-            mn[cur] = min(mn[u], emn[cur])
-            cur += 1
-        else:
-            u, v, x = int(qry[1]), int(qry[2]), int(qry[3])
-            print("YES" if mn[v] <= x <= mx[v] else "NO")
+    x, d = mint()
+
+    cnt_d = 0
+    while x % d == 0:
+        x //= d
+        cnt_d += 1
+
+    # 1. 只有一个d，只能有一种表示
+    if cnt_d < 2:
+        print("NO")
+        return
+    
+    cnt = 0
+    p = 2
+    while p * p <= x:
+        while x % p == 0:
+            x //= p
+            cnt += 1
+        if x == 1: break
+        p += 1
+    if x > 1: cnt += 1
+
+    if cnt >= 2:
+        # 2. 有两个以上与d无关的质因子，随意组合分配即可
+        print("YES")
+    elif cnt_d == 2:
+        # 3. 只有两个d，一个无关的质因子，分配给哪个都一样
+        print("NO")
+    elif cnt == 1 and d == x * x:
+        # 4. 只有一个质因子p，且d为p的平方，若把一个d分解后，有三个p，此时若d的个数仍大于等于3，可以有两种表示d*d*d*d*p / d*p * d*p * d*p 
+        print("YES" if cnt_d > 3 else "NO")
+    else:
+        # 5. 若能把一个d分解成其他质因子，则有其他表示
+        cnt_d -= 1
+        p = 2
+        x = d
+        while p * p <= x:
+            while x % p == 0:
+                x //= p
+                cnt += 1
+            if x == 1: break
+            p += 1
+        if x > 1 and x != d: cnt += 1
+        elif x == d: cnt_d += 1
+        print("YES" if cnt >= 2 else "NO")
+    
 
 for _ in range(int(input())):
     solve()

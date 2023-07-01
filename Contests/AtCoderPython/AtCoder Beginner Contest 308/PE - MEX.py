@@ -1,15 +1,13 @@
+import math
 import sys
-
-# import itertools
-# import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
-# from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
-# from string import *
+from bisect import *
+from collections import *
+from functools import *
+from heapq import *
+from itertools import *
+from random import *
+from string import *
+from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +29,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -57,24 +54,25 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n = sint()
-    mx = [0] * (n + 2)
-    mn = [0] * (n + 2)
-    emx = [0] * (n + 2)
-    emn = [0] * (n + 2)
-    mx[1] = emx[1] = 1
-    cur = 2
-    for _ in range(n):
-        qry = input().split()
-        if qry[0] == "+":
-            u, x = int(qry[1]), int(qry[2])
-            emx[cur] = max(emx[u] + x, x)
-            emn[cur] = min(emn[u] + x, x)
-            mx[cur] = max(mx[u], emx[cur])
-            mn[cur] = min(mn[u], emn[cur])
-            cur += 1
+    A = ints()
+    s = input()
+    m = [0] * 3
+    me = [[0] * 3 for _ in range(3)]
+    ans = 0
+    for x, c in zip(A, s):
+        if c == "M":
+            m[x] += 1
+        elif c == "E":
+            for i in range(3):
+                j, k = min(x, i), max(x, i)
+                me[j][k] += m[i]
         else:
-            u, v, x = int(qry[1]), int(qry[2]), int(qry[3])
-            print("YES" if mn[v] <= x <= mx[v] else "NO")
+            for i in range(3):
+                for j in range(i, 3):
+                    for k in range(4):
+                        if k != x and k != i and k != j:
+                            ans += me[i][j] * k
+                            break
+    print(ans)
 
-for _ in range(int(input())):
-    solve()
+solve()

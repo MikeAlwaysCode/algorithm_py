@@ -52,29 +52,35 @@ ints = lambda: list(map(int, input().split()))
 # # endregion dfsconvert
 
 # MOD = 998244353
-# MOD = 10 ** 9 + 7
+MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
-    mx = [0] * (n + 2)
-    mn = [0] * (n + 2)
-    emx = [0] * (n + 2)
-    emn = [0] * (n + 2)
-    mx[1] = emx[1] = 1
-    cur = 2
-    for _ in range(n):
-        qry = input().split()
-        if qry[0] == "+":
-            u, x = int(qry[1]), int(qry[2])
-            emx[cur] = max(emx[u] + x, x)
-            emn[cur] = min(emn[u] + x, x)
-            mx[cur] = max(mx[u], emx[cur])
-            mn[cur] = min(mn[u], emn[cur])
-            cur += 1
-        else:
-            u, v, x = int(qry[1]), int(qry[2]), int(qry[3])
-            print("YES" if mn[v] <= x <= mx[v] else "NO")
+    n, k = mint()
+    nums = ints()
+    nums.sort()
 
-for _ in range(int(input())):
-    solve()
+    # dp[i][j]：最后一组最小元素i差是j
+    dp = [[0] * (k + 1) for _ in range(n + 1)]
+    dp[1][0] = dp[0][0] = 1
+    for i in range(1, n):
+        tmp = [[0] * (k + 1) for _ in range(n + 1)]
+        for j in range(i + 1):
+            t = j * (nums[i] - nums[i - 1])
+            for l in range(k - t + 1):
+                # Continuing
+                tmp[j][l + t] = (tmp[j][l + t] + dp[j][l] * j) % MOD
+                # Starting
+                if j < n:
+                    tmp[j + 1][l + t] = (tmp[j + 1][l + t] + dp[j][l]) % MOD
+                # Closing
+                if j:
+                    tmp[j - 1][l + t] = (tmp[j - 1][l + t] + dp[j][l] * j) % MOD
+                # Open and close
+                tmp[j][l + t] = (tmp[j][l + t] + dp[j][l]) % MOD
+
+        dp = tmp
+
+    print(sum(dp[0]) % MOD)
+
+solve()

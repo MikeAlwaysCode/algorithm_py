@@ -1,7 +1,7 @@
+# import math
 import sys
 
 # import itertools
-# import math
 # import os
 # import random
 # from bisect import bisect, bisect_left
@@ -51,30 +51,42 @@ ints = lambda: list(map(int, input().split()))
 #     return wrappedfunc
 # # endregion dfsconvert
 
-# MOD = 998244353
+MOD = 998244353
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
-    mx = [0] * (n + 2)
-    mn = [0] * (n + 2)
-    emx = [0] * (n + 2)
-    emn = [0] * (n + 2)
-    mx[1] = emx[1] = 1
-    cur = 2
-    for _ in range(n):
-        qry = input().split()
-        if qry[0] == "+":
-            u, x = int(qry[1]), int(qry[2])
-            emx[cur] = max(emx[u] + x, x)
-            emn[cur] = min(emn[u] + x, x)
-            mx[cur] = max(mx[u], emx[cur])
-            mn[cur] = min(mn[u], emn[cur])
-            cur += 1
-        else:
-            u, v, x = int(qry[1]), int(qry[2]), int(qry[3])
-            print("YES" if mn[v] <= x <= mx[v] else "NO")
+    n, m, k = mint()
+    '''
+    # 77 ms
+    dp = [0] * (k + 1)
+    dp[0] = m
+    for _ in range(1, n):
+        for i in range(k, 0, -1):
+            dp[i] = (dp[i] + dp[i - 1] * (m - 1)) % MOD
+    print(dp[-1])
+    '''
+    '''
+    # 62 ms
+    ans = math.comb(n - 1, k) % MOD
+    ans = ans * m * pow(m - 1, k, MOD) % MOD
+    print(ans)
+    '''
+    # 62 ms
+    # 阶乘
+    fact = 1
+    for i in range(2, n):
+        fact = fact * i % MOD
+    ans = m * fact % MOD
 
-for _ in range(int(input())):
-    solve()
+    # 逆元
+    inverse = pow(fact, MOD - 2, MOD)
+    if k == n - 1 or k == 0: ans = ans * inverse % MOD
+    for i in range(n - 1, 0, -1):
+        inverse = inverse * i % MOD
+        if i - 1 == k or i - 1 == n - 1 - k: ans = ans * inverse % MOD
+    
+    ans = ans * pow(m - 1, k, MOD) % MOD
+    print(ans)
+
+solve()
