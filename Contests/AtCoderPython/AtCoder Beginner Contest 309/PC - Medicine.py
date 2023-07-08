@@ -53,10 +53,23 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    for _ in range(sint()):
-        qry = ints()
-        # if qry[0] == 1:
-        # elif qry[0] == 2:
-        # else:
+    n, k = mint()
+    pill = []
+    for _ in range(n):
+        pill.append(tuple(mint()))
+    pill.sort(reverse = True)
+    ans = last = pill[0][0] + 1
+    s = 0
+    for a, b in pill:
+        if a != last:
+            if s <= k:
+                ans = a + 1
+            else:
+                break
+        s += b
+        last = a
+    if s <= k: ans = 1
+    print(ans)
+        
 
 solve()

@@ -55,45 +55,63 @@ ints = lambda: list(map(int, input().split()))
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-def solve() -> None:
-    n = sint()
-    nums = ints()
-    ans = []
-    pre, i, j = 0, 0, n - 1
-    while i <= j:
-        if nums[i] > pre and nums[j] > pre:
-            if nums[i] < nums[j]:
-                ans.append("L")
-                pre = nums[i]
-                i += 1
-            elif nums[i] > nums[j]:
-                ans.append("R")
-                pre = nums[j]
-                j -= 1
-            else:
-                l = i
-                while l < j and nums[l + 1] > nums[l]:
-                    l += 1
-                r = j
-                while r > i and nums[r - 1] > nums[r]:
-                    r -= 1
-                if l - i > j - r:
-                    ans.extend(["L"] * (l - i + 1))
-                else:
-                    ans.extend(["R"] * (j - r + 1))
-                break
-        elif nums[i] > pre:
-            ans.append("L")
-            pre = nums[i]
-            i += 1
-        elif nums[j] > pre:
-            ans.append("R")
-            pre = nums[j]
-            j -= 1
-        else:
-            break
+class BIT:
+    def __init__(self, n: int):
+        self.nums = [0] * (n + 1)
+        self.n = n
+        self.BITree = [0] * (self.n + 1)
+        
+    def lowbit(self, x: int) -> int:
+        return x & -x
+    
+    def query(self, x: int) -> int:
+        ans = 0
+        while x:
+            ans += self.BITree[x]
+            x -= self.lowbit(x)
+        return ans
 
-    print(len(ans))
-    print("".join(ans))
+    def add(self, x: int, val: int):
+        while x <= self.n:
+            self.BITree[x] += val
+            x += self.lowbit(x)
+
+    def update(self, x: int, val: int) -> None:
+        self.add(x + 1, val - self.nums[x])
+        self.nums[x] = val
+
+def solve() -> None:
+    n, m, q = mint()
+    nums = [0] + list(map(int, list(input())))
+    s = sum(nums)
+    nxt = list(range(n + 1))
+    p = []
+    for _ in range(m):
+        l, r = mint()
+        while l <= r:
+            while l <= n and l != nxt[l]:
+                l = nxt[l]
+            if l <= r:
+                p.append(l)
+                nxt[l] = r + 1
+                l += 1
+    k = len(p)
+    for i in range(1, n + 1):
+        if nxt[i] == i: p.append(i)
+    # print(p)
+    d = [0] * (n + 1)
+    bt = BIT(n + 1)
+    for i, v in enumerate(p, 1):
+        d[v] = i
+        if nums[v] == 0: bt.update(i, 1)
+    # print(d)
+    for _ in range(q):
+        x = sint()
+        s -= nums[x]
+        nums[x] ^= 1
+        s += nums[x]
+        bt.update(d[x], nums[x] ^ 1)
+        print(bt.query(min(k, s) + 1))
 
 solve()
+

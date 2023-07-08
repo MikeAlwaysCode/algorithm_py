@@ -53,10 +53,32 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    for _ in range(sint()):
-        qry = ints()
-        # if qry[0] == 1:
-        # elif qry[0] == 2:
-        # else:
+    n1, n2, m = mint()
+    n = n1 + n2
+    g = [[] for _ in range(n + 1)]
+    for _ in range(m):
+        u, v = mint()
+        g[u].append(v)
+        g[v].append(u)
+    dist = [math.inf] * (n + 1)
+    dist[1] = dist[n] = 0
+    h = [(0, 1)]
+    while h:
+        d, x = heappop(h)
+        if d > dist[x]: continue
+        for y in g[x]:
+            if d + 1 < dist[y]:
+                dist[y] = d + 1
+                heappush(h, (dist[y], y))
+    h = [(0, n)]
+    while h:
+        d, x = heappop(h)
+        if d > dist[x]: continue
+        for y in g[x]:
+            if d + 1 < dist[y]:
+                dist[y] = d + 1
+                heappush(h, (dist[y], y))
+
+    print(max(dist[1:n1 + 1]) + max(dist[n1 + 1:]) + 1)
 
 solve()

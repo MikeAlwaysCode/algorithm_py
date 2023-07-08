@@ -53,10 +53,7 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    for _ in range(sint()):
-        qry = ints()
-        # if qry[0] == 1:
-        # elif qry[0] == 2:
-        # else:
+    a, b = mint()
+    print("Yes" if a + 1 == b and (a + 2) // 3 == (b + 2) // 3 else "No")
 
 solve()

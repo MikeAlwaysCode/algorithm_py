@@ -53,10 +53,25 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    for _ in range(sint()):
-        qry = ints()
-        # if qry[0] == 1:
-        # elif qry[0] == 2:
-        # else:
+    n, m = mint()
+    pa = ints()
+    c = [-1] * (n + 1)
+    tree = [[] for _ in range(n + 1)]
+    for i, p in enumerate(pa, 2):
+        tree[p].append(i)
+    for _ in range(m):
+        x, y = mint()
+        c[x] = max(c[x], y)
+    q = deque([(1, -1)])
+    ans = 0
+    while q:
+        x, y = q.popleft()
+        y = c[x] = max(y, c[x])
+        if y >= 0:
+            ans += 1
+            y -= 1
+        for z in tree[x]:
+            q.append((z, y))
+    print(ans)
 
 solve()

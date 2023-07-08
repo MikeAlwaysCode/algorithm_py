@@ -50,13 +50,27 @@ ints = lambda: list(map(int, input().split()))
 
 # MOD = 998244353
 # MOD = 10 ** 9 + 7
-# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
+DIR = ((1, 0), (0, 1), (-1, 0), (0, -1))
 
 def solve() -> None:
-    for _ in range(sint()):
-        qry = ints()
-        # if qry[0] == 1:
-        # elif qry[0] == 2:
-        # else:
+    n = sint()
+    g = []
+    for _ in range(n):
+        g.append(list(input()))
+    
+    c = g[1][0]
+    x, y = 1, 0
+    d = 0
+    while x != 0 or y != 0:
+        nx, ny = x + DIR[d][0], y + DIR[d][1]
+        if 0 <= nx < n and 0 <= ny < n:
+            g[x][y] = g[nx][ny]
+            x, y = nx, ny
+        else:
+            d = (d + 1) % 4
+    g[0][0] = c 
+    
+    for row in g:
+        print("".join(row))
 
 solve()

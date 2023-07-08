@@ -53,7 +53,21 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    return
+    p, f = mint()
+    cnts, cntw = mint()
+    s, w = mint()
+    if s > w:
+        s, w = w, s
+        cnts, cntw = cntw, cnts
+    
+    ans = 0
+    for ps in range(min(cnts, p // s) + 1):
+        pw = min(cntw, (p - ps * s) // w)
+        fs = min(cnts - ps, f // s)
+        fw = min(cntw - pw, (f - fs * s) // w)
+        ans = max(ans, ps + pw + fs + fw)
+
+    print(ans)
 
 for _ in range(int(input())):
     solve()

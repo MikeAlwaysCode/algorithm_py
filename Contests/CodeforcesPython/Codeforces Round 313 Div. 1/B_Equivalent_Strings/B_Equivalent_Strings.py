@@ -1,13 +1,15 @@
-import math
 import sys
-from bisect import *
-from collections import *
-from functools import *
-from heapq import *
-from itertools import *
-from random import *
-from string import *
-from types import GeneratorType
+from functools import cache
+
+# import itertools
+# import math
+# import os
+# import random
+# from bisect import bisect, bisect_left
+# from collections import *
+# from heapq import heapify, heappop, heappush
+# from io import BytesIO, IOBase
+# from string import *
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -29,6 +31,7 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
+# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -53,10 +56,26 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    for _ in range(sint()):
-        qry = ints()
-        # if qry[0] == 1:
-        # elif qry[0] == 2:
-        # else:
+    s = input()
+    t = input()
+
+    # @cache
+    # def f(s1: str, s2: str) -> bool:
+    #     n = len(s1)
+    #     if n & 1:
+    #         return s1 == s2
+        
+    #     return s1 == s2 or f(s1[:n//2], s2[:n//2]) and f(s1[n//2:], s2[n//2:]) or (f(s1[:n//2], s2[n//2:]) and f(s1[n//2:], s2[:n//2]))
+    # print("YES" if f(s, t) else "NO")
+
+    def split_sort(s: str):
+        n = len(s)
+        if n & 1:
+            return s
+        a, b = split_sort(s[:n // 2]), split_sort(s[n // 2:])
+ 
+        return a + b if a < b else b + a
+
+    print("YES" if split_sort(s) == split_sort(t) else "NO") 
 
 solve()

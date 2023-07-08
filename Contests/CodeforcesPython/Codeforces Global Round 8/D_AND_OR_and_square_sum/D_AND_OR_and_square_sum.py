@@ -1,13 +1,15 @@
-import math
 import sys
-from bisect import *
-from collections import *
-from functools import *
-from heapq import *
-from itertools import *
-from random import *
-from string import *
-from types import GeneratorType
+
+# import itertools
+# import math
+# import os
+# import random
+# from bisect import bisect, bisect_left
+# from collections import *
+# from functools import reduce
+# from heapq import heapify, heappop, heappush
+# from io import BytesIO, IOBase
+# from string import *
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -29,6 +31,7 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
+# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -53,10 +56,21 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    for _ in range(sint()):
-        qry = ints()
-        # if qry[0] == 1:
-        # elif qry[0] == 2:
-        # else:
+    n = sint()
+    nums = ints()
+    cnt = [0] * 20
+    for x in nums:
+        for bit in range(20):
+            if (x >> bit) & 1: cnt[bit] += 1
+    ans = 0
+    for _ in range(n):
+        cur = 0
+        for bit in range(20):
+            if cnt[bit]:
+                cur |= 1 << bit
+                cnt[bit] -= 1
+        if cur == 0: break
+        ans += cur * cur
+    print(ans)
 
 solve()

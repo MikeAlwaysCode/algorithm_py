@@ -1,13 +1,15 @@
 import math
 import sys
-from bisect import *
-from collections import *
-from functools import *
-from heapq import *
-from itertools import *
-from random import *
-from string import *
-from types import GeneratorType
+
+# import itertools
+# import os
+# import random
+# from bisect import bisect, bisect_left
+# from collections import *
+# from functools import reduce
+# from heapq import heapify, heappop, heappush
+# from io import BytesIO, IOBase
+# from string import *
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -29,6 +31,7 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
+# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -53,10 +56,24 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    for _ in range(sint()):
-        qry = ints()
-        # if qry[0] == 1:
-        # elif qry[0] == 2:
-        # else:
+    n = sint()
+    A = ints()
+    B = ints()
+    s = sum(A)
+    idx = sorted(range(n), key = lambda x: (-B[x], -A[x]))
+    sb = m = 0
+    while sb < s:
+        sb += B[idx[m]]
+        m += 1
+    # print(m)
+    dp = [[-math.inf] * 10001 for _ in range(m + 1)]
+    dp[0][0] = cur = 0
+    for a, b in zip(A, B):
+        cur = min(cur + b, sb)
+        for i in range(m, 0, -1):
+            for j in range(cur, b - 1, -1):
+                dp[i][j] = max(dp[i][j], dp[i - 1][j - b] + a)
+    
+    print(m, s - max(dp[m][s:]))
 
 solve()

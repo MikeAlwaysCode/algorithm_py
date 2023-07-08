@@ -1,13 +1,15 @@
-import math
 import sys
-from bisect import *
-from collections import *
-from functools import *
-from heapq import *
-from itertools import *
-from random import *
-from string import *
-from types import GeneratorType
+
+# import itertools
+# import math
+# import os
+# import random
+# from bisect import bisect, bisect_left
+# from collections import *
+# from functools import reduce
+# from heapq import heapify, heappop, heappush
+# from io import BytesIO, IOBase
+# from string import *
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -29,6 +31,7 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
+# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -53,10 +56,24 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    for _ in range(sint()):
-        qry = ints()
-        # if qry[0] == 1:
-        # elif qry[0] == 2:
-        # else:
+    n = sint()
+    nums = ints()
+    ans = mx = 0
+    def isPeakOrValley(i: int) -> int:
+        return 1 if i > 0 and i < n - 1 and ((nums[i - 1] < nums[i] and nums[i] > nums[i + 1]) or (nums[i - 1] > nums[i] and nums[i] < nums[i + 1])) else 0
 
-solve()
+    for i in range(1, n - 1):
+        ans += isPeakOrValley(i)
+        old = isPeakOrValley(i - 1) + isPeakOrValley(i) + isPeakOrValley(i + 1)
+        tmp = nums[i]
+        nums[i] = nums[i - 1]
+        mx = max(mx, old - isPeakOrValley(i + 1))
+        nums[i] = nums[i + 1]
+        mx = max(mx, old - isPeakOrValley(i - 1))
+        nums[i] = tmp
+
+    ans -= mx
+    print(ans)
+
+for _ in range(int(input())):
+    solve()
