@@ -54,6 +54,17 @@ ints = lambda: list(map(int, input().split()))
 # MOD = 998244353
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
+valid = set()
+def init() -> None:
+    for k in range(2, 10 ** 6 + 1):
+        val = k + 1
+        p = k * k
+        for _ in range(63):
+            val += p
+            if val > 10 ** 18: break
+            valid.add(val)
+            p *= k
+            if p > 10 ** 18: break
 
 def solve() -> None:
     n = sint()
@@ -61,16 +72,17 @@ def solve() -> None:
         print("NO")
         return
     
-    # (k**m - 1) / (k - 1)
-    k = 2
-    while k * k + k + 1 <= n:
-        m = n * (k - 1) + 1
-        l = int(math.log(m, k))
-        if pow(k, l) == m or pow(k, l + 1) == m or pow(k, l - 1) == m:
-            print("YES")
-            return
-        k += 1
-    print("NO")
+    if n in valid:
+        print("YES")
+        return
+    
+    d = n * 4 - 3
+    m = math.isqrt(d)
+    if m * m == d:
+        print("YES")
+    else:
+        print("NO")
 
+init()
 for _ in range(int(input())):
     solve()

@@ -1,4 +1,5 @@
 import sys
+from typing import Counter
 
 # import itertools
 # import math
@@ -56,7 +57,34 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    return
+    n = sint()
+    nums = ints()
+    cnt = Counter(nums)
+    rem = []
+    while True:
+        print("-", len(rem), *rem, flush = True)
+        nums = ints()
+        if len(nums) == 1: break
+
+        ncnt = Counter(nums)
+        target = -1
+        for k, v in ncnt.items():
+            if v > cnt[k]:
+                target = k
+                break
+        if target != -1:
+            if ncnt[target] == 1:
+                ans = nums.index(target) + 1
+                print("!", ans, flush = True)
+                return
+
+            rem = [i for i, x in enumerate(nums, 1) if x != target]
+            cnt.clear()
+            cnt[target] = ncnt[target]
+        else:
+            rem = []
+        
+    print("! 1", flush = True)
 
 for _ in range(int(input())):
     solve()
