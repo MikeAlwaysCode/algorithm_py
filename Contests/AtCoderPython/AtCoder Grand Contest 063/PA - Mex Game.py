@@ -1,15 +1,13 @@
+import math
 import sys
-
-# import itertools
-# import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
-# from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
-# from string import *
+from bisect import *
+from collections import *
+from functools import *
+from heapq import *
+from itertools import *
+from random import *
+from string import *
+from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +29,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -56,13 +53,22 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    k = sint()
+    n = sint()
+    s = input()
+    cnta = cntb = 0
     ans = []
-    while k:
-        ans.append(k % 9)
-        if ans[-1] >= 4: ans[-1] += 1
-        k //= 9
-    print(*reversed(ans), sep = "")
+    for c in s:
+        if c == 'A': cnta += 1
+        if c == 'B': cntb += 1
+        while len(ans) < n and cntb > (len(ans) + 2) // 2:
+            if cnta > (len(ans) + 1) // 2:
+                ans.append("Alice")
+            else:
+                ans.append("Bob")
+        if len(ans) >= n: break
+    for a in ans:
+        print(a)
+    for _ in range(n - len(ans)):
+        print("Alice")
 
-for _ in range(int(input())):
-    solve()
+solve()

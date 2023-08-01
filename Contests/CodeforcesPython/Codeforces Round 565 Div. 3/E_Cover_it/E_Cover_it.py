@@ -1,4 +1,5 @@
 import sys
+from collections import deque
 
 # import itertools
 # import math
@@ -56,13 +57,27 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    k = sint()
-    ans = []
-    while k:
-        ans.append(k % 9)
-        if ans[-1] >= 4: ans[-1] += 1
-        k //= 9
-    print(*reversed(ans), sep = "")
+    n, m = mint()
+    g = [[] for _ in range(n + 1)]
+    for _ in range(m):
+        u, v = mint()
+        g[u].append(v)
+        g[v].append(u)
+    cnt = [0] * 2
+    col = [-1] * (n + 1)
+    col[1] = 0
+    q = deque([1])
+    while q:
+        x = q.popleft()
+        cnt[col[x]] += 1
+        for y in g[x]:
+            if col[y] != -1: continue
+            col[y] = col[x] ^ 1
+            q.append(y)
+    t = 0 if cnt[0] <= cnt[1] else 1
+    ans = [i for i in range(1, n + 1) if col[i] == t]
+    print(len(ans))
+    print(*ans)
 
 for _ in range(int(input())):
     solve()

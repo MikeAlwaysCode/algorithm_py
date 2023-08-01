@@ -1,4 +1,5 @@
 import sys
+from collections import deque
 
 # import itertools
 # import math
@@ -56,7 +57,34 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    return
+    n = sint()
+    s = input()
+    t = input()
+    g = [[] for _ in range(20)]
+    for c1, c2 in zip(s, t):
+        if c1 > c2:
+            print(-1)
+            return
+        elif c1 < c2:
+            g[ord(c1) - 97].append(ord(c2) - 97)
+            g[ord(c2) - 97].append(ord(c1) - 97)
+    
+    seen = [False] * 20
+    ans = 0
+    q = deque()
+    for i in range(20):
+        if seen[i]: continue
+        seen[i] = True
+        q.append(i)
+        while q:
+            u = q.popleft()
+            for v in g[u]:
+                if seen[v]: continue
+                seen[v] = True
+                q.append(v)
+        ans += 1
+
+    print(20 - ans)
 
 for _ in range(int(input())):
     solve()

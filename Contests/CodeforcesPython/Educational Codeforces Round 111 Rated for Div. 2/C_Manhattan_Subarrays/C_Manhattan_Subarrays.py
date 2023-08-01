@@ -56,13 +56,21 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    k = sint()
-    ans = []
-    while k:
-        ans.append(k % 9)
-        if ans[-1] >= 4: ans[-1] += 1
-        k //= 9
-    print(*reversed(ans), sep = "")
+    n = sint()
+    nums = ints()
+    ans = n * 2 - 1
+    for i in range(2, n):
+        if nums[i] == nums[i - 1] or nums[i - 1] == nums[i - 2]:
+            continue
+        if (nums[i] > nums[i - 1]) == (nums[i - 1] > nums[i - 2]):
+            continue
+        ans += 1
+        if i <= 2 or nums[i] == nums[i - 2] or nums[i - 2] == nums[i - 3] or nums[i - 1] == nums[i - 3]:
+            continue
+        if (nums[i] > nums[i - 2]) == (nums[i - 2] > nums[i - 3]) or (nums[i] > nums[i - 1]) == (nums[i - 1] > nums[i - 3]) or (nums[i - 1] > nums[i - 2]) == (nums[i - 2] > nums[i - 3]):
+            continue
+        ans += 1
+    print(ans)
 
 for _ in range(int(input())):
     solve()

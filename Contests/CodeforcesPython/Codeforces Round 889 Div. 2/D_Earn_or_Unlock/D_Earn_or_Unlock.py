@@ -1,4 +1,6 @@
+import math
 import sys
+from heapq import heappop, heappush
 
 # import itertools
 # import math
@@ -56,13 +58,24 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    k = sint()
-    ans = []
-    while k:
-        ans.append(k % 9)
-        if ans[-1] >= 4: ans[-1] += 1
-        k //= 9
-    print(*reversed(ans), sep = "")
+    n = sint()
+    nums = ints()
+    ans = tot = 0
+    s = {0}
+    h = [0]
+    for i, x in enumerate(nums):
+        while h and h[0] < i:
+            s.remove(heappop(h))
+        if not h: break
+        tot += x
+        ns = set()
+        for y in s:
+            nx = min(n - 1, y + x)
+            if nx not in s:
+                ns.add(nx)
+                heappush(h, nx)
+        s |= ns
+        ans = max(ans, tot - h[0])
+    print(ans)
 
-for _ in range(int(input())):
-    solve()
+solve()

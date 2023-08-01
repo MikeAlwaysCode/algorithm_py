@@ -1,15 +1,13 @@
+import math
 import sys
-
-# import itertools
-# import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
-# from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
-# from string import *
+from bisect import *
+from collections import *
+from functools import *
+from heapq import *
+from itertools import *
+from random import *
+from string import *
+from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +29,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -51,18 +48,31 @@ ints = lambda: list(map(int, input().split()))
 #     return wrappedfunc
 # # endregion dfsconvert
 
-# MOD = 998244353
+MOD = 998244353
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    k = sint()
-    ans = []
-    while k:
-        ans.append(k % 9)
-        if ans[-1] >= 4: ans[-1] += 1
-        k //= 9
-    print(*reversed(ans), sep = "")
+    s = input()
+    n = len(s)
 
-for _ in range(int(input())):
-    solve()
+    if n & 1:
+        print(0)
+        return
+
+    dp = [0] * n
+    dp[0] = 1
+    for c in s:
+        tmp = [0] * n
+        for i in range(n // 2 + 1):
+            if c == "(":
+                if (i + 1) * 2 <= n: tmp[i + 1] = (tmp[i + 1] + dp[i]) % MOD
+            elif c == ")":
+                if i: tmp[i - 1] = (tmp[i - 1] + dp[i]) % MOD
+            else:
+                if (i + 1) * 2 <= n: tmp[i + 1] = (tmp[i + 1] + dp[i]) % MOD
+                if i: tmp[i - 1] = (tmp[i - 1] + dp[i]) % MOD
+        dp = tmp
+    print(dp[0])
+
+solve()

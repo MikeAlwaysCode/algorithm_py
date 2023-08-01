@@ -1,15 +1,13 @@
+import math
 import sys
-
-# import itertools
-# import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
-# from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
-# from string import *
+from bisect import *
+from collections import *
+from functools import *
+from heapq import *
+from itertools import *
+from random import *
+from string import *
+from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +29,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -56,13 +53,29 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    k = sint()
-    ans = []
-    while k:
-        ans.append(k % 9)
-        if ans[-1] >= 4: ans[-1] += 1
-        k //= 9
-    print(*reversed(ans), sep = "")
+    n = sint()
+    cnt = [0] * n
+    cub = []
+    for _ in range(n):
+        x1, y1, z1, x2, y2, z2 = mint()
+        cub.append(((x1, y1, z1), (x2, y2, z2)))
 
-for _ in range(int(input())):
-    solve()
+    def check(i: int, j: int) -> bool:
+        for k in range(3):
+            if cub[i][0][k] == cub[j][1][k] or cub[i][1][k] == cub[j][0][k]:
+                for l in range(3):
+                    if l == k: continue
+                    if cub[i][0][l] >= cub[j][1][l] or cub[i][1][l] <= cub[j][0][l]: return False
+                return True
+        
+        return False
+    
+    for i in range(n):
+        for j in range(i + 1, n):
+            if check(i, j):
+                cnt[i] += 1
+                cnt[j] += 1
+
+        print(cnt[i])
+
+solve()

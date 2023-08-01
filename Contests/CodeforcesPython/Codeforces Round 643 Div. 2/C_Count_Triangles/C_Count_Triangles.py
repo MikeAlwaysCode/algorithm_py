@@ -56,13 +56,23 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    k = sint()
-    ans = []
-    while k:
-        ans.append(k % 9)
-        if ans[-1] >= 4: ans[-1] += 1
-        k //= 9
-    print(*reversed(ans), sep = "")
+    a, b, c, d = mint()
+    # x + y > z
+    # count x + y
+    mx = 10 ** 6 + 2
+    cnt = [0] * mx
+    for x in range(a, b + 1):
+        cnt[x + b] += 1
+        cnt[x + c + 1] -= 1
+    for i in range(1, mx):
+        # 差分前缀和 -> 原
+        cnt[i] += cnt[i - 1]
+    for i in range(1, mx):
+        # 原前缀和
+        cnt[i] += cnt[i - 1]
+    ans = 0
+    for z in range(c, d + 1):
+        ans += cnt[-1] - cnt[z]
+    print(ans)
 
-for _ in range(int(input())):
-    solve()
+solve()

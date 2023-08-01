@@ -56,13 +56,11 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    k = sint()
-    ans = []
-    while k:
-        ans.append(k % 9)
-        if ans[-1] >= 4: ans[-1] += 1
-        k //= 9
-    print(*reversed(ans), sep = "")
+    n = sint()
+    if n & 1:
+        print("black")
+    else:
+        print("white")
+        print(1, 2)
 
-for _ in range(int(input())):
-    solve()
+solve()

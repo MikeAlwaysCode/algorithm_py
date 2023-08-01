@@ -1,15 +1,13 @@
+import math
 import sys
-
-# import itertools
-# import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
-# from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
-# from string import *
+from bisect import *
+from collections import *
+from functools import *
+from heapq import *
+from itertools import *
+from random import *
+from string import *
+from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +29,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -56,13 +53,32 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    k = sint()
-    ans = []
-    while k:
-        ans.append(k % 9)
-        if ans[-1] >= 4: ans[-1] += 1
-        k //= 9
-    print(*reversed(ans), sep = "")
+    n, m = mint()
+    nums = [[] for _ in range(3)]
+    for _ in range(n):
+        t, x = mint()
+        nums[t].append(x)
+    
+    pres = []
+    for i in range(3):
+        nums[i].sort(reverse = True)
+        # pres.append(list(accumulate(nums[i], initial = 0)))
+        pres.append([0] + list(accumulate(nums[i])))
+    
+    comb = []
+    j = 0
+    for i in range(len(pres[1])):
+        while j < len(pres[2]) and pres[2][j] < i:
+            j += 1
+        if j >= len(pres[2]) or i + j > m: break
+        comb.append((i + j, pres[1][i]))
+    ans = 0
+    for i in range(len(pres[0])):
+        # j = bisect(comb, m - i, key = lambda x: x[0])
+        if i > m: break
+        j = bisect(comb, (m - i, math.inf))
+        ans = max(ans, pres[0][i] + comb[j - 1][1])
 
-for _ in range(int(input())):
-    solve()
+    print(ans)
+
+solve()

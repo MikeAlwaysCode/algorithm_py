@@ -56,13 +56,17 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    k = sint()
-    ans = []
-    while k:
-        ans.append(k % 9)
-        if ans[-1] >= 4: ans[-1] += 1
-        k //= 9
-    print(*reversed(ans), sep = "")
+    n, m = mint()
+    g = []
+    for _ in range(n):
+        g.append(ints())
+    
+    for i in range(n):
+        for j in range(m):
+            if (i + j) & 1 != g[i][j] & 1:
+                g[i][j] += 1
+    for i in range(n):
+        print(*g[i])
 
 for _ in range(int(input())):
     solve()

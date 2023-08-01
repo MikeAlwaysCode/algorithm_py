@@ -1,15 +1,13 @@
+import math
 import sys
-
-# import itertools
-# import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
-# from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
-# from string import *
+from bisect import *
+from collections import *
+from functools import *
+from heapq import *
+from itertools import *
+from random import *
+from string import *
+from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +29,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -56,13 +53,31 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    k = sint()
-    ans = []
-    while k:
-        ans.append(k % 9)
-        if ans[-1] >= 4: ans[-1] += 1
-        k //= 9
-    print(*reversed(ans), sep = "")
+    n, m = mint()
+    g = []
+    for _ in range(n):
+        g.append(input())
+    
+    def check(x: int, y: int) -> bool:
+        if x + 8 >= n or y + 8 >= m: return False
+        for i in range(x, x + 3):
+            for j in range(y, y + 3):
+                if g[i][j] != "#": return False
+        for i in range(x + 6, x + 9):
+            for j in range(y + 6, y + 9):
+                if g[i][j] != "#": return False
+        for i in range(x, x + 4):
+            if g[i][y + 3] != ".": return False
+        for i in range(x + 5, x + 9):
+            if g[i][y + 5] != ".": return False
+        for j in range(y, y + 4):
+            if g[x + 3][j] != ".": return False
+        for j in range(y + 5, y + 9):
+            if g[x + 5][j] != ".": return False
+        return True
 
-for _ in range(int(input())):
-    solve()
+    for i in range(n):
+        for j in range(m):
+            if check(i, j): print(i + 1, j + 1)
+
+solve()

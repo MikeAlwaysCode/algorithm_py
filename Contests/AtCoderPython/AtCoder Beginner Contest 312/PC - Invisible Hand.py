@@ -1,15 +1,13 @@
+import math
 import sys
-
-# import itertools
-# import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
-# from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
-# from string import *
+from bisect import *
+from collections import *
+from functools import *
+from heapq import *
+from itertools import *
+from random import *
+from string import *
+from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +29,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -56,13 +53,26 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    k = sint()
-    ans = []
-    while k:
-        ans.append(k % 9)
-        if ans[-1] >= 4: ans[-1] += 1
-        k //= 9
-    print(*reversed(ans), sep = "")
+    n, m = mint()
+    A = ints()
+    B = ints()
+    
+    nums = []
+    for x in A:
+        nums.append((x, 0, -1))
+    for x in B:
+        nums.append((x, 1, 1))
+    
+    nums.sort()
+    ans = nums[-1][0] + 1
+    cnt = [n, 0]
+    for i in range(len(nums) - 1, -1, -1):
+        cnt[nums[i][1]] += nums[i][2]
+        if nums[i][1] == 0: ans = nums[i][0]
+        else: ans = min(ans, nums[i][0] + 1)
+        if cnt[0] < cnt[1]: break
 
-for _ in range(int(input())):
-    solve()
+    print(ans)
+
+
+solve()

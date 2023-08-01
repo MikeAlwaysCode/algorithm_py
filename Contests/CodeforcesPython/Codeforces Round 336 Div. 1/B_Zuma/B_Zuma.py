@@ -1,3 +1,4 @@
+import math
 import sys
 
 # import itertools
@@ -56,13 +57,22 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    k = sint()
-    ans = []
-    while k:
-        ans.append(k % 9)
-        if ans[-1] >= 4: ans[-1] += 1
-        k //= 9
-    print(*reversed(ans), sep = "")
+    n = sint()
+    nums = ints()
+    dp = [[math.inf] * n for _ in range(n)]
+    for i in range(n):
+        dp[i][i] = 1
+    
+    for r in range(1, n):
+        if nums[r] == nums[r - 1]:
+            dp[r - 1][r] = 1
+        else:
+            dp[r - 1][r] = 2
+        for l in range(r - 2, -1, -1):
+            if nums[l] == nums[r]:
+                dp[l][r] = dp[l + 1][r - 1]
+            for k in range(l, r):
+                dp[l][r] = min(dp[l][r], dp[l][k] + dp[k + 1][r])
+    print(dp[0][n - 1])
 
-for _ in range(int(input())):
-    solve()
+solve()
