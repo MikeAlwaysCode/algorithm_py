@@ -76,63 +76,25 @@ def printAns(ans) -> None:
 
 def solve() -> None:
     n = int(input())
-    arr = ints()
+    nums = ints()
 
-    neg = [a for a in arr if a < 0]
-    pos = [a for a in arr if a > 0]
+    neg = [a for a in nums if a < 0]
+    pos = [a for a in nums if a > 0]
 
-    neg.sort()
-    pos.sort()
+    neg.sort(reverse = True)
+    pos.sort(reverse = True)
+
+    x = neg + pos
 
     def f(a, b, c):
         return (a + b + c) / (a * b * c)
-    
-    if not neg:
-        mn = f(pos[-1], pos[-2], pos[-3])
-        mx = f(pos[0], pos[1], pos[2])
-    else:
-        mn = math.inf
-        mx = - math.inf
 
-        if len(neg) > 2:
-            mn = f(neg[0], neg[1], neg[2])
-            mx = f(neg[-1], neg[-2], neg[-3])
+    t1 = f(x[0], x[1], x[2])
+    t2 = f(x[0], x[1], x[-1])
+    t3 = f(x[0], x[-1], x[-2])
+    t4 = f(x[-1], x[-2], x[-3])
 
-        if len(pos) >= 2:
-            mn = min(mn, f(neg[-1], pos[0], pos[1]))
-            i = 0
-            while i < len(pos) - 2 and (neg[-1] + pos[i] + pos[i + 1]) <= 0:
-                i += 1
-            mn = min(mn, f(neg[-1], pos[i], pos[i + 1]))
-            
-            mx = max(mx, f(neg[-1], pos[0], pos[1]))
-            if neg[-1] + pos[0] + pos[1] > 0:
-                mx = max(mx, f(neg[-1], pos[-1], pos[-2]))
-            i = len(neg) - 1
-            while i > 0 and neg[i] + pos[0] + pos[1] >= 0:
-                i -= 1
-            mx = max(mx, f(neg[i], pos[-1], pos[-2]))
-
-        if pos and len(neg) >= 2:
-            mn = min(mn, f(neg[-1], neg[-2], pos[0]))
-            i = len(neg) - 2
-            while i > 0 and (neg[i] + neg[i + 1] + pos[0]) >= 0:
-                i -= 1
-            mn = min(mn, f(neg[i], neg[i+1], pos[0]))
-            
-            mx = max(mx, f(neg[-1], neg[-2], pos[0]))
-            if neg[-1] + neg[-2] + pos[0] < 0:
-                mx = max(mx, f(neg[0], neg[1], pos[0]))
-            i = 0
-            while i < len(pos) - 2 and neg[-1] + neg[-2] + pos[i] <= 0:
-                i += 1
-            mx = max(mx, f(neg[0], neg[1], pos[i]))
-
-        if len(pos) > 2:
-            mn = min(mn, f(pos[-1], pos[-2], pos[-3]))
-            mx = max(mx, f(pos[0], pos[1], pos[2]))
-
-    print(mn)
-    print(mx)
+    print(min(t1, t2, t3, t4))
+    print(max(t1, t2, t3, t4))
 
 solve()

@@ -1,6 +1,5 @@
 go 1.19
 
-use (
-	// ./Contests/AcWing
-	./GoProjects
-)
+// ./Contests/AcWing
+use ./GoProjects
+use ./Contests/Luogu/HOLD-R1
