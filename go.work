@@ -2,4 +2,3 @@ go 1.19
 
 // ./Contests/AcWing
 use ./GoProjects
-use ./Contests/Luogu/HOLD-R1
