@@ -1,4 +1,6 @@
+import math
 import sys
+# from functools import cache
 
 # import itertools
 # import math
@@ -6,7 +8,6 @@ import sys
 # import random
 # from bisect import bisect, bisect_left
 # from collections import *
-# from functools import reduce
 # from heapq import heapify, heappop, heappush
 # from io import BytesIO, IOBase
 # from string import *
@@ -56,47 +57,50 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
-    A = ints()
-    B = ints()
+    s = input()
 
-    ans = 0
+    n = len(s)
+    c0 = s.count('0')
+    c1 = n - c0
+    # 全部可能 - count("00") + count("11") = count("01") + count("10") + 2 * count("11")
+    target = (n * (n - 1) // 2 - c0 * (c0 - 1) // 2 + c1 * (c1 - 1) // 2) // 2
+    dp = [[math.inf] * (target + 1) for _ in range(c1 + 1)]
+    dp[0][0] = 0
+    for i in range(n):
+        for j in range(min(c1 - 1, i), -1, -1):
+            for k in range(target - i + 1):
+                # s[i]若是1，"01" + "11"将增加i
+                dp[j + 1][k + i] = min(dp[j + 1][k + i], dp[j][k] + int(s[i] == '0'))
+    
+    print(dp[c1][target])
 
-    def check(x: int):
-        nonlocal ans
-        A.sort()
-        B.sort()
-        i = j = 0
-        while i < n and j < n:
-            if A[i] == B[j]:
-                i += 1
-                j += 1
-            elif A[i] < B[j]:
-                if A[i] > x:
-                    A[i] = len(str(A[i]))
-                    ans += 1
-                i += 1
-            else:
-                if B[j] > x:
-                    B[j] = len(str(B[j]))
-                    ans += 1
-                j += 1
-        while i < n or j < n:
-            if i < n:
-                if A[i] > x:
-                    A[i] = len(str(A[i]))
-                    ans += 1
-                i += 1
-            if j < n:
-                if B[j] > x:
-                    B[j] = len(str(B[j]))
-                    ans += 1
-                j += 1
+    '''
+    if s.count('0') & 1:
+        pos = [i for i, c in enumerate(s) if c == '0']
+    else:
+        pos = [i for i, c in enumerate(s) if c == '1']
+    # print(pos)
+    n = len(s)
+    target = (n - 1) * len(pos) // 2
+    
+    def f(nums: list, i: int, cost: int) -> int:
+        nonlocal target
+        tot = sum(nums)
+        if tot == target:
+            return cost
+        if i == len(nums):
+            return len(nums) + 1
+        res = f(nums, i + 1, cost)
+        ss = set(nums)
+        x = nums[i]
+        for y in range(len(nums)):
+            if tot + y - x > target: break
+            if y != x and y not in ss:
+                nums[i] = y
+                res = min(res, f(nums, i + 1, cost + 1))
+        nums[i] = x
+        return res
+    print(f(pos, 0, 0))
+    '''
 
-    check(9)
-    check(1)
-
-    print(ans)
-
-for _ in range(int(input())):
-    solve()
+solve()

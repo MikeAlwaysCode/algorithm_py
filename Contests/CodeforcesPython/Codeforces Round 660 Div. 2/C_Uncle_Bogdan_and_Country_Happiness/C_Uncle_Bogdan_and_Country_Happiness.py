@@ -1,14 +1,15 @@
 import sys
 from collections import *
 
+# import itertools
 # import math
-# from bisect import *
-# from functools import *
-# from heapq import *
-# from itertools import *
-# from random import *
+# import os
+# import random
+# from bisect import bisect, bisect_left
+# from functools import reduce
+# from heapq import heapify, heappop, heappush
+# from io import BytesIO, IOBase
 # from string import *
-# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -30,6 +31,7 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
+# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -54,23 +56,41 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
-    nums = ints()
- 
-    ans = 0
+    n, m = mint()
+    p = ints()
+    h = ints()
+    l = [0] * n
+    r = [0] * n
+    deg = [0] * n
+    deg[0] += 1
+    g = [[] for _ in range(n)]
+    for _ in range(n - 1):
+        u, v = mint()
+        u -= 1
+        v -= 1
+        g[u].append(v)
+        g[v].append(u)
+        deg[u] += 1
+        deg[v] += 1
 
-    # 134 ms
-    cnt = Counter(nums)
-    i, j = 0, n - 1
-    while i < j:
-        l = n - cnt[nums[i]] - i * 2
-        r = n - cnt[nums[j]] - i * 2
-        ans += (l + r - int(nums[i] != nums[j])) * (i + 1)
-        cnt[nums[i]] -= 1
-        cnt[nums[j]] -= 1
-        i += 1
-        j -= 1
- 
-    print(ans)
+    q = deque([i for i in range(n) if deg[i] == 1])
+    while q:
+        x = q.popleft()
+        if h[x] < l[x] - p[x] or h[x] > r[x] + p[x]:
+            print("NO")
+            return
+        if (r[x] + p[x] + h[x]) & 1:
+            print("NO")
+            return
+        for y in g[x]:
+            if deg[y] == 1: continue
+            deg[y] -= 1
+            r[y] += p[x] + r[x]
+            l[y] += h[x]
+            if deg[y] == 1:
+                q.append(y)
 
-solve()
+    print("YES")
+
+for _ in range(int(input())):
+    solve()

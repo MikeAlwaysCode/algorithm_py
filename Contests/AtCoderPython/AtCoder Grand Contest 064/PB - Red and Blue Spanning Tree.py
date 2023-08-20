@@ -85,6 +85,8 @@ def solve() -> None:
         sz[fr] = 0
         fa[fr] = to
 
+    # 同颜色的点和边先连接形成森林
+    x = set()
     ans = []
     for c in range(2):
         for u, v, i in col_edge[c]:
@@ -93,74 +95,52 @@ def solve() -> None:
                 if fu != fv:
                     ans.append(i)
                     union(fu, fv)
-    
-    # for u in range(n):
-    #     fu = find(u)
-    #     c = s[fu]
-    #     if sz[fu] != 1:
-    #         continue
-    #     else:
-    #         for v, i in edges[fu][c]:
-    #             fv = find(v)
-    #             if sz[fv] > 1:
-    #                 ans.append(i)
-    #                 union(fu, fv)
-    #                 break
+                    x.add(u)
+                    x.add(v)
     
     if set_count == 1:
         print("Yes")
         print(*ans)
         return
         
-    seen = set()
+    # 森林外的点，以点颜色相同的边连接到已有的森林中
     q = []
-    for u in range(n):
+    for u in x:
         fu = find(u)
-        if sz[fu] == 1: continue
         for c in range(2):
             for v, i in edges[u][c]:
-                fv = find(v)
-                if fu == fv: continue
-
-                if sz[fv] > 1:
-                    ans.append(i)
-                    union(fu, fv)
-                elif sz[fv] == 1 and fv not in seen and c == s[fv]:
-                    seen.add(fv)
-                    q.append((fu, fv, i))
-
-                if set_count == 1: break
-            if set_count == 1: break
+                if v in x or c != s[v]: continue
+                q.append((u, v, i))
     
     while q:
         tmp = []
         for u, v, i in q:
             fu, fv = find(u), find(v)
-            if fu == fv or sz[fv] != 1: continue
+            if fu == fv: continue
             ans.append(i)
             union(fu, fv)
+            x.add(v)
             for c in range(2):
                 for w, j in edges[v][c]:
-                    fw = find(w)
-                    if sz[fw] != 1 or fw in seen or c != s[fw]: continue
-                    seen.add(fw)
-                    tmp.append((fv, fw, j))
+                    if w in x or c != s[w]: continue
+                    tmp.append((v, w, j))
         q = tmp
+    
+    # 仍有孤立的点，没有相同颜色的边能连到已有森林
+    if len(x) != n:
+        print("No")
+        return
 
-    for u in range(n):
-        fu = find(u)
-        if sz[fu] == 1: continue
-        for c in range(2):
-            for v, i in edges[u][c]:
-                fv = find(v)
-                if fu == fv: continue
+    # 任意边将所有森林相连
+    for c in range(2):
+        for u, v, i in col_edge[c]:
+            fu, fv = find(u), find(v)
+            if fu != fv:
+                ans.append(i)
+                union(fu, fv)
 
-                if sz[fv] > 1:
-                    ans.append(i)
-                    union(fu, fv)
-
-                if set_count == 1: break
             if set_count == 1: break
+        if set_count == 1: break
 
     if set_count > 1:
         print("No")

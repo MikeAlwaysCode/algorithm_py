@@ -1,7 +1,7 @@
+import math
 import sys
 
 # import itertools
-# import math
 # import os
 # import random
 # from bisect import bisect, bisect_left
@@ -56,47 +56,47 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
-    A = ints()
-    B = ints()
+    n, k = mint()
+    s = list(map(int, list(input())))
+    max0pref = [[0] * (n + 1) for _ in range(n + 1)]
+    max0suff = [[0] * (n + 1) for _ in range(n + 1)]
+    for l in range(n):
+        cnt1 = 0
+        for r in range(l + 1, n + 1):
+            cnt1 += int(s[r - 1] == 1)
+            max0pref[r][cnt1] = max(max0pref[r][cnt1], r - l)
+            max0suff[l][cnt1] = max(max0suff[l][cnt1], r - l)
+    
+    for r in range(n + 1):
+        for cnt in range(n + 1):
+            if r:
+                max0pref[r][cnt] = max(max0pref[r][cnt], max0pref[r - 1][cnt])
+            if cnt:
+                max0pref[r][cnt] = max(max0pref[r][cnt], max0pref[r][cnt - 1])
+    
+    for l in range(n, -1, -1):
+        for cnt in range(n + 1):
+            if l + 1 <= n:
+                max0suff[l][cnt] = max(max0suff[l][cnt], max0suff[l + 1][cnt])
+            if cnt:
+                max0suff[l][cnt] = max(max0suff[l][cnt], max0suff[l][cnt - 1])
+    
+    max0by1 = [-math.inf] * (n + 1)
+    ans = [0] * (n + 1)
+    for l in range(n):
+        cnt0 = 0
+        for r in range(l, n + 1):
+            if r > l: cnt0 += int(s[r - 1] == 0)
+            if cnt0 > k: break
 
-    ans = 0
+            max0by1[r - l] = max(max0by1[r - l], max0pref[l][k - cnt0]);
+            max0by1[r - l] = max(max0by1[r - l], max0suff[r][k - cnt0]);
 
-    def check(x: int):
-        nonlocal ans
-        A.sort()
-        B.sort()
-        i = j = 0
-        while i < n and j < n:
-            if A[i] == B[j]:
-                i += 1
-                j += 1
-            elif A[i] < B[j]:
-                if A[i] > x:
-                    A[i] = len(str(A[i]))
-                    ans += 1
-                i += 1
-            else:
-                if B[j] > x:
-                    B[j] = len(str(B[j]))
-                    ans += 1
-                j += 1
-        while i < n or j < n:
-            if i < n:
-                if A[i] > x:
-                    A[i] = len(str(A[i]))
-                    ans += 1
-                i += 1
-            if j < n:
-                if B[j] > x:
-                    B[j] = len(str(B[j]))
-                    ans += 1
-                j += 1
-
-    check(9)
-    check(1)
-
-    print(ans)
+    for i in range(n + 1):
+        for a in range(1, n + 1):
+            ans[a] = max(ans[a], i + max0by1[i] * a)
+    
+    print(*ans[1:])
 
 for _ in range(int(input())):
     solve()

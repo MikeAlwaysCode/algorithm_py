@@ -38,6 +38,24 @@ class BinaryTrie:
             cur = self.to[bit][cur]
             if cur == -1 or self.cnt[cur] == 0: return 0
         return self.cnt[cur]
+    
+    # 求与num异或严格小于limit的数量
+    def count_limit_xor(self, num: int, limit: int) -> int:
+        res = cur = 0
+        to, cnt = self.to, self.cnt
+        for k in range(self.max_bit, -1, -1):
+            bit = (num >> k) & 1
+            if limit >> k & 1:
+                if to[bit][cur] != -1:
+                    res += cnt[to[bit][cur]]
+                if to[bit ^ 1][cur] == -1 or cnt[to[bit ^ 1][cur]] == 0:
+                    return res
+                cur = to[bit ^ 1][cur]
+            else:
+                if to[bit][cur] == -1 or cnt[to[bit][cur]] == 0:
+                    return res
+                cur = to[bit][cur]
+        return res
 
     # Get max result for constant x ^ element in array
     def max_xor(self, x: int) -> int:

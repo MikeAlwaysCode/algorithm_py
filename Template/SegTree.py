@@ -25,8 +25,8 @@ class SegTree:
         self.lazy[o] ^= 1
 
     def do(self, o: int, l: int, r: int, val: int) -> None:
-        self.tree[o] = r - l + 1 - self.tree[o] # 异或反转
-        self.lazy[o] ^= 1
+        self.tree[o] += (r - l + 1) * val
+        self.lazy[o] += val
 
     def op(self, a: int, b: int) -> int:
         # + - * / max min

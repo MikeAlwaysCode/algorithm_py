@@ -1,8 +1,8 @@
 import sys
-from collections import *
 
 # import math
 # from bisect import *
+# from collections import *
 # from functools import *
 # from heapq import *
 # from itertools import *
@@ -49,28 +49,38 @@ ints = lambda: list(map(int, input().split()))
 #     return wrappedfunc
 # # endregion dfsconvert
 
-# MOD = 998244353
+MOD = 998244353
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
-    nums = ints()
- 
-    ans = 0
+    n, m, k = mint()
+    if k == 0:
+        print(pow(m, n, MOD))
+        return
 
-    # 134 ms
-    cnt = Counter(nums)
-    i, j = 0, n - 1
-    while i < j:
-        l = n - cnt[nums[i]] - i * 2
-        r = n - cnt[nums[j]] - i * 2
-        ans += (l + r - int(nums[i] != nums[j])) * (i + 1)
-        cnt[nums[i]] -= 1
-        cnt[nums[j]] -= 1
-        i += 1
-        j -= 1
- 
-    print(ans)
+    '''
+    # 100 ms
+    dp = [1] * m
+    for _ in range(n - 1):
+        ndp = [0] * m
+        for i in range(m - k):
+            ndp[i + k] = (dp[i] + ndp[i + k - 1]) % MOD
+        i, j = 0, m - 1
+        while i <= j:
+            ndp[i] = ndp[j] = (ndp[i] + ndp[j]) % MOD
+            i += 1
+            j -= 1
+        dp = ndp
+    print(sum(dp) % MOD)
+    '''
+
+    dp = list(range(m + 1))
+    for _ in range(n - 1):
+        ndp = [0] * (m + 1)
+        for i in range(m):
+            ndp[i + 1] = (ndp[i] + (dp[-1] - dp[min(i + k, m)] + dp[max(i - k + 1, 0)])) % MOD
+        dp = ndp
+    print(dp[-1])
 
 solve()

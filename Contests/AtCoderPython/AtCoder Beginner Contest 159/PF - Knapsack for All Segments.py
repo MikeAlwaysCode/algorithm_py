@@ -1,8 +1,8 @@
 import sys
-from collections import *
 
 # import math
 # from bisect import *
+# from collections import *
 # from functools import *
 # from heapq import *
 # from itertools import *
@@ -49,28 +49,20 @@ ints = lambda: list(map(int, input().split()))
 #     return wrappedfunc
 # # endregion dfsconvert
 
-# MOD = 998244353
+MOD = 998244353
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
+    n, s = mint()
     nums = ints()
- 
     ans = 0
-
-    # 134 ms
-    cnt = Counter(nums)
-    i, j = 0, n - 1
-    while i < j:
-        l = n - cnt[nums[i]] - i * 2
-        r = n - cnt[nums[j]] - i * 2
-        ans += (l + r - int(nums[i] != nums[j])) * (i + 1)
-        cnt[nums[i]] -= 1
-        cnt[nums[j]] -= 1
-        i += 1
-        j -= 1
- 
+    dp = [0] * (s + 1)
+    for x in nums:
+        dp[0] += 1
+        for i in range(s, x - 1, -1):
+            dp[i] = (dp[i] + dp[i - x]) % MOD
+        ans = (ans + dp[s]) % MOD
     print(ans)
 
 solve()

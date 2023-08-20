@@ -1,14 +1,15 @@
+import math
+import itertools
 import sys
-from collections import *
 
-# import math
-# from bisect import *
-# from functools import *
-# from heapq import *
-# from itertools import *
-# from random import *
+# import os
+# import random
+# from bisect import bisect, bisect_left
+# from collections import *
+# from functools import reduce
+# from heapq import heapify, heappop, heappush
+# from io import BytesIO, IOBase
 # from string import *
-# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -30,6 +31,7 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
+# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -54,23 +56,18 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
-    nums = ints()
- 
-    ans = 0
+    n, l, k = mint()
+    pos = ints() + [l]
+    v = ints()
+    dp = [[math.inf] * (k + 1) for _ in range(n + 1)]
+    dp[0][0] = 0
 
-    # 134 ms
-    cnt = Counter(nums)
-    i, j = 0, n - 1
-    while i < j:
-        l = n - cnt[nums[i]] - i * 2
-        r = n - cnt[nums[j]] - i * 2
-        ans += (l + r - int(nums[i] != nums[j])) * (i + 1)
-        cnt[nums[i]] -= 1
-        cnt[nums[j]] -= 1
-        i += 1
-        j -= 1
- 
-    print(ans)
+    for i in range(1, n + 1):
+        for j in range(max(0, i - k - 1), i):
+            # skip = i - j - 1
+            for m in range(k - i + j + 2):
+                dp[i][m + i - j - 1] = min(dp[i][m + i - j - 1], dp[j][m] + v[j] * (pos[i] - pos[j]))
+
+    print(min(dp[-1]))
 
 solve()

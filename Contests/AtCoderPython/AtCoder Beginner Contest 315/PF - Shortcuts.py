@@ -1,8 +1,8 @@
 import sys
-from collections import *
+import math
 
-# import math
 # from bisect import *
+# from collections import *
 # from functools import *
 # from heapq import *
 # from itertools import *
@@ -55,22 +55,32 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n = sint()
-    nums = ints()
- 
-    ans = 0
-
-    # 134 ms
-    cnt = Counter(nums)
-    i, j = 0, n - 1
-    while i < j:
-        l = n - cnt[nums[i]] - i * 2
-        r = n - cnt[nums[j]] - i * 2
-        ans += (l + r - int(nums[i] != nums[j])) * (i + 1)
-        cnt[nums[i]] -= 1
-        cnt[nums[j]] -= 1
-        i += 1
-        j -= 1
- 
+    p = []
+    for _ in range(n):
+        p.append(tuple(mint()))
+    
+    A = p[-1][1] - p[0][1]
+    B = p[0][0] - p[-1][0]
+    C = (p[0][1] - p[-1][1]) * p[0][0] + (p[-1][0] - p[0][0]) * p[0][1]
+    d = []
+    for i in range(1, n - 1):
+        dis = abs(A * p[i][0] + B * p[i][1] + C) / math.sqrt(A * A + B * B)
+        d.append((dis, i))
+    skip = [False] * n
+    cost, c = 1, 0
+    d.sort(reverse = True)
+    print(d)
+    for dis, i in d:
+        if dis >= cost:
+            skip[i] = True
+            c += 1
+            cost = pow(2, c) - cost
+    ans = 0.0
+    px, py = p[0][0], p[0][1]
+    for i in range(1, n):
+        if skip[i]: continue
+        ans += math.sqrt(pow(abs(p[i][0] - px), 2) + pow(abs(p[i][1] - py), 2))
+        px, py = p[i][0], p[i][1]
     print(ans)
 
 solve()

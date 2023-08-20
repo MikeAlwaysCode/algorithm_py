@@ -1,8 +1,9 @@
 import sys
-from collections import *
+import re
 
 # import math
 # from bisect import *
+# from collections import *
 # from functools import *
 # from heapq import *
 # from itertools import *
@@ -54,23 +55,7 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
-    nums = ints()
- 
-    ans = 0
-
-    # 134 ms
-    cnt = Counter(nums)
-    i, j = 0, n - 1
-    while i < j:
-        l = n - cnt[nums[i]] - i * 2
-        r = n - cnt[nums[j]] - i * 2
-        ans += (l + r - int(nums[i] != nums[j])) * (i + 1)
-        cnt[nums[i]] -= 1
-        cnt[nums[j]] -= 1
-        i += 1
-        j -= 1
- 
-    print(ans)
+    s = input()
+    print(re.sub("[aeiou]", "", s))
 
 solve()

@@ -98,6 +98,7 @@ def solve() -> None:
         for j in range(m):
             dis[i][j] = d[p[j][0]][p[j][1]]
     
+    # traveling salesman
     ans = -1
     dp = [[math.inf] * m for _ in range(1 << m)]
     dp[1][0] = 0

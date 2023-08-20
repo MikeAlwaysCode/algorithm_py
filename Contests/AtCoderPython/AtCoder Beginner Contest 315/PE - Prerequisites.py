@@ -55,22 +55,34 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n = sint()
-    nums = ints()
- 
-    ans = 0
+    g = [[] for _ in range(n + 1)]
+    to = [[] for _ in range(n + 1)]
+    deg = [0] * (n + 1)
+    for i in range(1, n + 1):
+        g[i] = ints()[1:]
+        deg[i] = len(g[i])
+        for j in g[i]:
+            to[j].append(i)
 
-    # 134 ms
-    cnt = Counter(nums)
-    i, j = 0, n - 1
-    while i < j:
-        l = n - cnt[nums[i]] - i * 2
-        r = n - cnt[nums[j]] - i * 2
-        ans += (l + r - int(nums[i] != nums[j])) * (i + 1)
-        cnt[nums[i]] -= 1
-        cnt[nums[j]] -= 1
-        i += 1
-        j -= 1
- 
-    print(ans)
+    seen = [False] * (n + 1)
+    q = deque([1])
+    while q:
+        x = q.popleft()
+        for y in g[x]:
+            if seen[y]: continue
+            seen[y] = True
+            q.append(y)
+
+    ans = []
+    q = deque([i for i in range(1, n + 1) if seen[i] and deg[i] == 0])
+    while q:
+        x = q.popleft()
+        ans.append(x)
+        for y in to[x]:
+            deg[y] -= 1
+            if seen[y] and deg[y] == 0:
+                q.append(y)
+
+    print(*ans)
 
 solve()

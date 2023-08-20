@@ -1,14 +1,15 @@
+import itertools
 import sys
-from collections import *
 
 # import math
-# from bisect import *
-# from functools import *
-# from heapq import *
-# from itertools import *
-# from random import *
+# import os
+# import random
+# from bisect import bisect, bisect_left
+# from collections import *
+# from functools import reduce
+# from heapq import heapify, heappop, heappush
+# from io import BytesIO, IOBase
 # from string import *
-# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -30,6 +31,7 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
+# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -56,21 +58,28 @@ ints = lambda: list(map(int, input().split()))
 def solve() -> None:
     n = sint()
     nums = ints()
- 
-    ans = 0
+    nums.sort()
+    if nums[0] & 1:
+        print("NO")
+        return
+    s = []
+    pre = 0
+    for i in range(0, n * 2, 2):
+        if nums[i] != nums[i + 1]:
+            print("NO")
+            return
+        d = nums[i] - pre
+        if i:
+            if d == 0 or d % i != 0:
+                print("NO")
+                return
+            s.append(d // i)
+        pre = nums[i]
+    ss = sum(list(itertools.accumulate(s))) * 2
+    if ss >= nums[0] or (nums[0] - ss) % (n * 2):
+        print("NO")
+    else:
+        print("YES")
 
-    # 134 ms
-    cnt = Counter(nums)
-    i, j = 0, n - 1
-    while i < j:
-        l = n - cnt[nums[i]] - i * 2
-        r = n - cnt[nums[j]] - i * 2
-        ans += (l + r - int(nums[i] != nums[j])) * (i + 1)
-        cnt[nums[i]] -= 1
-        cnt[nums[j]] -= 1
-        i += 1
-        j -= 1
- 
-    print(ans)
-
-solve()
+for _ in range(int(input())):
+    solve()

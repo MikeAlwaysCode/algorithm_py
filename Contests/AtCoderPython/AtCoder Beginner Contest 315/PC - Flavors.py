@@ -1,8 +1,8 @@
 import sys
-from collections import *
 
 # import math
 # from bisect import *
+# from collections import *
 # from functools import *
 # from heapq import *
 # from itertools import *
@@ -55,22 +55,20 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n = sint()
-    nums = ints()
- 
+    cups = []
+    for _ in range(n):
+        cups.append(tuple(mint()))
+    cups.sort(key = lambda x: -x[1])
     ans = 0
-
-    # 134 ms
-    cnt = Counter(nums)
-    i, j = 0, n - 1
-    while i < j:
-        l = n - cnt[nums[i]] - i * 2
-        r = n - cnt[nums[j]] - i * 2
-        ans += (l + r - int(nums[i] != nums[j])) * (i + 1)
-        cnt[nums[i]] -= 1
-        cnt[nums[j]] -= 1
-        i += 1
-        j -= 1
- 
+    if cups[0][0] == cups[1][0]:
+        ans = cups[0][1] + cups[1][1] // 2
+        i = 2
+        while i < n and cups[i][0] == cups[0][0]:
+            i += 1
+        if i < n:
+            ans = max(ans, cups[0][1] + cups[i][1])
+    else:
+        ans = cups[0][1] + cups[1][1]
     print(ans)
 
 solve()
