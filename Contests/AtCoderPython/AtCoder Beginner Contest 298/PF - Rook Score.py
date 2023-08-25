@@ -1,16 +1,14 @@
 import sys
-from collections import Counter
+from collections import *
 
-# import itertools
 # import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
-# from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
+# from bisect import *
+# from functools import *
+# from heapq import *
+# from itertools import *
+# from random import *
 # from string import *
+# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -32,7 +30,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -57,23 +54,23 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, x = mint()
-    s = input()
-    tot = s.count('0') * 2 - n
-    ans = curr = 0
-    for c in s:
-        if tot == 0:
-            if curr == x:
-                print(-1)
-                return
-        elif (x - curr) % tot == 0 and (x - curr) // tot >= 0:
-            ans += 1
-        curr += 1 if c == '0' else -1
+    n = sint()
+    point = Counter()
+    row = Counter()
+    col = Counter()
+    for _ in range(n):
+        x, y, v = mint()
+        row[x] += v
+        col[y] += v
+        point[(x, y)] = v
+    
+    ans = 0
+    col_sorted = sorted(((v, k) for k, v in col.items()), reverse = True)
+    for x, xv in row.items():
+        for yv, y in col_sorted:
+            ans = max(ans, xv + yv - point[(x, y)])
+            if not point[(x, y)]: break
 
-    if tot == 0:
-        print(0)
-    else:
-        print(ans)
+    print(ans)
 
-for _ in range(int(input())):
-    solve()
+solve()

@@ -1,5 +1,4 @@
 import sys
-from collections import Counter
 
 # import itertools
 # import math
@@ -57,23 +56,49 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, x = mint()
-    s = input()
-    tot = s.count('0') * 2 - n
-    ans = curr = 0
-    for c in s:
-        if tot == 0:
-            if curr == x:
-                print(-1)
-                return
-        elif (x - curr) % tot == 0 and (x - curr) // tot >= 0:
-            ans += 1
-        curr += 1 if c == '0' else -1
+    w, f = mint()
+    n = sint()
+    nums = ints()
+    s = sum(nums)
 
-    if tot == 0:
-        print(0)
-    else:
-        print(ans)
+    def cal(x: int) -> int:
+        return min(max((x + w - 1) // w, (s - x + f - 1) // f), max((x + f - 1) // f, (s - x + w - 1) // w))
+    
+    ans = min((s + w - 1) // w, (s + f - 1) // f)
+    dp = [False] * (s + 1)
+    dp[0] = True
+    for x in nums:
+        for j in range(s, x - 1, -1):
+            if dp[j - x]:
+                dp[j] = True
+                ans = min(ans, cal(j))
+    print(ans)
+
+    '''
+    mx = max(nums)
+    l = 1
+    r = min((s + w - 1) // w, (s + f - 1) // f)
+    def check(x: int) -> bool:
+        vw, vf = w * x, f * x
+        if mx > vw and mx > vf: return False
+        if vw >= s or vf >= s: return True
+        dp = [False] * (vw + 1)
+        dp[0] = True
+        for x in nums:
+            for j in range(vw, x - 1, -1):
+                if dp[j - x]:
+                    dp[j] = True
+                    if vf >= s - j: return True
+        return False
+
+    while l < r:
+        mid = (l + r) >> 1
+        if check(mid):
+            r = mid
+        else:
+            l = mid + 1
+    print(r)
+    '''
 
 for _ in range(int(input())):
     solve()

@@ -1,5 +1,5 @@
 import sys
-from collections import Counter
+from heapq import heapify, heappop, heappush
 
 # import itertools
 # import math
@@ -8,7 +8,6 @@ from collections import Counter
 # from bisect import bisect, bisect_left
 # from collections import *
 # from functools import reduce
-# from heapq import heapify, heappop, heappush
 # from io import BytesIO, IOBase
 # from string import *
 
@@ -57,23 +56,18 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, x = mint()
-    s = input()
-    tot = s.count('0') * 2 - n
-    ans = curr = 0
-    for c in s:
-        if tot == 0:
-            if curr == x:
-                print(-1)
-                return
-        elif (x - curr) % tot == 0 and (x - curr) // tot >= 0:
-            ans += 1
-        curr += 1 if c == '0' else -1
-
-    if tot == 0:
-        print(0)
-    else:
-        print(ans)
+    n, m, d = mint()
+    nums = ints()
+    ans = s = 0
+    h = []
+    for i, x in enumerate(nums, 1):
+        if x > 0:
+            heappush(h, x)
+            s += x
+            if len(h) > m:
+                s -= heappop(h)
+            ans = max(ans, s - d * i)
+    print(ans)
 
 for _ in range(int(input())):
     solve()

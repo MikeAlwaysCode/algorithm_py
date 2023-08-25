@@ -1,8 +1,7 @@
+import math
 import sys
-from collections import Counter
 
 # import itertools
-# import math
 # import os
 # import random
 # from bisect import bisect, bisect_left
@@ -57,23 +56,15 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, x = mint()
-    s = input()
-    tot = s.count('0') * 2 - n
-    ans = curr = 0
-    for c in s:
-        if tot == 0:
-            if curr == x:
-                print(-1)
-                return
-        elif (x - curr) % tot == 0 and (x - curr) // tot >= 0:
-            ans += 1
-        curr += 1 if c == '0' else -1
-
-    if tot == 0:
-        print(0)
+    n = sint()
+    k = math.isqrt(n * 2)
+    if k * (k + 1) == n * 2:
+        print(k + 1)
     else:
-        print(ans)
+        while k * (k + 1) > n * 2:
+            k -= 1
+
+        print(k + 1 + n - k * (k + 1) // 2)
 
 for _ in range(int(input())):
     solve()

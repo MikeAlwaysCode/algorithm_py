@@ -1,16 +1,14 @@
 import sys
-from collections import Counter
+from functools import *
 
-# import itertools
 # import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
+# from bisect import *
 # from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
+# from heapq import *
+# from itertools import *
+# from random import *
 # from string import *
+# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -32,7 +30,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -52,28 +49,22 @@ ints = lambda: list(map(int, input().split()))
 #     return wrappedfunc
 # # endregion dfsconvert
 
-# MOD = 998244353
+MOD = 998244353
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, x = mint()
-    s = input()
-    tot = s.count('0') * 2 - n
-    ans = curr = 0
-    for c in s:
-        if tot == 0:
-            if curr == x:
-                print(-1)
-                return
-        elif (x - curr) % tot == 0 and (x - curr) // tot >= 0:
-            ans += 1
-        curr += 1 if c == '0' else -1
+    n = sint()
 
-    if tot == 0:
-        print(0)
-    else:
-        print(ans)
+    @lru_cache(None)
+    def f(x: int) -> int:
+        if x == 1: return 1
+        res = 0
+        for d in range(2, 7):
+            if x % d: continue
+            res += f(x // d)
+        return res * pow(5, MOD - 2, MOD) % MOD
+    
+    print(f(n))
 
-for _ in range(int(input())):
-    solve()
+solve()
