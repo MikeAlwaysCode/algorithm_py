@@ -1,14 +1,15 @@
+import math
 import sys
 from collections import *
 
-# import math
-# from bisect import *
-# from functools import *
-# from heapq import *
-# from itertools import *
-# from random import *
+# import itertools
+# import os
+# import random
+# from bisect import bisect, bisect_left
+# from functools import reduce
+# from heapq import heapify, heappop, heappush
+# from io import BytesIO, IOBase
 # from string import *
-# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -30,6 +31,7 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
+# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -54,18 +56,44 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    s = input()
+    n, m, k = mint()
+    h = ints()
+    l = h[:]
+    r = h[:]
+    g = [[] for _ in range(n)]
+    deg = [0] * n
+    for _ in range(m):
+        u, v = mint()
+        u -= 1
+        v -= 1
+        deg[v] += 1
+        g[u].append(v)
 
-    ans = 0
-    cnt = Counter()
-    mask = 0
-    cnt[mask] = 1
-    for c in s:
-        c = int(c)
-        mask ^= 1 << c
-        ans += cnt[mask]
-        cnt[mask] += 1
+    q = deque((i for i in range(n) if deg[i] == 0))
+    for i in range(n):
+        u = q[i]
+        for v in g[u]:
+            deg[v] -= 1
+            if deg[v] == 0:
+                q.append(v)
 
+    # 求出以i作为起点，最长的链
+    dp = [0] * n
+    for i in range(n - 1, -1, -1):
+        u = q[i]
+        for v in g[u]:
+            dp[u] = max(dp[u], dp[v] + (h[v] - h[u]) % k)
+
+    idx = sorted(range(n), key = lambda x: h[x])
+    mx = 0
+    for i in range(n):
+        dp[i] += h[i]
+        mx = max(mx, dp[i])
+    ans = math.inf
+    for i in idx:
+        ans = min(ans, mx - h[i])
+        mx = max(mx, dp[i] + k)
     print(ans)
 
-solve()
+for _ in range(int(input())):
+    solve()

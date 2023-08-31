@@ -1,5 +1,4 @@
 import sys
-from string import *
 
 # import itertools
 # import math
@@ -10,6 +9,7 @@ from string import *
 # from functools import reduce
 # from heapq import heapify, heappop, heappush
 # from io import BytesIO, IOBase
+# from string import *
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -56,20 +56,40 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
-    left, right = [], []
-    i = 0
-    while n:
-        if n <= 3:
-            left.append(ascii_lowercase[i:i + n])
-            break
-        else:
-            x = (n - 2) // 2
-            left.append(ascii_lowercase[i] * x)
-            right.append(ascii_lowercase[i] * (x + 1))
-            i += 1
-            n -= x * 2 + 1
-    print("".join(left) + "".join(right))
+    n, m = mint()
+    row = dict()
+    col = dict()
+    g = [['.'] * m for _ in range(n)]
+    for i in range(n):
+        s = input()
+        for j, c in enumerate(s):
+            if c == "L":
+                r1, c1, c2 = i, j, j + 1
+                if (c1, c2) in row:
+                    r2 = row[(c1, c2)]
+                    del row[(c1, c2)]
+                    g[r1][c1] = 'W'
+                    g[r1][c2] = 'B'
+                    g[r2][c1] = 'B'
+                    g[r2][c2] = 'W'
+                else:
+                    row[(c1, c2)] = r1
+            if c == 'U':
+                r1, r2, c1 = i, i + 1, j
+                if (r1, r2) in col:
+                    c2 = col[(r1, r2)]
+                    del col[(r1, r2)]
+                    g[r1][c1] = 'W'
+                    g[r1][c2] = 'B'
+                    g[r2][c1] = 'B'
+                    g[r2][c2] = 'W'
+                else:
+                    col[(r1, r2)] = c1
+    if len(row) or len(col):
+        print(-1)
+    else:
+        for row in g:
+            print("".join(row))
 
 for _ in range(int(input())):
     solve()

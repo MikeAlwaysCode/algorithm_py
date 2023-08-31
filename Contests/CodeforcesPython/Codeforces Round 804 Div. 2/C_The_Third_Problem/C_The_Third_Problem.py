@@ -1,14 +1,15 @@
 import sys
-from collections import *
 
+# import itertools
 # import math
-# from bisect import *
-# from functools import *
-# from heapq import *
-# from itertools import *
-# from random import *
+# import os
+# import random
+# from bisect import bisect, bisect_left
+# from collections import *
+# from functools import reduce
+# from heapq import heapify, heappop, heappush
+# from io import BytesIO, IOBase
 # from string import *
-# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -30,6 +31,7 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
+# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -50,22 +52,23 @@ ints = lambda: list(map(int, input().split()))
 # # endregion dfsconvert
 
 # MOD = 998244353
-# MOD = 10 ** 9 + 7
+MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    s = input()
-
-    ans = 0
-    cnt = Counter()
-    mask = 0
-    cnt[mask] = 1
-    for c in s:
-        c = int(c)
-        mask ^= 1 << c
-        ans += cnt[mask]
-        cnt[mask] += 1
-
+    n = sint()
+    nums = ints()
+    l, r = n, -1
+    d = {v:i for i, v in enumerate(nums)}
+    ans = 1
+    for i in range(n):
+        pos = d[i]
+        if pos < l or pos > r:
+            l = min(l, pos)
+            r = max(r, pos)
+        else:
+            ans = ans * (r - l - i + 1) % MOD
     print(ans)
 
-solve()
+for _ in range(int(input())):
+    solve()

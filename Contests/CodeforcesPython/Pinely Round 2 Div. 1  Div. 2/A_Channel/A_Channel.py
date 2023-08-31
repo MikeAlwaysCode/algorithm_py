@@ -1,14 +1,15 @@
 import sys
-from collections import *
 
+# import itertools
 # import math
-# from bisect import *
-# from functools import *
-# from heapq import *
-# from itertools import *
-# from random import *
+# import os
+# import random
+# from bisect import bisect, bisect_left
+# from collections import *
+# from functools import reduce
+# from heapq import heapify, heappop, heappush
+# from io import BytesIO, IOBase
 # from string import *
-# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -30,6 +31,7 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
+# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -54,18 +56,25 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
+    n, a, q = mint()
     s = input()
-
-    ans = 0
-    cnt = Counter()
-    mask = 0
-    cnt[mask] = 1
+    if n == a:
+        print("YES")
+        return
+        
+    ok = mb = False
+    
+    cnt = mx = a
     for c in s:
-        c = int(c)
-        mask ^= 1 << c
-        ans += cnt[mask]
-        cnt[mask] += 1
+        d = 1 if c == '+' else -1
+        mx = max(mx, mx + d)
+        cnt += d
+        if cnt >= n:
+            ok = True
+        elif mx >= n:
+            mb = True
+    
+    print("YES" if ok else "MAYBE" if mb else "NO")
 
-    print(ans)
-
-solve()
+for _ in range(int(input())):
+    solve()

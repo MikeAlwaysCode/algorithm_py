@@ -1,3 +1,4 @@
+
 class BinaryTrie:
     def __init__(self, max_bit: int = 30):
         self.inf = 1 << 63

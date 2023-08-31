@@ -1,14 +1,15 @@
 import sys
 
+# import itertools
 # import math
-# from bisect import *
+# import os
+# import random
+# from bisect import bisect, bisect_left
 # from collections import *
-# from functools import *
-# from heapq import *
-# from itertools import *
-# from random import *
+# from functools import reduce
+# from heapq import heapify, heappop, heappush
+# from io import BytesIO, IOBase
 # from string import *
-# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -30,6 +31,7 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
+# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -54,54 +56,27 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    L, n1, n2 = mint()
-    A = []
-    B = []
-    for _ in range(n1):
-        A.append(list(mint()))
-    for _ in range(n2):
-        B.append(list(mint()))
-
+    n, m = mint()
+    n += 1
+    d, k = divmod(n, m + 1)
     ans = 0
-    i = j = 0
-    while i < n1 and j < n2:
-        if A[i][0] == B[j][0]:
-            ans += min(A[i][1], B[j][1])
-        if A[i][1] > B[j][1]:
-            A[i][1] -= B[j][1]
-            j += 1
-        else:
-            B[j][1] -= A[i][1]
-            i += 1
-
     '''
-    i = j = 1
-    l1, r1, v1 = 1, A[0][1], A[0][0]
-    l2, r2, v2 = 1, B[0][1], B[0][0]
-    
-    while i < n1 or j < n2:
-        if v1 == v2:
-            r = min(r1, r2)
-            l = max(l1, l2)
-            ans += max(0, r - l + 1)
-
-        if r1 > r2:
-            l2, r2, v2 = r2 + 1, r2 + B[j][1], B[j][0]
-            j += 1
-        elif r2 > r1:
-            l1, r1, v1 = r1 + 1, r1 + A[i][1], A[i][0]
-            i += 1
+    # TLE
+    while n:
+        if k:
+            ans += (d + 1) * (n - d - 1)
+            k -= 1
+            n -= d + 1
         else:
-            l1, r1, v1 = r1 + 1, r1 + A[i][1], A[i][0]
-            i += 1
-            l2, r2, v2 = r2 + 1, r2 + B[j][1], B[j][0]
-            j += 1
-    if v1 == v2:
-        r = min(r1, r2)
-        l = max(l1, l2)
-        ans += max(0, r - l + 1)
+            ans += d * (n - d)
+            n -= d
     '''
-
+    if k:
+        p = (n + n - (k + 1) * (d + 1)) * k // 2
+        ans += (d + 1) * p
+        n -= k * (d + 1)
+    ans += (n - d) * n // 2
     print(ans)
 
-solve()
+for _ in range(int(input())):
+    solve()

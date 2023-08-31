@@ -1,14 +1,15 @@
 import sys
-from collections import *
 
+# import itertools
 # import math
-# from bisect import *
-# from functools import *
-# from heapq import *
-# from itertools import *
-# from random import *
+# import os
+# import random
+# from bisect import bisect, bisect_left
+# from collections import *
+# from functools import reduce
+# from heapq import heapify, heappop, heappush
+# from io import BytesIO, IOBase
 # from string import *
-# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -30,6 +31,7 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
+# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -54,18 +56,20 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    s = input()
+    n, k = mint()
+    nums = ints()
+    s = set(nums)
+    for i in range(n + 1):
+        if i not in s:
+            nums.append(i)
+            break
+    ans = []
+    k %= (n + 1)
+    i = (-k) % (n + 1)
+    for _ in range(n):
+        ans.append(nums[i])
+        i = (i + 1) % (n + 1)
+    print(*ans)
 
-    ans = 0
-    cnt = Counter()
-    mask = 0
-    cnt[mask] = 1
-    for c in s:
-        c = int(c)
-        mask ^= 1 << c
-        ans += cnt[mask]
-        cnt[mask] += 1
-
-    print(ans)
-
-solve()
+for _ in range(int(input())):
+    solve()
