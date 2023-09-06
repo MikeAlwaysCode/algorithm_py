@@ -1,30 +1,23 @@
-import math
 import sys
-from bisect import *
-from collections import *
-from functools import *
-from heapq import *
-from itertools import *
-from random import *
-from string import *
+
+# import itertools
+# import math
+# import os
+# import random
+# from bisect import bisect, bisect_left
+# from collections import *
+# from functools import reduce
+# from heapq import heapify, heappop, heappush
+# from io import BytesIO, IOBase
+# from string import *
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
 sint = lambda: int(input())
 mint = lambda: map(int, input().split())
 ints = lambda: list(map(int, input().split()))
-# print = lambda d: sys.stdout.write(str(d) + " ")
+# print = lambda d: sys.stdout.write(str(d) + "\n")
 # endregion fastio
-
-# MOD = 998244353
-# MOD = 10 ** 9 + 7
-# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
-
-def solve() -> None:
-    return
-
-for _ in range(int(input())):
-    solve()
 
 # # region interactive
 # def printQry(a, b) -> None:
@@ -57,3 +50,13 @@ for _ in range(int(input())):
 #             return to
 #     return wrappedfunc
 # # endregion dfsconvert
+
+# MOD = 998244353
+# MOD = 10 ** 9 + 7
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
+
+def solve() -> None:
+    w = sint()
+    print("YES" if w >= 4 and w % 2 == 0 else "NO")
+
+solve()

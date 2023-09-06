@@ -24,6 +24,14 @@ class BIT:
         self.add(x + 1, val - self.nums[x])
         self.nums[x] = val
 
+    def lower_bound(self, s):
+        x = y = 0
+        for i in range(self.n.bit_length() - 1, -1, -1):
+            k = x + (1 << i)
+            if k <= self.n and (y + self.BITree[k] < s):
+                y += self.BITree[k]
+                x += 1 << i
+        return x + 1
 
     # 逆序对
     def getPairOfInversion(nums: list) -> int:

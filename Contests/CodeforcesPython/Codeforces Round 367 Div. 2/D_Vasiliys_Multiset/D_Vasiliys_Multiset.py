@@ -1,75 +1,36 @@
-import itertools
-import math
-import os
-import random
 import sys
-from bisect import bisect, bisect_left
-from collections import *
-from functools import reduce
-from heapq import heapify, heappop, heappush
-from io import BytesIO, IOBase
-from string import *
+
+# import itertools
+# import math
+# import os
+# import random
+# from bisect import bisect, bisect_left
+# from collections import *
+# from functools import reduce
+# from heapq import heapify, heappop, heappush
+# from io import BytesIO, IOBase
+# from string import *
 
 # region fastio
-BUFSIZE = 8192
-class FastIO(IOBase):
-    newlines = 0
-
-    def __init__(self, file):
-        self._fd = file.fileno()
-        self.buffer = BytesIO()
-        self.writable = "x" in file.mode or "r" not in file.mode
-        self.write = self.buffer.write if self.writable else None
-
-    def read(self):
-        while True:
-            b = os.read(self._fd, max(os.fstat(self._fd).st_size, BUFSIZE))
-            if not b:
-                break
-            ptr = self.buffer.tell()
-            self.buffer.seek(0, 2), self.buffer.write(b), self.buffer.seek(ptr)
-        self.newlines = 0
-        return self.buffer.read()
-
-    def readline(self):
-        while self.newlines == 0:
-            b = os.read(self._fd, max(os.fstat(self._fd).st_size, BUFSIZE))
-            self.newlines = b.count(b"\n") + (not b)
-            ptr = self.buffer.tell()
-            self.buffer.seek(0, 2), self.buffer.write(b), self.buffer.seek(ptr)
-        self.newlines -= 1
-        return self.buffer.readline()
-
-    def flush(self):
-        if self.writable:
-            os.write(self._fd, self.buffer.getvalue())
-            self.buffer.truncate(0), self.buffer.seek(0)
-
-class IOWrapper(IOBase):
-    def __init__(self, file):
-        self.buffer = FastIO(file)
-        self.flush = self.buffer.flush
-        self.writable = self.buffer.writable
-        self.write = lambda s: self.buffer.write(s.encode("ascii"))
-        self.read = lambda: self.buffer.read().decode("ascii")
-        self.readline = lambda: self.buffer.readline().decode("ascii")
-        
-sys.stdin, sys.stdout = IOWrapper(sys.stdin), IOWrapper(sys.stdout)
-input = lambda: sys.stdin.readline().rstrip("\r\n")
+input = lambda: sys.stdin.readline().rstrip()
+sint = lambda: int(input())
+mint = lambda: map(int, input().split())
 ints = lambda: list(map(int, input().split()))
+# print = lambda d: sys.stdout.write(str(d) + "\n")
 # endregion fastio
 
-# region interactive
-def printQry(a, b) -> None:
-    sa = str(a)
-    sb = str(b)
-    print(f"? {sa} {sb}", flush = True)
+# # region interactive
+# def printQry(a, b) -> None:
+#     sa = str(a)
+#     sb = str(b)
+#     print(f"? {sa} {sb}", flush = True)
 
-def printAns(ans) -> None:
-    s = str(ans)
-    print(f"! {s}", flush = True)
-# endregion interactive
+# def printAns(ans) -> None:
+#     s = str(ans)
+#     print(f"! {s}", flush = True)
+# # endregion interactive
 
+# # region dfsconvert
 # from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
@@ -88,18 +49,68 @@ def printAns(ans) -> None:
 #                     to = stack[-1].send(to)
 #             return to
 #     return wrappedfunc
+# # endregion dfsconvert
 
 # MOD = 998244353
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
+class BinaryTrie:
+    def __init__(self, max_bit: int = 30):
+        self.inf = 1 << 63
+        self.to = [[-1], [-1]]
+        self.cnt = [0]
+        self.max_bit = max_bit
+
+    def add(self, num: int) -> None:
+        cur = 0
+        self.cnt[cur] += 1
+        for k in range(self.max_bit, -1, -1):
+            bit = (num >> k) & 1
+            if self.to[bit][cur] == -1:
+                self.to[bit][cur] = len(self.cnt)
+                self.to[0].append(-1)
+                self.to[1].append(-1)
+                self.cnt.append(0)
+            cur = self.to[bit][cur]
+            self.cnt[cur] += 1
+
+    def remove(self, num: int) -> bool:
+        if self.cnt[0] == 0: return False
+        cur = 0
+        rm = [0]
+        for k in range(self.max_bit, -1, -1):
+            bit = (num >> k) & 1
+            cur = self.to[bit][cur]
+            if cur == -1 or self.cnt[cur] == 0: return False
+            rm.append(cur)
+        for cur in rm: self.cnt[cur] -= 1
+        return True
+
+    # Get max result for constant x ^ element in array
+    def max_xor(self, x: int) -> int:
+        if self.cnt[0] == 0: return -self.inf
+        res = cur = 0
+        for k in range(self.max_bit, -1, -1):
+            bit = (x >> k) & 1
+            nxt = self.to[bit ^ 1][cur]
+            if nxt == -1 or self.cnt[nxt] == 0:
+                cur = self.to[bit][cur]
+            else:
+                cur = nxt
+                res |= 1 << k
+        return res
+
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    bt = BinaryTrie()
+    bt.add(0)
+    for _ in range(sint()):
+        qry = input().split()
+        if qry[0] == "+":
+            bt.add(int(qry[1]))
+        elif qry[0] == "-":
+            bt.remove(int(qry[1]))
+        else:
+            print(bt.max_xor(int(qry[1])))
 
-    return
-
-for _ in range(int(input())):
-    solve()
+solve()

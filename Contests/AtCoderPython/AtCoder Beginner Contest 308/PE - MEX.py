@@ -56,9 +56,28 @@ def solve() -> None:
     n = sint()
     A = ints()
     s = input()
+
+    ans = 0
+    f0 = [0] * 8
+    f1 = [0] * 8
+    for x, c in zip(A, s):
+        if c == 'M':
+            f0[1 << x] += 1
+        elif c == 'E':
+            for v in range(3):
+                f1[(1 << x) | (1 << v)] += f0[1 << v]
+        else:
+            for v in range(1, 8):
+                if not f1[v]: continue
+                mask = v | (1 << x)
+                if mask == 7:
+                    ans += 3 * f1[v]
+                else:
+                    mask ^= 7
+                    ans += ((mask & (-mask)).bit_length() - 1) * f1[v]
+    '''
     m = [0] * 3
     me = [[0] * 3 for _ in range(3)]
-    ans = 0
     for x, c in zip(A, s):
         if c == "M":
             m[x] += 1
@@ -73,6 +92,7 @@ def solve() -> None:
                         if k != x and k != i and k != j:
                             ans += me[i][j] * k
                             break
+    '''
     print(ans)
 
 solve()
