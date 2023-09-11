@@ -1,11 +1,11 @@
+import math
 import sys
+from collections import *
 
 # import itertools
-# import math
 # import os
 # import random
 # from bisect import bisect, bisect_left
-# from collections import *
 # from functools import reduce
 # from heapq import heapify, heappop, heappush
 # from io import BytesIO, IOBase
@@ -56,38 +56,44 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, k = mint()
+    n = sint()
     nums = ints()
+    c = ints()
+    deg = [0] * n
 
-    h = nums[k - 1]
-    i = j = l = r = k - 1
-    ls = rs = mnls = mnrs = 0
-    l_move = r_move = True
-    while l_move or r_move:
-        l_move = r_move = False
-        while (i == l or ls < 0) and i > 0:
-            i -= 1
-            ls += nums[i]
-            mnls = min(mnls, ls)
-        if h + mnls >= 0:
-            h += ls
-            ls = mnls = 0
-            l = i
-            l_move = True
-        while (j == r or rs < 0) and j < n - 1:
-            j += 1
-            rs += nums[j]
-            mnrs = min(mnrs, rs)
-        if h + mnrs >= 0:
-            h += rs
-            rs = mnrs = 0
-            r = j
-            r_move = True
-        if l == 0 or r == n - 1:
-            print("YES")
-            return
+    for i in range(n):
+        nums[i] -= 1
+        deg[nums[i]] += 1
 
-    print("NO")
+    ans = []
+    q = deque(i for i in range(n) if deg[i] == 0)
+    seen = [False] * n
+    while q:
+        x = q.popleft()
+        ans.append(x + 1)
+        seen[x] = True
+        deg[nums[x]] -= 1
+        if deg[nums[x]] == 0:
+            q.append(nums[x])
+    
+    for i in range(n):
+        if seen[i]: continue
+        path = []
+        mx = math.inf
+        idx = 0
+        while not seen[i]:
+            path.append(i)
+            seen[i] = True
+            if c[i] < mx:
+                mx = c[i]
+                idx = len(path)
+            i = nums[i]
+        for x in path[idx:]:
+            ans.append(x + 1)
+        for x in path[:idx]:
+            ans.append(x + 1)
+
+    print(*ans)
 
 for _ in range(int(input())):
     solve()

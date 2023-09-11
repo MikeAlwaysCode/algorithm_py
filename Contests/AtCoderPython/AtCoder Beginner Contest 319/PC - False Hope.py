@@ -1,11 +1,11 @@
 import math
 import sys
+from itertools import *
 
 # from bisect import *
 # from collections import *
 # from functools import *
 # from heapq import *
-# from itertools import *
 # from random import *
 # from string import *
 # from types import GeneratorType
@@ -53,56 +53,41 @@ ints = lambda: list(map(int, input().split()))
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-class BIT:
-    def __init__(self, n: int):
-        self.n = n
-        self.BITree = [math.inf] * (self.n + 1)
-        
-    def lowbit(self, x: int) -> int:
-        return x & -x
-    
-    def query(self, x: int) -> int:
-        ans = math.inf
-        x += 1
-        while x:
-            ans = min(ans, self.BITree[x])
-            x -= self.lowbit(x)
-        return ans
-
-    def update(self, x: int, val: int) -> None:
-        x += 1
-        while x <= self.n:
-            self.BITree[x] = min(self.BITree[x], val)
-            x += self.lowbit(x)
-
 def solve() -> None:
-    n = sint()
-    a = []
-    s = set()
-    for _ in range(n):
-        a.append(ints())
-        a[-1].sort()
-        s.add(a[-1][1])
-
-    a.sort()
+    g = []
+    for _ in range(3):
+        g.append(ints())
     
-    disc = {v:i for i, v in enumerate(sorted(s))}
-    m = len(s)
+    q = p = 0
+    for per in permutations(range(9)):
+        row = [[] for _ in range(3)]
+        col = [[] for _ in range(3)]
+        dia1 = []
+        dia2 = []
+        check = True
+        for x in per:
+            r, c = divmod(x, 3)
+            row[r].append(g[r][c])
+            col[c].append(g[r][c])
+            if r == c:
+                dia1.append(g[r][c])
+            if r + c == 2:
+                dia2.append(g[r][c])
+            if len(row[r]) >= 2 and row[r][0] == row[r][1]:
+                check = False
+                break
+            if len(col[c]) >= 2 and col[c][0] == col[c][1]:
+                check = False
+                break
+            if len(dia1) >= 2 and dia1[0] == dia1[1]:
+                check = False
+                break
+            if len(dia2) >= 2 and dia2[0] == dia2[1]:
+                check = False
+                break
+        if check: p += 1
+        q += 1
 
-    bit = BIT(m)
-    i = 0
-    while i < n:
-        j = i
-        while j < n and a[j][0] == a[i][0]:
-            if bit.query(disc[a[j][1]] - 1) < a[j][2]:
-                print("Yes")
-                return
-            j += 1
-
-        while i < j:
-            bit.update(disc[a[i][1]], a[i][2])
-            i += 1
-    
-    print("No")
+    print(p / q)
 
 solve()

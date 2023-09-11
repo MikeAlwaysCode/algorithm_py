@@ -14,6 +14,13 @@ class BIT:
             ans += self.BITree[x]
             x -= self.lowbit(x)
         return ans
+        # ans = math.inf
+        # x += 1
+        # while x <= self.n:
+        #     self.BITree[x] = min(self.BITree[x], val)
+        #     x += self.lowbit(x)
+
+
 
     def add(self, x: int, val: int):
         while x <= self.n:
@@ -23,6 +30,10 @@ class BIT:
     def update(self, x: int, val: int) -> None:
         self.add(x + 1, val - self.nums[x])
         self.nums[x] = val
+        # x += 1
+        # while x <= self.n:
+        #     self.BITree[x] = min(self.BITree[x], val)
+        #     x += self.lowbit(x)
 
     def lower_bound(self, s):
         x = y = 0

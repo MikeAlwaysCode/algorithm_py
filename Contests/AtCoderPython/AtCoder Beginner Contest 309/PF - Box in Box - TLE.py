@@ -1,14 +1,13 @@
 import math
 import sys
-
-# from bisect import *
-# from collections import *
-# from functools import *
-# from heapq import *
-# from itertools import *
-# from random import *
-# from string import *
-# from types import GeneratorType
+from bisect import *
+from collections import *
+from functools import *
+from heapq import *
+from itertools import *
+from random import *
+from string import *
+from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -55,25 +54,28 @@ ints = lambda: list(map(int, input().split()))
 
 class BIT:
     def __init__(self, n: int):
+        self.nums = [0] * (n + 1)
         self.n = n
-        self.BITree = [math.inf] * (self.n + 1)
+        self.BITree = [0] * (self.n + 1)
         
     def lowbit(self, x: int) -> int:
         return x & -x
     
     def query(self, x: int) -> int:
-        ans = math.inf
-        x += 1
+        ans = 0
         while x:
-            ans = min(ans, self.BITree[x])
+            ans += self.BITree[x]
             x -= self.lowbit(x)
         return ans
 
-    def update(self, x: int, val: int) -> None:
-        x += 1
+    def add(self, x: int, val: int):
         while x <= self.n:
-            self.BITree[x] = min(self.BITree[x], val)
+            self.BITree[x] += val
             x += self.lowbit(x)
+
+    def update(self, x: int, val: int) -> None:
+        self.add(x + 1, val - self.nums[x])
+        self.nums[x] = val
 
 def solve() -> None:
     n = sint()
@@ -82,27 +84,27 @@ def solve() -> None:
     for _ in range(n):
         a.append(ints())
         a[-1].sort()
-        s.add(a[-1][1])
-
+        s = s.union(set(a[-1]))
     a.sort()
     
     disc = {v:i for i, v in enumerate(sorted(s))}
     m = len(s)
-
-    bit = BIT(m)
-    i = 0
-    while i < n:
-        j = i
-        while j < n and a[j][0] == a[i][0]:
-            if bit.query(disc[a[j][1]] - 1) < a[j][2]:
-                print("Yes")
-                return
-            j += 1
-
-        while i < j:
-            bit.update(disc[a[i][1]], a[i][2])
-            i += 1
     
-    print("No")
+    def check(l: int, r: int) -> bool:
+        if l == r: return False
+        mid = (l + r) >> 1
+        if check(l, mid) or check(mid + 1, r): return True
+        a[l:mid + 1] = sorted(a[l: mid + 1], key = lambda x: x[1])
+        a[mid + 1:r + 1] = sorted(a[mid + 1: r + 1], key = lambda x: x[1])
+        bit = BIT(m)
+        j = l
+        for i in range(mid + 1, r + 1):
+            while j <= mid and a[j][1] <= a[i][1]:
+                bit.update(disc[a[j][2]], 1)
+                j += 1
+            if bit.query(disc[a[i][2]]) > 0: return True
+        return False
+    
+    print("Yes" if check(0, n - 1) else "No")
 
 solve()

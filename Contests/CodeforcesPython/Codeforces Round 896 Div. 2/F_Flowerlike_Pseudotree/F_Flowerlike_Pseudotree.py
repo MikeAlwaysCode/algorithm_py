@@ -56,38 +56,7 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, k = mint()
-    nums = ints()
-
-    h = nums[k - 1]
-    i = j = l = r = k - 1
-    ls = rs = mnls = mnrs = 0
-    l_move = r_move = True
-    while l_move or r_move:
-        l_move = r_move = False
-        while (i == l or ls < 0) and i > 0:
-            i -= 1
-            ls += nums[i]
-            mnls = min(mnls, ls)
-        if h + mnls >= 0:
-            h += ls
-            ls = mnls = 0
-            l = i
-            l_move = True
-        while (j == r or rs < 0) and j < n - 1:
-            j += 1
-            rs += nums[j]
-            mnrs = min(mnrs, rs)
-        if h + mnrs >= 0:
-            h += rs
-            rs = mnrs = 0
-            r = j
-            r_move = True
-        if l == 0 or r == n - 1:
-            print("YES")
-            return
-
-    print("NO")
+    return
 
 for _ in range(int(input())):
     solve()

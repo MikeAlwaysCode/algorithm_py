@@ -1,6 +1,6 @@
-import math
 import sys
 
+# import math
 # from bisect import *
 # from collections import *
 # from functools import *
@@ -53,56 +53,21 @@ ints = lambda: list(map(int, input().split()))
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-class BIT:
-    def __init__(self, n: int):
-        self.n = n
-        self.BITree = [math.inf] * (self.n + 1)
-        
-    def lowbit(self, x: int) -> int:
-        return x & -x
-    
-    def query(self, x: int) -> int:
-        ans = math.inf
-        x += 1
-        while x:
-            ans = min(ans, self.BITree[x])
-            x -= self.lowbit(x)
-        return ans
-
-    def update(self, x: int, val: int) -> None:
-        x += 1
-        while x <= self.n:
-            self.BITree[x] = min(self.BITree[x], val)
-            x += self.lowbit(x)
+d = {
+    "tourist": 3858,
+    "ksun48": 3679,
+    "Benq": 3658,
+    "Um_nik": 3648,
+    "apiad": 3638,
+    "Stonefeang": 3630,
+    "ecnerwala": 3613,
+    "mnbvmar": 3555,
+    "newbiedmy": 3516,
+    "semiexp": 3481
+    }
 
 def solve() -> None:
-    n = sint()
-    a = []
-    s = set()
-    for _ in range(n):
-        a.append(ints())
-        a[-1].sort()
-        s.add(a[-1][1])
-
-    a.sort()
-    
-    disc = {v:i for i, v in enumerate(sorted(s))}
-    m = len(s)
-
-    bit = BIT(m)
-    i = 0
-    while i < n:
-        j = i
-        while j < n and a[j][0] == a[i][0]:
-            if bit.query(disc[a[j][1]] - 1) < a[j][2]:
-                print("Yes")
-                return
-            j += 1
-
-        while i < j:
-            bit.update(disc[a[i][1]], a[i][2])
-            i += 1
-    
-    print("No")
+    s = input()
+    print(d[s])
 
 solve()

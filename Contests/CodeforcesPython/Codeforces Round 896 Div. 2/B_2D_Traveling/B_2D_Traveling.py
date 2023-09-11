@@ -1,14 +1,15 @@
 import math
 import sys
 
-# from bisect import *
+# import itertools
+# import os
+# import random
+# from bisect import bisect, bisect_left
 # from collections import *
-# from functools import *
-# from heapq import *
-# from itertools import *
-# from random import *
+# from functools import reduce
+# from heapq import heapify, heappop, heappush
+# from io import BytesIO, IOBase
 # from string import *
-# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -30,6 +31,7 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
+# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -53,56 +55,28 @@ ints = lambda: list(map(int, input().split()))
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-class BIT:
-    def __init__(self, n: int):
-        self.n = n
-        self.BITree = [math.inf] * (self.n + 1)
-        
-    def lowbit(self, x: int) -> int:
-        return x & -x
-    
-    def query(self, x: int) -> int:
-        ans = math.inf
-        x += 1
-        while x:
-            ans = min(ans, self.BITree[x])
-            x -= self.lowbit(x)
-        return ans
-
-    def update(self, x: int, val: int) -> None:
-        x += 1
-        while x <= self.n:
-            self.BITree[x] = min(self.BITree[x], val)
-            x += self.lowbit(x)
-
 def solve() -> None:
-    n = sint()
-    a = []
-    s = set()
+    n, k, a, b = mint()
+    a -= 1
+    b -= 1
+    city = []
     for _ in range(n):
-        a.append(ints())
-        a[-1].sort()
-        s.add(a[-1][1])
-
-    a.sort()
+        city.append(tuple(mint()))
+    if a < k and b < k:
+        print(0)
+        return
+    def f(i: int, j: int) -> int:
+        if i < k and j < k:
+            return 0
+        return abs(city[i][0] - city[j][0]) + abs(city[i][1] - city[j][1])
+    ans = f(a, b)
     
-    disc = {v:i for i, v in enumerate(sorted(s))}
-    m = len(s)
+    resa = resb = math.inf
+    for i in range(k):
+        resa = min(resa, f(i, a))
+        resb = min(resb, f(i, b))
+    ans = min(ans, resa + resb)
+    print(ans)
 
-    bit = BIT(m)
-    i = 0
-    while i < n:
-        j = i
-        while j < n and a[j][0] == a[i][0]:
-            if bit.query(disc[a[j][1]] - 1) < a[j][2]:
-                print("Yes")
-                return
-            j += 1
-
-        while i < j:
-            bit.update(disc[a[i][1]], a[i][2])
-            i += 1
-    
-    print("No")
-
-solve()
+for _ in range(int(input())):
+    solve()
