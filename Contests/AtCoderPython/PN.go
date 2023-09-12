@@ -2,11 +2,9 @@ package main
 
 import (
 	"bufio"
-	// "container/heap"
 	. "fmt"
 	"io"
 	"os"
-	// "sort"
 )
 
 func solve(_r io.Reader, _w io.Writer) {

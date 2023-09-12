@@ -56,39 +56,21 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, k = mint()
-    nums = ints()
-
-    def check(x: int) -> bool:
-        cnt = 0
-        for i in range(n):
-            if nums[i] * 2 < x:
-                cnt += 1
-        if cnt > k:
-            return False
-        elif cnt <= k - 2:
-            return True
-
-        for i in range(n - 1):
-            a, b = nums[i], nums[i + 1]
-            if a * 2 < x:
-                a = 10 ** 9
-            if b * 2 < x:
-                b = 10 ** 9
-            if a >= x and b >= x:
-                return True
-            if k > cnt and (a >= x or b >= x):
-                return True
-        return False
-
-    l, r = 0, 10 ** 9
-    while l < r:
-        mid = (l + r + 1) >> 1
-        if check(mid):
-            l = mid
+    n = sint()
+    s = input()
+    eq = ne = 0
+    for i in range(n // 2):
+        if s[i] == s[n - 1 - i]:
+            eq += 1
         else:
-            r = mid - 1
-    print(l)
+            ne += 1
+    
+    ans = [0] * (n + 1)
+    for i in range(n + 1):
+        if i >= ne and i <= ne + eq * 2 + 1:
+            if (i - ne) % 2 == 0 or n & 1:
+                ans[i] = 1
+    print(*ans, sep = "")
 
 for _ in range(int(input())):
     solve()

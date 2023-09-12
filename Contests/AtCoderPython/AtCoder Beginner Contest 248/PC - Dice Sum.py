@@ -1,15 +1,14 @@
 import sys
 
-# import itertools
 # import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
+# from bisect import *
 # from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
+# from functools import *
+# from heapq import *
+# from itertools import *
+# from random import *
 # from string import *
+# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +30,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -51,44 +49,36 @@ ints = lambda: list(map(int, input().split()))
 #     return wrappedfunc
 # # endregion dfsconvert
 
-# MOD = 998244353
+MOD = 998244353
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, k = mint()
-    nums = ints()
+    n, m, k = mint()
+    '''
+    # dp[i]: 和是i的方案数
+    dp = [0] * (k + 1)
+    dp[0] = 1
+    for i in range(n):
+        # 和最大是k和(i + 1)个m的较小值
+        up = min(k, m * (i + 1))
+        # 最后m个数的方案和
+        s = sum(dp[up - m + 1:up + 1]) % MOD
+        for j in range(up, -1, -1):
+            # 滑窗处理
+            if j - m >= 0:
+                s += dp[j - m]
+            s -= dp[j]
+            dp[j] = s
+    print(sum(dp) % MOD)
+    '''
+    # 后缀和优化
+    suff = [0] * (k + 2)
+    suff[0] = 1
+    for i in range(n):
+        for j in range(min(k, m * (i + 1)), -1, -1):
+            s = suff[max(j - m, 0)] - suff[j]
+            suff[j] = (suff[j + 1] + s) % MOD
+    print(suff[0]) 
 
-    def check(x: int) -> bool:
-        cnt = 0
-        for i in range(n):
-            if nums[i] * 2 < x:
-                cnt += 1
-        if cnt > k:
-            return False
-        elif cnt <= k - 2:
-            return True
-
-        for i in range(n - 1):
-            a, b = nums[i], nums[i + 1]
-            if a * 2 < x:
-                a = 10 ** 9
-            if b * 2 < x:
-                b = 10 ** 9
-            if a >= x and b >= x:
-                return True
-            if k > cnt and (a >= x or b >= x):
-                return True
-        return False
-
-    l, r = 0, 10 ** 9
-    while l < r:
-        mid = (l + r + 1) >> 1
-        if check(mid):
-            l = mid
-        else:
-            r = mid - 1
-    print(l)
-
-for _ in range(int(input())):
-    solve()
+solve()

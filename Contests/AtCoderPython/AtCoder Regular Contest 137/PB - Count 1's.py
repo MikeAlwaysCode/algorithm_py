@@ -1,15 +1,14 @@
 import sys
 
-# import itertools
 # import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
+# from bisect import *
 # from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
+# from functools import *
+# from heapq import *
+# from itertools import *
+# from random import *
 # from string import *
+# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +30,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -56,39 +54,16 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, k = mint()
+    n = sint()
     nums = ints()
+    mx = pre_mx = mn = pre_mn = 0
+    for x in nums:
+        d = -1 if x == 1 else 1
+        pre_mx = max(pre_mx + d, d)
+        mx = max(mx, pre_mx)
+        pre_mn = min(pre_mn + d, d)
+        mn = min(mn, pre_mn)
+    
+    print(mx - mn + 1)
 
-    def check(x: int) -> bool:
-        cnt = 0
-        for i in range(n):
-            if nums[i] * 2 < x:
-                cnt += 1
-        if cnt > k:
-            return False
-        elif cnt <= k - 2:
-            return True
-
-        for i in range(n - 1):
-            a, b = nums[i], nums[i + 1]
-            if a * 2 < x:
-                a = 10 ** 9
-            if b * 2 < x:
-                b = 10 ** 9
-            if a >= x and b >= x:
-                return True
-            if k > cnt and (a >= x or b >= x):
-                return True
-        return False
-
-    l, r = 0, 10 ** 9
-    while l < r:
-        mid = (l + r + 1) >> 1
-        if check(mid):
-            l = mid
-        else:
-            r = mid - 1
-    print(l)
-
-for _ in range(int(input())):
-    solve()
+solve()

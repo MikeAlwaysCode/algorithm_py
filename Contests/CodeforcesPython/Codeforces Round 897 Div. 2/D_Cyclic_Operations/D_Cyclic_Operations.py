@@ -1,11 +1,11 @@
 import sys
+from collections import *
 
 # import itertools
 # import math
 # import os
 # import random
 # from bisect import bisect, bisect_left
-# from collections import *
 # from functools import reduce
 # from heapq import heapify, heappop, heappush
 # from io import BytesIO, IOBase
@@ -58,37 +58,41 @@ ints = lambda: list(map(int, input().split()))
 def solve() -> None:
     n, k = mint()
     nums = ints()
-
-    def check(x: int) -> bool:
+    if k == 1:
+        for i, x in enumerate(nums, 1):
+            if i != x:
+                print("NO")
+                return
+        print("YES")
+        return
+    
+    g = [[] for _ in range(n)]
+    deg = [0] * n
+    for i, x in enumerate(nums):
+        g[i].append(x - 1)
+        deg[x - 1] += 1
+    seen = [False] * n
+    q = deque(i for i in range(n) if deg[i] == 0)
+    while q:
+        u = q.popleft()
+        seen[u] = True
+        for v in g[u]:
+            deg[v] -= 1
+            if deg[v] == 0:
+                q.append(v)
+    
+    for i in range(n):
+        if seen[i]: continue
         cnt = 0
-        for i in range(n):
-            if nums[i] * 2 < x:
-                cnt += 1
-        if cnt > k:
-            return False
-        elif cnt <= k - 2:
-            return True
-
-        for i in range(n - 1):
-            a, b = nums[i], nums[i + 1]
-            if a * 2 < x:
-                a = 10 ** 9
-            if b * 2 < x:
-                b = 10 ** 9
-            if a >= x and b >= x:
-                return True
-            if k > cnt and (a >= x or b >= x):
-                return True
-        return False
-
-    l, r = 0, 10 ** 9
-    while l < r:
-        mid = (l + r + 1) >> 1
-        if check(mid):
-            l = mid
-        else:
-            r = mid - 1
-    print(l)
+        while not seen[i]:
+            cnt += 1
+            seen[i] = True
+            i = nums[i] - 1
+        if cnt != k:
+            print("NO")
+            return
+    
+    print("YES")
 
 for _ in range(int(input())):
     solve()

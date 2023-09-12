@@ -52,43 +52,39 @@ ints = lambda: list(map(int, input().split()))
 # # endregion dfsconvert
 
 # MOD = 998244353
-# MOD = 10 ** 9 + 7
+MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, k = mint()
-    nums = ints()
+    a, b, n = mint()
 
-    def check(x: int) -> bool:
-        cnt = 0
-        for i in range(n):
-            if nums[i] * 2 < x:
-                cnt += 1
-        if cnt > k:
-            return False
-        elif cnt <= k - 2:
-            return True
+    # 阶乘
+    fact = [1] * (n + 1)
+    for i in range(1, n + 1):
+        fact[i] = fact[i-1] * i % MOD
+    # 逆元
+    inverse = [0] * (n + 1)
+    inverse[n] = pow(fact[n], MOD - 2, MOD)
+    for i in range(n, 0, -1):
+        inverse[i-1] = inverse[i] * i % MOD
+    # 组合数
+    def comb(n: int, m: int, MOD = MOD) -> int:
+        if m < 0 or m > n:
+            return 0
+        return fact[n] * inverse[m] % MOD * inverse[n-m] % MOD
 
-        for i in range(n - 1):
-            a, b = nums[i], nums[i + 1]
-            if a * 2 < x:
-                a = 10 ** 9
-            if b * 2 < x:
-                b = 10 ** 9
-            if a >= x and b >= x:
-                return True
-            if k > cnt and (a >= x or b >= x):
-                return True
-        return False
+    def isGood(x: int) -> bool:
+        while x:
+            if x % 10 != a and x % 10 != b:
+                return False
+            x //= 10
+        return True
 
-    l, r = 0, 10 ** 9
-    while l < r:
-        mid = (l + r + 1) >> 1
-        if check(mid):
-            l = mid
-        else:
-            r = mid - 1
-    print(l)
-
-for _ in range(int(input())):
-    solve()
+    ans = 0
+    for i in range(n + 1):
+        s = a * i + b * (n - i)
+        if isGood(s):
+            ans = (ans + comb(n, i)) % MOD
+    print(ans)
+    
+solve()
