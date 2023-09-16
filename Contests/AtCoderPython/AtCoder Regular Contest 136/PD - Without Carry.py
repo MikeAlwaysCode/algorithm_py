@@ -1,15 +1,14 @@
 import sys
 
-# import itertools
 # import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
+# from bisect import *
 # from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
+# from functools import *
+# from heapq import *
+# from itertools import *
+# from random import *
 # from string import *
+# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +30,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -52,34 +50,10 @@ ints = lambda: list(map(int, input().split()))
 # # endregion dfsconvert
 
 # MOD = 998244353
-MOD = 10 ** 9 + 7
+# MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, k = mint()
-
-    if n <= k:
-        print(pow(2, n, MOD))
-        return
-
-    # 阶乘
-    fact = [1] * (n + 1)
-    for i in range(1, n + 1):
-        fact[i] = fact[i-1] * i % MOD
-    # 逆元
-    inverse = [0] * (n + 1)
-    inverse[n] = pow(fact[n], MOD - 2, MOD)
-    for i in range(n, 0, -1):
-        inverse[i-1] = inverse[i] * i % MOD
-    # 组合数
-    def comb(n: int, m: int, MOD = MOD) -> int:
-        if m < 0 or m > n:
-            return 0
-        return fact[n] * inverse[m] % MOD * inverse[n-m] % MOD
-    ans = 0
-    for i in range(k + 1):
-        ans = (ans + comb(n, i)) % MOD
-    
-    print(ans)
+    return
 
 solve()

@@ -1,5 +1,6 @@
 import sys
-from collections import *
+
+# from collections import *
 
 # import itertools
 # import math
@@ -65,7 +66,26 @@ def solve() -> None:
                 return
         print("YES")
         return
+
+    # Timestamp 186 ms
+    time = [0] * n
+    clock = 1
+    for x, t in enumerate(time):
+        if t: continue
+        start_time = clock
+        while time[x] == 0:
+            time[x] = clock
+            clock += 1
+            x = nums[x] - 1
+        if time[x] >= start_time:
+            if clock - time[x] != k:
+                print("NO")
+                return
+
+    print("YES")
     
+    '''
+    # TopoSort 467 ms
     g = [[] for _ in range(n)]
     deg = [0] * n
     for i, x in enumerate(nums):
@@ -91,8 +111,9 @@ def solve() -> None:
         if cnt != k:
             print("NO")
             return
-    
+
     print("YES")
+    '''
 
 for _ in range(int(input())):
     solve()

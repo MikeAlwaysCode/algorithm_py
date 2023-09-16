@@ -1,15 +1,14 @@
+import math
 import sys
+from bisect import *
 
-# import itertools
-# import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
 # from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
+# from functools import *
+# from heapq import *
+# from itertools import *
+# from random import *
 # from string import *
+# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +30,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -56,35 +54,58 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, p = mint()
+    n, k = mint()
     nums = ints()
-    s = set(nums)
-    if len(s) == p:
+    nums.sort()
+
+    p = bisect_left(nums, 0)
+    q = bisect_left(nums, 1)
+    
+    neg = p * (n - q)
+    if k <= neg:
+        k = neg - k + 1
+
+        def zz1(x: int) -> bool:
+            res = 0
+            j = q
+            for a in nums[:p]:
+                a = -a
+                while j < n and nums[j] * a <= x:
+                    j += 1
+                res += j - q 
+            return res
+        
+        print(-bisect_left(range(10 ** 18 + 1), k, key = zz1))
+        return
+    
+    k -= neg
+    c0 = q - p
+    zero = c0 * (n - c0) + c0 * (c0 - 1) // 2
+    if k <= zero:
         print(0)
         return
 
-    m = 0
-    while m in s:
-        m += 1
-    if m > nums[-1]:
-        m = p - 1
-        while m in s:
-            m -= 1
-        print(max(0, m - nums[-1]))
-    else:
-        s.add(0)
-        i = n - 2
-        while i >= 0 and nums[i] == p - 1:
-            i -= 1
-        if i >= 0:
-            s.add(nums[i] + 1)
-        else:
-            s.add(1)
-        ans = p - nums[-1]
-        m = nums[-1] - 1
-        while m in s:
-            m -= 1
-        print(ans + max(m, 0))
+    k -= zero
+    
+    def zz2(x: int) -> bool:
+        res = 0
+        i, j = 0, p - 1
+        while i < j:
+            if nums[i] * nums[j] > x:
+                i += 1
+            else:
+                res += j - i
+                j -= 1
+        i, j = q, n - 1
+        while i < j:
+            if nums[i] * nums[j] > x:
+                j -= 1
+            else:
+                res += j - i
+                i += 1
+                
+        return res
+    
+    print(bisect_left(range(10 ** 18 + 1), k, key = zz2))
 
-for _ in range(int(input())):
-    solve()
+solve()

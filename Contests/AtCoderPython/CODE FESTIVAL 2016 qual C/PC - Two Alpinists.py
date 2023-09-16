@@ -1,15 +1,14 @@
+# import math
 import sys
 
-# import itertools
-# import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
+# from bisect import *
 # from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
+# from functools import *
+# from heapq import *
+# from itertools import *
+# from random import *
 # from string import *
+# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +30,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -56,30 +54,52 @@ MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, k = mint()
-
-    if n <= k:
-        print(pow(2, n, MOD))
+    n = sint()
+    T = ints()
+    A = ints()
+    ans = 1
+    # 88 ms
+    for i in range(n):
+        if i == 0 or T[i] > T[i - 1]:
+            l = r = T[i]
+        else:
+            l, r = 1, T[i]
+        if i == n - 1 or A[i] > A[i + 1]:
+            l = max(l, A[i])
+            r = min(r, A[i])
+        else:
+            r = min(r, A[i])
+        if l > r:
+            print(0)
+            return
+        ans = ans * (r - l + 1) % MOD
+    '''
+    # 90 ms
+    l, r = [-math.inf] * n, [math.inf] * n
+    l[-1] = r[-1] = A[-1]
+    for i in range(n - 2, -1, -1):
+        if A[i] > A[i + 1]:
+            l[i] = r[i] = A[i]
+        else:
+            l[i], r[i] = 1, A[i]
+    l[0] = max(l[0], T[0])
+    r[0] = min(r[0], T[0])
+    if l[0] > r[0]:
+        print(0)
         return
-
-    # 阶乘
-    fact = [1] * (n + 1)
-    for i in range(1, n + 1):
-        fact[i] = fact[i-1] * i % MOD
-    # 逆元
-    inverse = [0] * (n + 1)
-    inverse[n] = pow(fact[n], MOD - 2, MOD)
-    for i in range(n, 0, -1):
-        inverse[i-1] = inverse[i] * i % MOD
-    # 组合数
-    def comb(n: int, m: int, MOD = MOD) -> int:
-        if m < 0 or m > n:
-            return 0
-        return fact[n] * inverse[m] % MOD * inverse[n-m] % MOD
-    ans = 0
-    for i in range(k + 1):
-        ans = (ans + comb(n, i)) % MOD
-    
+    ans = 1
+    for i in range(1, n):
+        if T[i] > T[i - 1]:
+            l[i] = max(l[i], T[i])
+            r[i] = min(r[i], T[i])
+        else:
+            l[i] = max(l[i], 1)
+            r[i] = min(r[i], T[i])
+        if l[i] > r[i]:
+            print(0)
+            return
+        ans = ans * (r[i] - l[i] + 1) % MOD
+    '''
     print(ans)
 
 solve()

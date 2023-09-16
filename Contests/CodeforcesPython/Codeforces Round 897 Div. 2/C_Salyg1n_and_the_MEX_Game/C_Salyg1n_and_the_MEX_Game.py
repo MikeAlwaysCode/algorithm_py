@@ -63,8 +63,8 @@ def solve() -> None:
         x += 1
     while True:
         sx = str(x)
-        print(f"{sx}")
-        sys.stdout.flush()
+        print(f"{sx}", flush = True)
+        # sys.stdout.flush()
         x = sint()
         if x == -2:
             exit()
