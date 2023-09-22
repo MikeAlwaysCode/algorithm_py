@@ -1,15 +1,7 @@
 import sys
+from bisect import bisect, bisect_left
 
-# import itertools
-# import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
-# from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
-# from string import *
+# from collections import defaultdict
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +23,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -56,14 +47,18 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, k, x = mint()
-    if n < k or x < k - 1:
-        print(-1)
-        return
-    if x == k:
-        x -= 1
-    ans = k * (k - 1) // 2 + (n - k) * x
-    print(ans)
+    n = sint()
+    nums = ints()
+    # pos = defaultdict(list)
+    pos = [[] for _ in range(n + 1)]
+    for i, x in enumerate(nums, 1):
+        pos[x].append(i)
 
-for _ in range(int(input())):
-    solve()
+    for _ in range(sint()):
+        l, r, x = mint()
+        if not pos[x]:
+            print(0)
+        else:
+            print(bisect(pos[x], r) - bisect_left(pos[x], l))
+
+solve()

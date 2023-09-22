@@ -1,15 +1,14 @@
+import math
 import sys
 
-# import itertools
-# import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
+# from bisect import *
 # from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
+# from functools import *
+# from heapq import *
+# from itertools import *
+# from random import *
 # from string import *
+# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +30,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -56,14 +54,14 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, k, x = mint()
-    if n < k or x < k - 1:
-        print(-1)
-        return
-    if x == k:
-        x -= 1
-    ans = k * (k - 1) // 2 + (n - k) * x
-    print(ans)
+    n = sint()
+    d = 2
+    while d * d <= n:
+        if n % d == 0 and math.gcd(d, n // d) == 1:
+            print("Yes")
+            return
+        d += 1
+    print("No")
 
-for _ in range(int(input())):
+for _ in range(sint()):
     solve()

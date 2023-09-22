@@ -1,5 +1,7 @@
 import sys
 
+from sortedcontainers import SortedList
+
 # import math
 # from bisect import *
 # from collections import *
@@ -54,56 +56,38 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    s = input()
-    n = sint()
-
-    ans = int(s.replace("?", "0"), 2)
-    if ans > n:
-        print(-1)
+    n, k = ints()
+    nums = ints()
+    
+    if k == 1:
+        print(*nums)
+        return
+    elif n == k:
+        print(*sorted(nums))
         return
     
-    for i, c in enumerate(s):
-        if c == "?" and ans + (1 << (len(s) - i - 1)) <= n:
-            ans += 1 << (len(s) - i - 1)
-    print(ans)
-
-    '''
-    m = len(s)
+    pres = [0] * n
+    for i in range(1, n):
+        pres[i] = pres[i - 1] + (nums[i] > nums[i - 1])
+        if i >= k - 1 and pres[i] - pres[i - k + 1] == k - 1:
+            print(*nums)
+            return
     
-    dp = [[0] * 2 for _ in range(62)]
-    for bit in range(1, 62):
-        if m - bit >= 0:
-            c = s[m - bit]
-        else:
-            c = "0"
-        
-        d = n >> (bit - 1) & 1
-        if c == "?":
-            dp[bit][1] = dp[bit - 1][1] + (1 << (bit - 1))
-            if d == 0:
-                dp[bit][0] = dp[bit - 1][0]
-            else:
-                if dp[bit - 1][0] != -1:
-                    dp[bit][0] = dp[bit - 1][0] + (1 << (bit - 1))
-                else:
-                    dp[bit][0] = dp[bit - 1][1]
-        elif c == "1":
-            dp[bit][1] = dp[bit - 1][1] + (1 << (bit - 1))
-            if d == 0:
-                dp[bit][0] = -1
-            else:
-                if dp[bit - 1][0] != -1:
-                    dp[bit][0] = dp[bit - 1][0] + (1 << (bit - 1))
-                else:
-                    dp[bit][0] = dp[bit - 1][0]
-        else: # c == "0"
-            dp[bit][1] = dp[bit - 1][1]
-            if d == 0:
-                dp[bit][0] = dp[bit - 1][0]
-            else:
-                dp[bit][0] = max(dp[bit - 1][0], dp[bit - 1][1])
-            
-    print(dp[-1][0])
-    '''
+    ans = nums[:]
+    ss = SortedList()
+    for i in range(n - 1, n - k - 1, -1):
+        ss.add(nums[i])
+    for i in range(n - k - 1, -1, -1):
+        ss.remove(nums[i + k])
+        if nums[i] > ss[0]:
+            ss.add(nums[i + k])
+            for j in range(i + 1, i + 1 + k):
+                ans[j] = ss[j - i - 1]
+            print(*ans)
+            return
+        ss.add(nums[i])
+    for j in range(k):
+        ans[j] = ss[j]
+    print(*ans)
 
 solve()

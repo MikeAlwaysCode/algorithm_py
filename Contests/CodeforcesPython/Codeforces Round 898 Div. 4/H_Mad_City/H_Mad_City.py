@@ -1,11 +1,11 @@
 import sys
+from collections import *
 
 # import itertools
 # import math
 # import os
 # import random
 # from bisect import bisect, bisect_left
-# from collections import *
 # from functools import reduce
 # from heapq import heapify, heappop, heappush
 # from io import BytesIO, IOBase
@@ -56,59 +56,71 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, q = mint()
-    nums = ints()
+    n, a, b = mint()
+    a -= 1
+    b -= 1
+    g = [[] for _ in range(n)]
+    deg = [0] * n
+    for _ in range(n):
+        u, v = mint()
+        u -= 1
+        v -= 1
+        g[u].append(v)
+        g[v].append(u)
+        deg[u] += 1
+        deg[v] += 1
+    
+    if a == b:
+        print("NO")
+        return
+    
+    circle = [True] * n
+    q = deque(i for i in range(n) if deg[i] == 1)
+    while q:
+        u = q.popleft()
+        circle[u] = False
+        for v in g[u]:
+            if deg[v] == 1: continue
+            deg[v] -= 1
+            if deg[v] == 1:
+                q.append(v)
+    
+    if circle[b]:
+        print("YES")
+        return
 
-    right = [n - 1] * n
-    pres = [0] * (n + 1)
-    xor = [0] * (n + 1)
-    before = 0
-    for i, a in enumerate(nums):
-        pres[i+1] = pres[i] + a
-        xor[i+1] = xor[i] ^ a
-        if a > 0:
-            right[before] = i
-            before = i
-    for i in range(1, n):
-        if nums[i] == 0: right[i] = right[i - 1]
- 
-    def cal(l, r) -> int:
-        return pres[r] - pres[l] - (xor[r] ^ xor[l])
- 
-    for _ in range(q):
-        L, R = mint()
-        ans = cal(L - 1, R)
-        if ans == 0:
-            print(L, L)
-            continue
+    d = [-1] * n
+    q = [b]
+    p = -1
+    while q:
+        tmp = q
+        q = []
+        p += 1
+        for u in tmp:
+            d[u] = p
+            if circle[u]: continue
+            for v in g[u]:
+                if d[v] >= 0: continue
+                q.append(v)
+    
+    c = [False] * n
+    q = [a]
+    p = -1
+    c[a] = True
+    while q:
+        tmp = q
+        q = []
+        p += 1
+        for u in tmp:
+            if p <= d[u] and circle[u]:
+                print("NO")
+                return
+            for v in g[u]:
+                if c[v]: continue
+                c[v] = True
+                q.append(v)
+        
+    print("YES")
 
-        ansl, ansr = L, R
- 
-        now = L - 1
- 
-        for i in range(min(65, R - L)):
-            if cal(now, R) != ans:
-                break
-            
-            r = R
-            l = now + 1
-
-            while l < r:
-                mid = (l + r) >> 1
-
-                if cal(now, mid) == ans:
-                    r = mid
-                else:
-                    l = mid + 1
-                    
-            if r - now - 1 < ansr - ansl:
-                ansl, ansr = now + 1, r
- 
-            now = right[now]
-            if now == R - 1:
-                break
- 
-        print(ansl, ansr)
-
-for _ in range(sint()):
+for _ in range(int(input())):
     solve()

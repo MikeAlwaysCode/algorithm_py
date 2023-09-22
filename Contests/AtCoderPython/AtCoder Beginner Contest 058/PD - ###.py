@@ -54,56 +54,6 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    s = input()
-    n = sint()
-
-    ans = int(s.replace("?", "0"), 2)
-    if ans > n:
-        print(-1)
-        return
-    
-    for i, c in enumerate(s):
-        if c == "?" and ans + (1 << (len(s) - i - 1)) <= n:
-            ans += 1 << (len(s) - i - 1)
-    print(ans)
-
-    '''
-    m = len(s)
-    
-    dp = [[0] * 2 for _ in range(62)]
-    for bit in range(1, 62):
-        if m - bit >= 0:
-            c = s[m - bit]
-        else:
-            c = "0"
-        
-        d = n >> (bit - 1) & 1
-        if c == "?":
-            dp[bit][1] = dp[bit - 1][1] + (1 << (bit - 1))
-            if d == 0:
-                dp[bit][0] = dp[bit - 1][0]
-            else:
-                if dp[bit - 1][0] != -1:
-                    dp[bit][0] = dp[bit - 1][0] + (1 << (bit - 1))
-                else:
-                    dp[bit][0] = dp[bit - 1][1]
-        elif c == "1":
-            dp[bit][1] = dp[bit - 1][1] + (1 << (bit - 1))
-            if d == 0:
-                dp[bit][0] = -1
-            else:
-                if dp[bit - 1][0] != -1:
-                    dp[bit][0] = dp[bit - 1][0] + (1 << (bit - 1))
-                else:
-                    dp[bit][0] = dp[bit - 1][0]
-        else: # c == "0"
-            dp[bit][1] = dp[bit - 1][1]
-            if d == 0:
-                dp[bit][0] = dp[bit - 1][0]
-            else:
-                dp[bit][0] = max(dp[bit - 1][0], dp[bit - 1][1])
-            
-    print(dp[-1][0])
-    '''
+    return
 
 solve()

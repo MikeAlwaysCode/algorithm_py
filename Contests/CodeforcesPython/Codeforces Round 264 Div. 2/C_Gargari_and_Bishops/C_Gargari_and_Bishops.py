@@ -56,59 +56,27 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, q = mint()
-    nums = ints()
+    n = sint()
+    g = []
+    dia1 = [0] * (n * 2)
+    dia2 = [0] * (n * 2)
+    for i in range(n):
+        g.append(ints())
+        for j, x in enumerate(g[-1]):
+            dia1[i + j] += x
+            dia2[i - j + n] += x
+    
+    ans = [-1] * 2
+    x = [-1] * 2
+    y = [-1] * 2
+    for i in range(n):
+        for j in range(n):
+            c = (i + j) & 1
+            res = dia1[i + j] + dia2[i - j + n] - g[i][j]
+            if res > ans[c]:
+                ans[c], x[c], y[c] = res, i + 1, j + 1
+    print(sum(ans))
+    print(x[0], y[0], x[1], y[1])
 
-    right = [n - 1] * n
-    pres = [0] * (n + 1)
-    xor = [0] * (n + 1)
-    before = 0
-    for i, a in enumerate(nums):
-        pres[i+1] = pres[i] + a
-        xor[i+1] = xor[i] ^ a
-        if a > 0:
-            right[before] = i
-            before = i
-    for i in range(1, n):
-        if nums[i] == 0: right[i] = right[i - 1]
- 
-    def cal(l, r) -> int:
-        return pres[r] - pres[l] - (xor[r] ^ xor[l])
- 
-    for _ in range(q):
-        L, R = mint()
-        ans = cal(L - 1, R)
-        if ans == 0:
-            print(L, L)
-            continue
 
-        ansl, ansr = L, R
- 
-        now = L - 1
- 
-        for i in range(min(65, R - L)):
-            if cal(now, R) != ans:
-                break
-            
-            r = R
-            l = now + 1
-
-            while l < r:
-                mid = (l + r) >> 1
-
-                if cal(now, mid) == ans:
-                    r = mid
-                else:
-                    l = mid + 1
-                    
-            if r - now - 1 < ansr - ansl:
-                ansl, ansr = now + 1, r
- 
-            now = right[now]
-            if now == R - 1:
-                break
- 
-        print(ansl, ansr)
-
-for _ in range(sint()):
-    solve()
+solve()
