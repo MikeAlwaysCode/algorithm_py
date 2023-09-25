@@ -56,15 +56,7 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
-    nums = ints()
-    nums[0] = 2 if nums[0] == 1 else 1
-    for i in range(1, n):
-        if nums[i] == nums[i - 1] + 1:
-            nums[i] += 1
-        else:
-            nums[i] = nums[i - 1] + 1
-    print(nums[-1])
+    return
 
 for _ in range(int(input())):
     solve()

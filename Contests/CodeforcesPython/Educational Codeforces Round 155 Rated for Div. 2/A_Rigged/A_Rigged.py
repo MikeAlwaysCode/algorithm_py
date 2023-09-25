@@ -57,14 +57,15 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n = sint()
-    nums = ints()
-    nums[0] = 2 if nums[0] == 1 else 1
-    for i in range(1, n):
-        if nums[i] == nums[i - 1] + 1:
-            nums[i] += 1
-        else:
-            nums[i] = nums[i - 1] + 1
-    print(nums[-1])
+    s, e = mint()
+    
+    for _ in range(n - 1):
+        s0, e0 = mint()
+        if s == -1: continue
+        if s0 >= s and e0 >= e: s = -1
+        
+    print(s)
+
 
 for _ in range(int(input())):
     solve()

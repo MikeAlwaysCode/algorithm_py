@@ -50,10 +50,31 @@ ints = lambda: list(map(int, input().split()))
 # # endregion dfsconvert
 
 # MOD = 998244353
-# MOD = 10 ** 9 + 7
+MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    return
+    n = sint()
+    nums = ints()
+    xor, cnt0 = 0, 1
+    f0 = [1] * (1 << 20)
+    f1 = [0] * (1 << 20)
+    c0 = [0] * (1 << 20)
+    for x in nums:
+        xor ^= x
+        if xor == 0:
+            cnt0 += 1
+        else:
+            # 跟上一个异常值是xor的位置之间异或值是0的位置，都能得到异或值是0的分割
+            f0[xor] = (f0[xor] + f1[xor] * (cnt0 - c0[xor])) % MOD
+            # 前面所有异或值为0的方案
+            f1[xor] = (f0[xor] + f1[xor]) % MOD
+            c0[xor] = cnt0
+
+    if xor:
+        print(f0[xor])
+    else:
+        ans = (pow(2, cnt0 - 2, MOD) + sum(f1)) % MOD
+        print(ans)
 
 solve()

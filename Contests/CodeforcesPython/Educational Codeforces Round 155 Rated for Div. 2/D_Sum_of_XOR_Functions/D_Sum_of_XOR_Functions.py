@@ -51,20 +51,33 @@ ints = lambda: list(map(int, input().split()))
 #     return wrappedfunc
 # # endregion dfsconvert
 
-# MOD = 998244353
+MOD = 998244353
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
     n = sint()
     nums = ints()
-    nums[0] = 2 if nums[0] == 1 else 1
-    for i in range(1, n):
-        if nums[i] == nums[i - 1] + 1:
-            nums[i] += 1
-        else:
-            nums[i] = nums[i - 1] + 1
-    print(nums[-1])
+    ans = 0
+    for k in range(31):
+        cnt = [0] * 2
+        cs = [0] * 2
+        s = [0] * 2
+        last = [-1] * 2
+        c = 0
+        for i, x in enumerate(nums):
+            if (x >> k) & 1:
+                c += 1
+                cs[c&1] = (cs[c&1] + cnt[c&1] * (i - last[c&1])) % MOD
+                d = i - last[(c&1)^1]
+                cs[c&1] += (d + 1) * d // 2
+                cnt[c&1] = (cnt[c&1] + d) % MOD
+                last[c&1] = i
+                s[c&1] = (s[c&1] + cs[c&1]) % MOD
+            elif c:
+                s[c&1] = (s[c&1] + (i - last[c&1]) * cnt[c&1] + cs[c&1]) % MOD
+        ans = (ans + (1 << k) * (s[0] + s[1])) % MOD
+    
+    print(ans)
 
-for _ in range(int(input())):
-    solve()
+solve()

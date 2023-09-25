@@ -58,13 +58,23 @@ ints = lambda: list(map(int, input().split()))
 def solve() -> None:
     n = sint()
     nums = ints()
-    nums[0] = 2 if nums[0] == 1 else 1
-    for i in range(1, n):
-        if nums[i] == nums[i - 1] + 1:
-            nums[i] += 1
+    ans = s = 0
+    for i in range(n - 1, -1, -1):
+        if i & 1:
+            ans = max(ans, s)
         else:
-            nums[i] = nums[i - 1] + 1
-    print(nums[-1])
+            ans = max(ans, s + nums[i])
+        if nums[i] > 0: s += nums[i]
+    print(ans)
+    '''
+    dp0, dp1 = 0, nums[0]
+    for i in range(1, n):
+        if i & 1:
+            dp0, dp1 = max(dp0, dp1, dp1 + nums[i]), max(dp1, dp0)
+        else:
+            dp0, dp1 = max(dp0, dp1), max(dp0 + nums[i], dp0, dp1)
+    print(max(dp0, dp1))
+    '''
 
 for _ in range(int(input())):
     solve()

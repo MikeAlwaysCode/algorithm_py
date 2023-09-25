@@ -1,11 +1,11 @@
 import sys
+from collections import *
 
 # import itertools
 # import math
 # import os
 # import random
 # from bisect import bisect, bisect_left
-# from collections import *
 # from functools import reduce
 # from heapq import heapify, heappop, heappush
 # from io import BytesIO, IOBase
@@ -57,14 +57,22 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n = sint()
-    nums = ints()
-    nums[0] = 2 if nums[0] == 1 else 1
-    for i in range(1, n):
-        if nums[i] == nums[i - 1] + 1:
-            nums[i] += 1
-        else:
-            nums[i] = nums[i - 1] + 1
-    print(nums[-1])
+    ans = 0
+    pos = [set() for _ in range(51)]
+    s = []
+    for i in range(n):
+        s.append(set(ints()[1:]))
+        for x in s[-1]:
+            pos[x].add(i)
+
+    for i in range(1, 51):
+        if not pos[i]: continue
+        cs = set()
+        for j in range(n):
+            if j in pos[i]: continue
+            cs |= s[j]
+        ans = max(ans, len(cs))
+    print(ans)
 
 for _ in range(int(input())):
     solve()

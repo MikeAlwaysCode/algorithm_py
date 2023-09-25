@@ -1,15 +1,14 @@
 import sys
+from collections import *
 
-# import itertools
 # import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
-# from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
+# from bisect import *
+# from functools import *
+# from heapq import *
+# from itertools import *
+# from random import *
 # from string import *
+# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +30,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -56,15 +54,28 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
-    nums = ints()
-    nums[0] = 2 if nums[0] == 1 else 1
-    for i in range(1, n):
-        if nums[i] == nums[i - 1] + 1:
-            nums[i] += 1
-        else:
-            nums[i] = nums[i - 1] + 1
-    print(nums[-1])
+    n, q = mint()
+    g = [[] for _ in range(n)]
+    for _ in range(n - 1):
+        u, v = mint()
+        u -= 1
+        v -= 1
+        g[u].append(v)
+        g[v].append(u)
+    
+    ans = [0] * n
+    for _ in range(q):
+        p, x = mint()
+        ans[p - 1] += x
 
-for _ in range(int(input())):
-    solve()
+    q = deque([(0, -1)])
+    while q:
+        x, p = q.popleft()
+        for y in g[x]:
+            if y == p: continue
+            ans[y] += ans[x]
+            q.append((y, x))
+    
+    print(*ans)
+
+solve()
