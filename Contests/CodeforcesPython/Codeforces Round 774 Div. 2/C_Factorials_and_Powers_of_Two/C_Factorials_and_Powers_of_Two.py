@@ -1,12 +1,12 @@
+import math
 import sys
+# from functools import cache
 
 # import itertools
-# import math
 # import os
 # import random
 # from bisect import bisect, bisect_left
 # from collections import *
-# from functools import reduce
 # from heapq import heapify, heappop, heappush
 # from io import BytesIO, IOBase
 # from string import *
@@ -52,38 +52,39 @@ ints = lambda: list(map(int, input().split()))
 # # endregion dfsconvert
 
 # MOD = 998244353
-MOD = 10 ** 9 + 7
+# MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-mx = 2 * 10 ** 6
+fact = []
+for i in range(3, 15):
+    fact.append(math.factorial(i))
 
-'''
-# 1123 ms
-dp = [[0] * 4 for _ in range(mx + 1)]
-dp[1][0] = 1
-for i in range(2, mx + 1):
-    dp[i][0] = (dp[i - 1][0] + dp[i - 1][1] * 2) % MOD
-    dp[i][1] = dp[i - 1][0]
-    dp[i][2] = dp[i - 1][1]
-    dp[i][3] = (dp[i][2] * 4 + dp[i - 3][3]) % MOD
+s = [0] * (1 << len(fact))
+cnt = [0] * (1 << len(fact))
+for mask in range(1, 1 << len(fact)):
+    lb = mask & -mask
+    cnt[mask] = cnt[mask - lb] + 1
+    s[mask] = s[mask - lb] + fact[len(bin(lb)) - 3]
+    '''
+    for j in range(len(fact)):
+        if (mask >> j) & 1:
+            cnt[mask] += 1
+            s[mask] += fact[j]
+    '''
 
 def solve() -> None:
     n = sint()
 
-    print(dp[n][3])
-'''
-
-'''
-# 108ms
-dp = [0] * (mx + 1)
-dp[3] = dp[4] = 4
-for i in range (5, mx + 1):
-    dp[i] = max(((2 * dp[i-2]) + dp[i-1]) % MOD, ((4 * dp[i-4]) + 4 * dp[i-3] + dp[i-2] + 4) % MOD)
+    def zz(x: int) -> int:
+        return bin(x)[2:].count("1")
     
-def solve() -> None:
-    n = sint()
-    print(dp[n])
-'''
+    ans = zz(n)
+    
+    for mask in range(1, 1 << len(fact)):
+        if s[mask] > n: break
+        ans = min(ans, cnt[mask] + zz(n - s[mask]))
+    
+    print(ans)
 
 for _ in range(int(input())):
     solve()

@@ -52,38 +52,35 @@ ints = lambda: list(map(int, input().split()))
 # # endregion dfsconvert
 
 # MOD = 998244353
-MOD = 10 ** 9 + 7
+# MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-mx = 2 * 10 ** 6
-
-'''
-# 1123 ms
-dp = [[0] * 4 for _ in range(mx + 1)]
-dp[1][0] = 1
-for i in range(2, mx + 1):
-    dp[i][0] = (dp[i - 1][0] + dp[i - 1][1] * 2) % MOD
-    dp[i][1] = dp[i - 1][0]
-    dp[i][2] = dp[i - 1][1]
-    dp[i][3] = (dp[i][2] * 4 + dp[i - 3][3]) % MOD
-
 def solve() -> None:
-    n = sint()
-
-    print(dp[n][3])
-'''
-
-'''
-# 108ms
-dp = [0] * (mx + 1)
-dp[3] = dp[4] = 4
-for i in range (5, mx + 1):
-    dp[i] = max(((2 * dp[i-2]) + dp[i-1]) % MOD, ((4 * dp[i-4]) + 4 * dp[i-3] + dp[i-2] + 4) % MOD)
-    
-def solve() -> None:
-    n = sint()
-    print(dp[n])
-'''
+    n, k = mint()
+    s = list(input())
+    l = ints()
+    r = ints()
+    q = sint()
+    xs = ints()
+    xs.sort()
+    rev = [0] * (n + 1)
+    i = 0
+    for x in xs:
+        while x > r[i]:
+            i += 1
+        a, b = min(x, l[i] + r[i] - x), max(x, l[i] + r[i] - x)
+        rev[a - 1] += 1
+        rev[b] -= 1
+    # print(rev)
+    d = i = 0
+    for j in range(n):
+        d = (d + rev[j]) & 1
+        while j + 1 > r[i]:
+            i += 1
+        if d and (j + 1) * 2 < l[i] + r[i]:
+            x = l[i] + r[i] - j - 2
+            s[j], s[x] = s[x], s[j]
+    print("".join(s))
 
 for _ in range(int(input())):
     solve()

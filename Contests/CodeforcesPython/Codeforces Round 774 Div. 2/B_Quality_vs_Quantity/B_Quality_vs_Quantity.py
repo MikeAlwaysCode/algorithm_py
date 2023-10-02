@@ -52,38 +52,21 @@ ints = lambda: list(map(int, input().split()))
 # # endregion dfsconvert
 
 # MOD = 998244353
-MOD = 10 ** 9 + 7
+# MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-mx = 2 * 10 ** 6
-
-'''
-# 1123 ms
-dp = [[0] * 4 for _ in range(mx + 1)]
-dp[1][0] = 1
-for i in range(2, mx + 1):
-    dp[i][0] = (dp[i - 1][0] + dp[i - 1][1] * 2) % MOD
-    dp[i][1] = dp[i - 1][0]
-    dp[i][2] = dp[i - 1][1]
-    dp[i][3] = (dp[i][2] * 4 + dp[i - 3][3]) % MOD
-
 def solve() -> None:
     n = sint()
-
-    print(dp[n][3])
-'''
-
-'''
-# 108ms
-dp = [0] * (mx + 1)
-dp[3] = dp[4] = 4
-for i in range (5, mx + 1):
-    dp[i] = max(((2 * dp[i-2]) + dp[i-1]) % MOD, ((4 * dp[i-4]) + 4 * dp[i-3] + dp[i-2] + 4) % MOD)
-    
-def solve() -> None:
-    n = sint()
-    print(dp[n])
-'''
+    nums = ints()
+    nums.sort()
+    i, j = 1, n - 1
+    sb, sr = nums[0] + nums[1], nums[-1]
+    while i < j - 2 and sb >= sr:
+        i += 1
+        sb += nums[i]
+        j -= 1
+        sr += nums[j]
+    print("YES" if sr > sb else "NO")
 
 for _ in range(int(input())):
     solve()

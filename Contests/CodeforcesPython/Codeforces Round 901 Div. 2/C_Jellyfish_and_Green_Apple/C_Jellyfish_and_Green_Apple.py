@@ -1,7 +1,7 @@
 import sys
+import math
 
 # import itertools
-# import math
 # import os
 # import random
 # from bisect import bisect, bisect_left
@@ -52,38 +52,27 @@ ints = lambda: list(map(int, input().split()))
 # # endregion dfsconvert
 
 # MOD = 998244353
-MOD = 10 ** 9 + 7
+# MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-mx = 2 * 10 ** 6
-
-'''
-# 1123 ms
-dp = [[0] * 4 for _ in range(mx + 1)]
-dp[1][0] = 1
-for i in range(2, mx + 1):
-    dp[i][0] = (dp[i - 1][0] + dp[i - 1][1] * 2) % MOD
-    dp[i][1] = dp[i - 1][0]
-    dp[i][2] = dp[i - 1][1]
-    dp[i][3] = (dp[i][2] * 4 + dp[i - 3][3]) % MOD
-
 def solve() -> None:
-    n = sint()
-
-    print(dp[n][3])
-'''
-
-'''
-# 108ms
-dp = [0] * (mx + 1)
-dp[3] = dp[4] = 4
-for i in range (5, mx + 1):
-    dp[i] = max(((2 * dp[i-2]) + dp[i-1]) % MOD, ((4 * dp[i-4]) + 4 * dp[i-3] + dp[i-2] + 4) % MOD)
+    n, m = mint()
+    n %= m
+    if n == 0:
+        print(0)
+        return
     
-def solve() -> None:
-    n = sint()
-    print(dp[n])
-'''
+    k = math.lcm(n, m) // n
+    if bin(k)[2:].count("1") > 1:
+        print(-1)
+        return
+    
+    ans = 0
+    while n % m:
+        ans += n
+        n = n * 2 % m
+    
+    print(ans)
 
 for _ in range(int(input())):
     solve()

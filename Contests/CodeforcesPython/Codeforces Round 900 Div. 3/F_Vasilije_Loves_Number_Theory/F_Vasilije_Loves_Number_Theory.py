@@ -1,11 +1,11 @@
 import sys
+from collections import *
 
 # import itertools
 # import math
 # import os
 # import random
 # from bisect import bisect, bisect_left
-# from collections import *
 # from functools import reduce
 # from heapq import heapify, heappop, heappush
 # from io import BytesIO, IOBase
@@ -52,38 +52,45 @@ ints = lambda: list(map(int, input().split()))
 # # endregion dfsconvert
 
 # MOD = 998244353
-MOD = 10 ** 9 + 7
+# MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-mx = 2 * 10 ** 6
-
-'''
-# 1123 ms
-dp = [[0] * 4 for _ in range(mx + 1)]
-dp[1][0] = 1
-for i in range(2, mx + 1):
-    dp[i][0] = (dp[i - 1][0] + dp[i - 1][1] * 2) % MOD
-    dp[i][1] = dp[i - 1][0]
-    dp[i][2] = dp[i - 1][1]
-    dp[i][3] = (dp[i][2] * 4 + dp[i - 3][3]) % MOD
-
 def solve() -> None:
-    n = sint()
-
-    print(dp[n][3])
-'''
-
-'''
-# 108ms
-dp = [0] * (mx + 1)
-dp[3] = dp[4] = 4
-for i in range (5, mx + 1):
-    dp[i] = max(((2 * dp[i-2]) + dp[i-1]) % MOD, ((4 * dp[i-4]) + 4 * dp[i-3] + dp[i-2] + 4) % MOD)
+    n, q = mint()
     
-def solve() -> None:
-    n = sint()
-    print(dp[n])
-'''
+    def getPrimes(n: int, res: Counter):
+        d = 2
+        while d * d <= n:
+            if n % d == 0:
+                while n % d == 0:
+                    res[d] += 1
+                    n //= d
+            if n == 1:
+                break
+            d += 1
+        if n > 1:
+            res[n] += 1
+        return res
+            
+    cnt = Counter()
+    x = n
+    getPrimes(x, cnt)
+    
+    x = n
+    cc = cnt.copy()
+    for _ in range(q):
+        qry = ints()
+        if qry[0] == 2:
+            x = n
+            cc = cnt.copy()
+        else:
+            x *= qry[1]
+            getPrimes(qry[1], cc)
+            p = 1
+            for v in cc.values():
+                p *= (v + 1)
+            print("YES" if x % p == 0 else "NO")
+    print()
 
 for _ in range(int(input())):
     solve()

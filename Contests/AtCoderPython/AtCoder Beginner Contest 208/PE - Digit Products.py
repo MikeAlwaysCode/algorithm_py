@@ -1,15 +1,14 @@
 import sys
+from functools import cache
 
-# import itertools
 # import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
+# from bisect import *
 # from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
+# from heapq import *
+# from itertools import *
+# from random import *
 # from string import *
+# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +30,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -52,38 +50,33 @@ ints = lambda: list(map(int, input().split()))
 # # endregion dfsconvert
 
 # MOD = 998244353
-MOD = 10 ** 9 + 7
+# MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-mx = 2 * 10 ** 6
-
-'''
-# 1123 ms
-dp = [[0] * 4 for _ in range(mx + 1)]
-dp[1][0] = 1
-for i in range(2, mx + 1):
-    dp[i][0] = (dp[i - 1][0] + dp[i - 1][1] * 2) % MOD
-    dp[i][1] = dp[i - 1][0]
-    dp[i][2] = dp[i - 1][1]
-    dp[i][3] = (dp[i][2] * 4 + dp[i - 3][3]) % MOD
-
 def solve() -> None:
-    n = sint()
+    n, k = mint()
+    s = str(n)
 
-    print(dp[n][3])
-'''
+    @cache
+    def zz(i: int, mul: int, isLimit: bool, isNum: bool):
+        if i == len(s):
+            # 前面填了数字，当前为1个有效结果
+            return int(isNum and mul <= k)
+        if mul == 0:
+            if isLimit:
+                return int(s[i:]) + 1 if isNum else int(s[i:])
+            else:
+                return pow(10, len(s) - i)
+        res = 0
+        if not isNum:
+            # 可继续跳过
+            res = zz(i+1, mul, False, False)
+        up = int(s[i]) if isLimit else 9
+        for d in range(1-int(isNum), up+1):
+            res += zz(i+1, mul * d, isLimit and d == up, True)
+        return res
 
-'''
-# 108ms
-dp = [0] * (mx + 1)
-dp[3] = dp[4] = 4
-for i in range (5, mx + 1):
-    dp[i] = max(((2 * dp[i-2]) + dp[i-1]) % MOD, ((4 * dp[i-4]) + 4 * dp[i-3] + dp[i-2] + 4) % MOD)
-    
-def solve() -> None:
-    n = sint()
-    print(dp[n])
-'''
+    print(zz(0, 1, True, False))
 
-for _ in range(int(input())):
-    solve()
+sys.setrecursionlimit(10 ** 5)
+solve()

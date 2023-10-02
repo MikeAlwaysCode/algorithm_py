@@ -1,15 +1,14 @@
+import math
 import sys
 
-# import itertools
-# import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
+# from bisect import *
 # from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
+# from functools import *
+# from heapq import *
+# from itertools import *
+# from random import *
 # from string import *
+# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +30,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -52,38 +50,38 @@ ints = lambda: list(map(int, input().split()))
 # # endregion dfsconvert
 
 # MOD = 998244353
-MOD = 10 ** 9 + 7
+# MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-mx = 2 * 10 ** 6
-
-'''
-# 1123 ms
-dp = [[0] * 4 for _ in range(mx + 1)]
-dp[1][0] = 1
-for i in range(2, mx + 1):
-    dp[i][0] = (dp[i - 1][0] + dp[i - 1][1] * 2) % MOD
-    dp[i][1] = dp[i - 1][0]
-    dp[i][2] = dp[i - 1][1]
-    dp[i][3] = (dp[i][2] * 4 + dp[i - 3][3]) % MOD
-
 def solve() -> None:
-    n = sint()
+    n, k, p = mint()
+    mx = (p + 1) ** k
+    dp = [math.inf] * mx
+    dp[0] = 0
+    for _ in range(n):
+        nums = ints()
+        c = nums[0]
+        op = nums[1:]
+        for mask in range(mx - 1, -1, -1):
+            nmask = 0
+            x = mask
+            pw = 1
+            for i in range(k):
+                nmask += max(0, (x % (p + 1)) - op[i]) * pw
+                x //= (p + 1)
+                pw *= (p + 1)
+            dp[mask] = min(dp[mask], dp[nmask] + c)
+    ans = math.inf
+    for mask, v in enumerate(dp):
+        if v == math.inf: continue
+        check = True
+        for i in range(k):
+            if mask % (p + 1) < p:
+                check = False
+                break
+            mask //= (p + 1)
+        if check: ans = min(ans, v)
+    print(-1 if ans == math.inf else ans)
 
-    print(dp[n][3])
-'''
 
-'''
-# 108ms
-dp = [0] * (mx + 1)
-dp[3] = dp[4] = 4
-for i in range (5, mx + 1):
-    dp[i] = max(((2 * dp[i-2]) + dp[i-1]) % MOD, ((4 * dp[i-4]) + 4 * dp[i-3] + dp[i-2] + 4) % MOD)
-    
-def solve() -> None:
-    n = sint()
-    print(dp[n])
-'''
-
-for _ in range(int(input())):
-    solve()
+solve()

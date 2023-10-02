@@ -1,11 +1,11 @@
 import sys
+import random
+from collections import *
 
 # import itertools
 # import math
 # import os
-# import random
 # from bisect import bisect, bisect_left
-# from collections import *
 # from functools import reduce
 # from heapq import heapify, heappop, heappush
 # from io import BytesIO, IOBase
@@ -52,38 +52,32 @@ ints = lambda: list(map(int, input().split()))
 # # endregion dfsconvert
 
 # MOD = 998244353
-MOD = 10 ** 9 + 7
+# MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-mx = 2 * 10 ** 6
-
-'''
-# 1123 ms
-dp = [[0] * 4 for _ in range(mx + 1)]
-dp[1][0] = 1
-for i in range(2, mx + 1):
-    dp[i][0] = (dp[i - 1][0] + dp[i - 1][1] * 2) % MOD
-    dp[i][1] = dp[i - 1][0]
-    dp[i][2] = dp[i - 1][1]
-    dp[i][3] = (dp[i][2] * 4 + dp[i - 3][3]) % MOD
-
 def solve() -> None:
     n = sint()
-
-    print(dp[n][3])
-'''
-
-'''
-# 108ms
-dp = [0] * (mx + 1)
-dp[3] = dp[4] = 4
-for i in range (5, mx + 1):
-    dp[i] = max(((2 * dp[i-2]) + dp[i-1]) % MOD, ((4 * dp[i-4]) + 4 * dp[i-3] + dp[i-2] + 4) % MOD)
+    nums = ints()
+    h = random.randint(1, 1 << 30)
+    cnt = Counter(x ^ h for x in nums)
+    mex = 0
+    while cnt[mex^h]:
+        mex += 1
     
-def solve() -> None:
-    n = sint()
-    print(dp[n])
-'''
+    if mex == 0:
+        print(0)
+        return
+    # print(mex)
+    dp = [0] * mex
+    c0 = cnt[h]
+    dp[0] = (c0 - 1) * mex
+    for i in range(1, mex):
+        v = cnt[i^h]
+        dp[i] = mex * (v - 1) + i * c0
+        for j in range(1, i):
+            dp[i] = min(dp[i], dp[j] + mex * (v - 1) + i * cnt[j ^ h] - mex * (cnt[j ^ h] - 1))
+    # print(dp)
+    print(min(dp))
 
 for _ in range(int(input())):
     solve()
