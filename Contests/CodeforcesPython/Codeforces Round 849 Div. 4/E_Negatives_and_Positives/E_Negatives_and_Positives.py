@@ -55,22 +55,19 @@ ints = lambda: list(map(int, input().split()))
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-def phi(x: int) -> int:
-    res = x
-    d = 2
-    while d * d <= x:
-        if x % d == 0:
-            res -= res // d
-            while x % d == 0:
-                x //= d
-        if x == 1: break
-        d += 1
-    if x > 1: res -= res // x
-    return res
-
 def solve() -> None:
-    a, m = mint()
-    print(phi(m // math.gcd(a, m)))
+    n = sint()
+    nums = ints()
+    ans, mx, cnt = 0, math.inf, 0
+    for x in nums:
+        if x < 0:
+            cnt ^= 1
+            x = -x
+        ans += x
+        mx = min(mx, x)
+    if cnt:
+        ans -= mx * 2
+    print(ans)
 
 for _ in range(int(input())):
     solve()

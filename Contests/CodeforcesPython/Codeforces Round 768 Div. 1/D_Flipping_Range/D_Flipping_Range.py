@@ -1,12 +1,12 @@
 import sys
 import math
+from functools import reduce
 
 # import itertools
 # import os
 # import random
 # from bisect import bisect, bisect_left
 # from collections import *
-# from functools import reduce
 # from heapq import heapify, heappop, heappush
 # from io import BytesIO, IOBase
 # from string import *
@@ -55,22 +55,15 @@ ints = lambda: list(map(int, input().split()))
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-def phi(x: int) -> int:
-    res = x
-    d = 2
-    while d * d <= x:
-        if x % d == 0:
-            res -= res // d
-            while x % d == 0:
-                x //= d
-        if x == 1: break
-        d += 1
-    if x > 1: res -= res // x
-    return res
-
 def solve() -> None:
-    a, m = mint()
-    print(phi(m // math.gcd(a, m)))
+    n, m = mint()
+    nums = ints()
+    g = reduce(math.gcd, ints())
+    dp = [[0] * g, [-math.inf] * g]
+    for i, x in enumerate(nums):
+        dp[0][i%g], dp[1][i%g] = max(dp[0][i%g] + x, dp[1][i%g] - x), max(dp[0][i%g] - x, dp[1][i%g] + x)
+
+    print(max(sum(dp[0]), sum(dp[1])))
 
 for _ in range(int(input())):
     solve()

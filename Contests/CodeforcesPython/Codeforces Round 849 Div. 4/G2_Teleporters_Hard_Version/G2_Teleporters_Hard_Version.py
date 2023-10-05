@@ -1,10 +1,10 @@
 import sys
-import math
+import itertools
+from bisect import bisect, bisect_left
 
-# import itertools
+# import math
 # import os
 # import random
-# from bisect import bisect, bisect_left
 # from collections import *
 # from functools import reduce
 # from heapq import heapify, heappop, heappush
@@ -55,22 +55,33 @@ ints = lambda: list(map(int, input().split()))
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-def phi(x: int) -> int:
-    res = x
-    d = 2
-    while d * d <= x:
-        if x % d == 0:
-            res -= res // d
-            while x % d == 0:
-                x //= d
-        if x == 1: break
-        d += 1
-    if x > 1: res -= res // x
-    return res
-
 def solve() -> None:
-    a, m = mint()
-    print(phi(m // math.gcd(a, m)))
+    n, c = mint()
+    nums = ints()
+    left = [0] * n
+    # right = [0] * n
+    mn = [0] * n
+    for i in range(n):
+        l, r = nums[i] + i + 1, nums[i] + n - i
+        # left[i], right[i] = l, r
+        left[i] = l
+        mn[i] = min(l, r)
+
+    ans = 0
+    idx = sorted(range(n), key = lambda x: mn[x])
+    d = {x:i for i, x in enumerate(idx)}
+    pres = list(itertools.accumulate(sorted(mn)))
+    for i in range(n):
+        if c < left[i]: continue
+        cc = c - left[i]
+        j = bisect(pres, cc)
+        if d[i] < j:
+            j = bisect(pres, cc + mn[i])
+            ans = max(ans, j)
+        else:
+            ans = max(ans, j + 1)
+
+    print(ans)
 
 for _ in range(int(input())):
     solve()

@@ -12,17 +12,26 @@ func solve(_r io.Reader, _w io.Writer) {
 	out := bufio.NewWriter(_w)
 	defer out.Flush()
 
-	var T, n, k int
-	for Fscan(in, &T); T > 0; T-- {
-		Fscan(in, &n, &k)
-		a := make([]int, n)
-		for i := range a {
-			Fscan(in, &a[i])
+	var n, ans, cnt, x int
+	mn := 1 << 30
+	Fscan(in, &n)
+	for i := 0; i < n; i++ {
+		Fscan(in, &x)
+		if x < 0 {
+			x = -x
+			cnt++
 		}
-
-		ans := 0
-		Fprintln(out, ans)
+		ans += x
+		if x < mn {
+			mn = x
+		}
 	}
+
+	if cnt&1 > 0 {
+		ans -= 2 * mn
+	}
+
+	Fprintln(out, ans)
 }
 
 func main() { solve(os.Stdin, os.Stdout) }

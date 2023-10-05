@@ -1,15 +1,14 @@
 import sys
-import math
 
-# import itertools
-# import os
-# import random
-# from bisect import bisect, bisect_left
+# import math
+# from bisect import *
 # from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
+# from functools import *
+# from heapq import *
+# from itertools import *
+# from random import *
 # from string import *
+# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +30,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -51,26 +49,30 @@ ints = lambda: list(map(int, input().split()))
 #     return wrappedfunc
 # # endregion dfsconvert
 
-# MOD = 998244353
+MOD = 998244353
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-def phi(x: int) -> int:
-    res = x
-    d = 2
-    while d * d <= x:
-        if x % d == 0:
-            res -= res // d
-            while x % d == 0:
-                x //= d
-        if x == 1: break
-        d += 1
-    if x > 1: res -= res // x
-    return res
-
 def solve() -> None:
-    a, m = mint()
-    print(phi(m // math.gcd(a, m)))
+    n = sint()
+    A = ints()
+    B = ints()
+    # dp[i]：当前填小于等于i的方案数
+    dp = [0] * 3001
+    dp[A[0]] = 1
+    for i in range(A[0] + 1, 3001):
+        dp[i] = dp[i - 1]
+        if i <= B[0]:
+            dp[i] += 1
+    for a, b in zip(A[1:], B[1:]):
+        tmp = [0] * 3001
+        tmp[a] = dp[a]
+        for i in range(a + 1, 3001):
+            tmp[i] = tmp[i - 1]
+            if i <= b:
+                # 当前可以填i，加上前一位dp[i]方案数
+                tmp[i] = (tmp[i] + dp[i]) % MOD
+        dp = tmp
+    print(dp[-1])
 
-for _ in range(int(input())):
-    solve()
+solve()

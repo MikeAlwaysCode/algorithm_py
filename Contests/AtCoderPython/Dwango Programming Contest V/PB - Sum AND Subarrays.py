@@ -1,15 +1,14 @@
 import sys
-import math
 
-# import itertools
-# import os
-# import random
-# from bisect import bisect, bisect_left
+# import math
+# from bisect import *
 # from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
+# from functools import *
+# from heapq import *
+# from itertools import *
+# from random import *
 # from string import *
+# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +30,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -55,22 +53,20 @@ ints = lambda: list(map(int, input().split()))
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-def phi(x: int) -> int:
-    res = x
-    d = 2
-    while d * d <= x:
-        if x % d == 0:
-            res -= res // d
-            while x % d == 0:
-                x //= d
-        if x == 1: break
-        d += 1
-    if x > 1: res -= res // x
-    return res
-
 def solve() -> None:
-    a, m = mint()
-    print(phi(m // math.gcd(a, m)))
+    n, k = mint()
+    nums = ints()
+    mx = sum(nums).bit_length() - 1
+    ans = 0
+    for bit in range(mx, -1, -1):
+        cnt = 0
+        for i in range(n):
+            s = 0
+            for j in range(i, n):
+                s += nums[j]
+                if s & ans == ans and (s >> bit) & 1:
+                    cnt += 1
+        if cnt >= k: ans |= 1 << bit
+    print(ans)
 
-for _ in range(int(input())):
-    solve()
+solve()

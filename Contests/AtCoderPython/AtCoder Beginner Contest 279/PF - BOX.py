@@ -1,15 +1,14 @@
 import sys
-import math
 
-# import itertools
-# import os
-# import random
-# from bisect import bisect, bisect_left
+# import math
+# from bisect import *
 # from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
+# from functools import *
+# from heapq import *
+# from itertools import *
+# from random import *
 # from string import *
+# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +30,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -55,22 +53,43 @@ ints = lambda: list(map(int, input().split()))
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-def phi(x: int) -> int:
-    res = x
-    d = 2
-    while d * d <= x:
-        if x % d == 0:
-            res -= res // d
-            while x % d == 0:
-                x //= d
-        if x == 1: break
-        d += 1
-    if x > 1: res -= res // x
-    return res
-
 def solve() -> None:
-    a, m = mint()
-    print(phi(m // math.gcd(a, m)))
+    n, q = mint()
 
-for _ in range(int(input())):
-    solve()
+    box = list(range(n + 1))
+    ball = list(range(n + 1))
+    fa = list(range(n + 1))
+    def find(x: int) -> int:
+        cur = x
+        while x != fa[x]:
+            x = fa[x]
+        while fa[cur] != x:
+            fa[cur], cur = x, fa[cur]
+        return x
+    
+    for _ in range(q):
+        qry = ints()
+        if qry[0] == 1:
+            x, y = box[qry[1]], box[qry[2]]
+            if y == -1:
+                continue
+            if x == -1:
+                box[qry[1]] = y
+                ball[y] = qry[1]
+            else:
+                fa[y] = x
+            box[qry[2]] = -1
+        elif qry[0] == 2:
+            n += 1
+            fa.append(n)
+            ball.append(n)
+            x = box[qry[1]]
+            if x == -1:
+                ball[-1] = qry[1]
+                box[qry[1]] = n
+            else:
+                fa[-1] = x
+        else:
+            print(ball[find(qry[1])])
+
+solve()

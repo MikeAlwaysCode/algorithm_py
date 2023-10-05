@@ -1,7 +1,7 @@
 import sys
-import math
 
 # import itertools
+# import math
 # import os
 # import random
 # from bisect import bisect, bisect_left
@@ -53,24 +53,20 @@ ints = lambda: list(map(int, input().split()))
 
 # MOD = 998244353
 # MOD = 10 ** 9 + 7
-# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
-
-def phi(x: int) -> int:
-    res = x
-    d = 2
-    while d * d <= x:
-        if x % d == 0:
-            res -= res // d
-            while x % d == 0:
-                x //= d
-        if x == 1: break
-        d += 1
-    if x > 1: res -= res // x
-    return res
+DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    a, m = mint()
-    print(phi(m // math.gcd(a, m)))
+    n = sint()
+    s = input()
+    d = "LURD"
+    x = y = 0
+    ans = False
+    for c in s:
+        i = d.index(c)
+        x, y = x + DIR[i][0], y + DIR[i][1]
+        if x == y == 1:
+            ans = True
+    print("YES" if ans else "NO")
 
 for _ in range(int(input())):
     solve()

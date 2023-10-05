@@ -1,15 +1,14 @@
 import sys
 import math
 
-# import itertools
-# import os
-# import random
-# from bisect import bisect, bisect_left
+# from bisect import *
 # from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
+# from functools import *
+# from heapq import *
+# from itertools import *
+# from random import *
 # from string import *
+# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +30,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -55,22 +53,23 @@ ints = lambda: list(map(int, input().split()))
 # MOD = 10 ** 9 + 7
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
-def phi(x: int) -> int:
-    res = x
-    d = 2
-    while d * d <= x:
-        if x % d == 0:
-            res -= res // d
-            while x % d == 0:
-                x //= d
-        if x == 1: break
-        d += 1
-    if x > 1: res -= res // x
-    return res
-
 def solve() -> None:
-    a, m = mint()
-    print(phi(m // math.gcd(a, m)))
+    n = sint()
+    nums = ints()
+    ans = cnt = 0
+    mn = math.inf
+    for x in nums:
+        if x < 0:
+            ans -= x
+            cnt += 1
+            mn = min(mn, -x)
+        else:
+            ans += x
+            mn = min(mn, x)
+    
+    if cnt & 1:
+        ans -= 2 * mn
+    
+    print(ans)
 
-for _ in range(int(input())):
-    solve()
+solve()
