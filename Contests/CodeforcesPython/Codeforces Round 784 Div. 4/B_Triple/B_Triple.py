@@ -1,13 +1,13 @@
 import sys
-from itertools import *
+from collections import *
 
 # import math
 # import os
 # import random
 # from bisect import bisect, bisect_left
-# from collections import *
 # from functools import reduce
 # from heapq import heapify, heappop, heappush
+# from itertools import *
 # from io import BytesIO, IOBase
 # from string import *
 
@@ -51,27 +51,26 @@ ints = lambda: list(map(int, input().split()))
 #     return wrappedfunc
 # # endregion dfsconvert
 
-# MOD = 998244353
+# MOD = 998_244_353
 # MOD = 10 ** 9 + 7
-# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
+# DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
+# DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n, x = mint()
+    n = sint()
+    cnt = Counter(sorted(ints()))
+    k, v = cnt.most_common(1)[0]
+    print(-1 if v < 3 else k)
+    '''
+    cnt = [0] * (n + 1)
     nums = ints()
-    nums.reverse()
-    tot = [x * (x + 1) //2 for x in nums]
-    nums += nums
-    pres = list(accumulate(nums, initial = 0))
-    ans = s = 0
-    j = 1
-    for i in range(n):
-        while pres[j] - pres[i] <= x:
-            s += tot[(j - 1) % n]
-            j += 1
-        d = x - pres[j - 1] + pres[i]
-        cur = d * (nums[j - 1] * 2 - d + 1) // 2
-        ans = max(ans, s + cur)
-        s -= tot[i]
-    print(ans)
+    for x in nums:
+        cnt[x] += 1
+        if cnt[x] >= 3:
+            print(x)
+            return
+    print(-1)
+    '''
 
-solve()
+for _ in range(int(input())):
+    solve()

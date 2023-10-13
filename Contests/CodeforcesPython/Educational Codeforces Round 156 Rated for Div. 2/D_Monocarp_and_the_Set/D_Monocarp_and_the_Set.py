@@ -1,5 +1,4 @@
 import sys
-from itertools import *
 
 # import math
 # import os
@@ -8,6 +7,7 @@ from itertools import *
 # from collections import *
 # from functools import reduce
 # from heapq import heapify, heappop, heappush
+# from itertools import *
 # from io import BytesIO, IOBase
 # from string import *
 
@@ -51,27 +51,41 @@ ints = lambda: list(map(int, input().split()))
 #     return wrappedfunc
 # # endregion dfsconvert
 
-# MOD = 998244353
+MOD = 998_244_353
 # MOD = 10 ** 9 + 7
-# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
+# DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
+# DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n, x = mint()
-    nums = ints()
-    nums.reverse()
-    tot = [x * (x + 1) //2 for x in nums]
-    nums += nums
-    pres = list(accumulate(nums, initial = 0))
-    ans = s = 0
-    j = 1
-    for i in range(n):
-        while pres[j] - pres[i] <= x:
-            s += tot[(j - 1) % n]
-            j += 1
-        d = x - pres[j - 1] + pres[i]
-        cur = d * (nums[j - 1] * 2 - d + 1) // 2
-        ans = max(ans, s + cur)
-        s -= tot[i]
-    print(ans)
+    n, m = mint()
+    s = list(input())
+
+    ans = 1
+    for i, c in enumerate(s):
+        if i and c == '?':
+            ans = ans * i % MOD
+
+    if s[0] == '?':
+        print(0)
+    else:
+        print(ans)
+
+    for _ in range(m):
+        qry = input().split()
+        i, c = int(qry[0]) - 1, qry[1]
+
+        if c != s[i]:
+            if i:
+                if s[i] == '?':
+                    ans = ans * pow(i, MOD - 2, MOD) % MOD
+                elif c == '?':
+                    ans = ans * i % MOD
+
+            s[i] = c
+
+        if s[0] == '?':
+            print(0)
+        else:
+            print(ans)
 
 solve()

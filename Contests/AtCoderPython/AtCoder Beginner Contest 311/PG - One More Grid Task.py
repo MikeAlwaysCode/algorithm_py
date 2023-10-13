@@ -1,15 +1,14 @@
 import sys
-from itertools import *
 
 # import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
+# from bisect import *
 # from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from io import BytesIO, IOBase
+# from functools import *
+# from heapq import *
+# from itertools import *
+# from random import *
 # from string import *
+# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +30,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -56,22 +54,29 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n, x = mint()
-    nums = ints()
-    nums.reverse()
-    tot = [x * (x + 1) //2 for x in nums]
-    nums += nums
-    pres = list(accumulate(nums, initial = 0))
-    ans = s = 0
-    j = 1
+    n, m = mint()
+    g = []
+    ans = 0
     for i in range(n):
-        while pres[j] - pres[i] <= x:
-            s += tot[(j - 1) % n]
-            j += 1
-        d = x - pres[j - 1] + pres[i]
-        cur = d * (nums[j - 1] * 2 - d + 1) // 2
-        ans = max(ans, s + cur)
-        s -= tot[i]
+        g.append(ints())
+        mn = g[-1][:]
+        pres = [0] * (m + 1)
+        for up in range(i, -1, -1):
+            s = 0
+            for j, v in enumerate(g[up]):
+                mn[j] = min(mn[j], v)
+                s += v
+                pres[j + 1] += s
+            left, right = [-1] * m, [m] * m
+            stk = []
+            for j, v in enumerate(mn):
+                while stk and mn[stk[-1]] > v:
+                    right[stk.pop()] = j
+                if stk: left[j] = stk[-1]
+                stk.append(j)
+            
+            for j, v in enumerate(mn):
+                ans = max(ans, (pres[right[j]] - pres[left[j] + 1]) * v)
     print(ans)
 
 solve()

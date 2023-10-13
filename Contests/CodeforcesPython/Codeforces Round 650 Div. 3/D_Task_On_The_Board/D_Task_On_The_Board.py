@@ -1,15 +1,15 @@
 import sys
-from itertools import *
+from collections import *
+# from string import *
 
 # import math
 # import os
 # import random
 # from bisect import bisect, bisect_left
-# from collections import *
 # from functools import reduce
 # from heapq import heapify, heappop, heappush
+# from itertools import *
 # from io import BytesIO, IOBase
-# from string import *
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -51,27 +51,40 @@ ints = lambda: list(map(int, input().split()))
 #     return wrappedfunc
 # # endregion dfsconvert
 
-# MOD = 998244353
+# MOD = 998_244_353
 # MOD = 10 ** 9 + 7
-# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
+# DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
+# DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n, x = mint()
+    s = sorted(Counter(input()).items(), reverse = True)
+    m = sint()
     nums = ints()
-    nums.reverse()
-    tot = [x * (x + 1) //2 for x in nums]
-    nums += nums
-    pres = list(accumulate(nums, initial = 0))
-    ans = s = 0
-    j = 1
-    for i in range(n):
-        while pres[j] - pres[i] <= x:
-            s += tot[(j - 1) % n]
-            j += 1
-        d = x - pres[j - 1] + pres[i]
-        cur = d * (nums[j - 1] * 2 - d + 1) // 2
-        ans = max(ans, s + cur)
-        s -= tot[i]
-    print(ans)
 
-solve()
+    ans = [''] * m
+    i = 0
+    pos = [j for j, v in enumerate(nums) if v == 0]
+    while True:
+        while s[i][1] < len(pos):
+            i += 1
+        for j in pos:
+            ans[j] = s[i][0]
+        i += 1
+        nxt = []
+        for j, v in enumerate(nums):
+            if v == 0:
+                nums[j] = -1
+                continue
+            if v < 0:
+                continue
+            for k in pos:
+                nums[j] -= abs(j - k)
+            if nums[j] == 0:
+                nxt.append(j)
+        if not nxt: break
+        pos = nxt
+        
+    print("".join(ans))
+
+for _ in range(int(input())):
+    solve()

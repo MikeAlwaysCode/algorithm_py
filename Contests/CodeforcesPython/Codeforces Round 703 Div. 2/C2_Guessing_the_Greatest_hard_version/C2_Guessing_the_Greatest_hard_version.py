@@ -1,5 +1,4 @@
 import sys
-from itertools import *
 
 # import math
 # import os
@@ -8,6 +7,7 @@ from itertools import *
 # from collections import *
 # from functools import reduce
 # from heapq import heapify, heappop, heappush
+# from itertools import *
 # from io import BytesIO, IOBase
 # from string import *
 
@@ -19,16 +19,17 @@ ints = lambda: list(map(int, input().split()))
 # print = lambda d: sys.stdout.write(str(d) + "\n")
 # endregion fastio
 
-# # region interactive
-# def printQry(a, b) -> None:
-#     sa = str(a)
-#     sb = str(b)
-#     print(f"? {sa} {sb}", flush = True)
+# region interactive
+def printQry(a, b) -> int:
+    sa = str(a)
+    sb = str(b)
+    print(f"? {sa} {sb}", flush = True)
+    return sint()
 
-# def printAns(ans) -> None:
-#     s = str(ans)
-#     print(f"! {s}", flush = True)
-# # endregion interactive
+def printAns(ans) -> None:
+    s = str(ans)
+    print(f"! {s}", flush = True)
+# endregion interactive
 
 # # region dfsconvert
 # from types import GeneratorType
@@ -51,27 +52,40 @@ ints = lambda: list(map(int, input().split()))
 #     return wrappedfunc
 # # endregion dfsconvert
 
-# MOD = 998244353
+# MOD = 998_244_353
 # MOD = 10 ** 9 + 7
-# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
+# DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
+# DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n, x = mint()
-    nums = ints()
-    nums.reverse()
-    tot = [x * (x + 1) //2 for x in nums]
-    nums += nums
-    pres = list(accumulate(nums, initial = 0))
-    ans = s = 0
-    j = 1
-    for i in range(n):
-        while pres[j] - pres[i] <= x:
-            s += tot[(j - 1) % n]
-            j += 1
-        d = x - pres[j - 1] + pres[i]
-        cur = d * (nums[j - 1] * 2 - d + 1) // 2
-        ans = max(ans, s + cur)
-        s -= tot[i]
-    print(ans)
+    n = sint()
+    smax = printQry(1, n)
+    if smax == 1:
+        l, r = 2, n
+    elif smax == n:
+        l, r = 1, n - 1
+    else:
+        nmax = printQry(1, smax)
+        if nmax == smax:
+            l, r = 1, smax - 1
+        else:
+            l, r = smax + 1, n
+            
+    while l < r:
+        if r < smax:
+            mid = (l + r + 1) >> 1
+            nmax = printQry(mid, smax)
+            if nmax != smax:
+                r = mid - 1
+            else:
+                l = mid
+        else:
+            mid = (l + r) >> 1
+            nmax = printQry(smax, mid)
+            if nmax != smax:
+                l = mid + 1
+            else:
+                r = mid
+    printAns(r)
 
 solve()

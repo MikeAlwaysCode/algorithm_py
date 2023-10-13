@@ -1,5 +1,4 @@
 import sys
-from itertools import *
 
 # import math
 # import os
@@ -8,6 +7,7 @@ from itertools import *
 # from collections import *
 # from functools import reduce
 # from heapq import heapify, heappop, heappush
+# from itertools import *
 # from io import BytesIO, IOBase
 # from string import *
 
@@ -51,27 +51,30 @@ ints = lambda: list(map(int, input().split()))
 #     return wrappedfunc
 # # endregion dfsconvert
 
-# MOD = 998244353
+# MOD = 998_244_353
 # MOD = 10 ** 9 + 7
-# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
+# DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
+# DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n, x = mint()
-    nums = ints()
-    nums.reverse()
-    tot = [x * (x + 1) //2 for x in nums]
-    nums += nums
-    pres = list(accumulate(nums, initial = 0))
-    ans = s = 0
-    j = 1
-    for i in range(n):
-        while pres[j] - pres[i] <= x:
-            s += tot[(j - 1) % n]
-            j += 1
-        d = x - pres[j - 1] + pres[i]
-        cur = d * (nums[j - 1] * 2 - d + 1) // 2
-        ans = max(ans, s + cur)
-        s -= tot[i]
-    print(ans)
+    n, m = mint()
+    g = []
+    for _ in range(n):
+        g.append(list(input()))
 
-solve()
+    floor = [n - 1] * m
+    for i in range(n - 1, -1, -1):
+        for j in range(m):
+            if g[i][j] == 'o':
+                floor[j] = i - 1
+            elif g[i][j] == '*':
+                g[i][j] = '.'
+                g[floor[j]][j] = '*'
+                floor[j] -= 1
+
+    for row in g:
+        print("".join(row))
+    print()
+
+for _ in range(int(input())):
+    solve()

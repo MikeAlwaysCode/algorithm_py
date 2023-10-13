@@ -1,13 +1,13 @@
 import sys
-from itertools import *
+import math
+from heapq import heapify, heappop, heappush
 
-# import math
 # import os
 # import random
 # from bisect import bisect, bisect_left
 # from collections import *
 # from functools import reduce
-# from heapq import heapify, heappop, heappush
+# from itertools import *
 # from io import BytesIO, IOBase
 # from string import *
 
@@ -51,27 +51,34 @@ ints = lambda: list(map(int, input().split()))
 #     return wrappedfunc
 # # endregion dfsconvert
 
-# MOD = 998244353
+# MOD = 998_244_353
 # MOD = 10 ** 9 + 7
-# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
+# DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
+DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n, x = mint()
-    nums = ints()
-    nums.reverse()
-    tot = [x * (x + 1) //2 for x in nums]
-    nums += nums
-    pres = list(accumulate(nums, initial = 0))
-    ans = s = 0
-    j = 1
-    for i in range(n):
-        while pres[j] - pres[i] <= x:
-            s += tot[(j - 1) % n]
-            j += 1
-        d = x - pres[j - 1] + pres[i]
-        cur = d * (nums[j - 1] * 2 - d + 1) // 2
-        ans = max(ans, s + cur)
-        s -= tot[i]
-    print(ans)
+    sx, sy, tx, ty = mint()
+    d = dict()
+    for _ in range(sint()):
+        r, c1, c2 = mint()
+        for c in range(c1, c2 + 1):
+            d[(r, c)] = math.inf
+    
+    d[(sx, sy)] = 0
+    h = [(0, sx, sy)]
+    while h:
+        dis, x, y = heappop(h)
+        if dis > d[(x, y)]:
+            continue
+        for dx, dy in DIR8:
+            nx, ny = x + dx, y + dy
+            if (nx, ny) not in d or dis + 1 >= d[(nx, ny)]:
+                continue
+            d[(nx, ny)] = dis + 1
+            if nx == tx and ny == ty:
+                break
+            heappush(h, (d[(nx, ny)], nx, ny))
+        if d[(tx, ty)] != math.inf: break
+    print(-1 if d[(tx, ty)] == math.inf else d[(tx, ty)])
 
 solve()

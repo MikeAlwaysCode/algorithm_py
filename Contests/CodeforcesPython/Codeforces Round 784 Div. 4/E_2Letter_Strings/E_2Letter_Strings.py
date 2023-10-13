@@ -1,13 +1,13 @@
 import sys
-from itertools import *
 
+# from collections import *
 # import math
 # import os
 # import random
 # from bisect import bisect, bisect_left
-# from collections import *
 # from functools import reduce
 # from heapq import heapify, heappop, heappush
+# from itertools import *
 # from io import BytesIO, IOBase
 # from string import *
 
@@ -51,27 +51,26 @@ ints = lambda: list(map(int, input().split()))
 #     return wrappedfunc
 # # endregion dfsconvert
 
-# MOD = 998244353
+# MOD = 998_244_353
 # MOD = 10 ** 9 + 7
-# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
+# DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
+# DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n, x = mint()
-    nums = ints()
-    nums.reverse()
-    tot = [x * (x + 1) //2 for x in nums]
-    nums += nums
-    pres = list(accumulate(nums, initial = 0))
-    ans = s = 0
-    j = 1
-    for i in range(n):
-        while pres[j] - pres[i] <= x:
-            s += tot[(j - 1) % n]
-            j += 1
-        d = x - pres[j - 1] + pres[i]
-        cur = d * (nums[j - 1] * 2 - d + 1) // 2
-        ans = max(ans, s + cur)
-        s -= tot[i]
+    n = sint()
+    cnt1 = [0] * 26
+    cnt2 = [0] * 26
+    cnt_both = [[0] * 26 for _ in range(26)]
+    ans = 0
+    for _ in range(n):
+        s = input()
+        n1 = ord(s[0]) - 97
+        n2 = ord(s[1]) - 97
+        ans += cnt1[n1] + cnt2[n2] - cnt_both[n1][n2] * 2
+        cnt1[n1] += 1
+        cnt2[n2] += 1
+        cnt_both[n1][n2] += 1
     print(ans)
 
-solve()
+for _ in range(int(input())):
+    solve()
