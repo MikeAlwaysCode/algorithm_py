@@ -39,34 +39,29 @@ def solve() -> None:
         for y in g[x]:
             if y == p: continue
             q.append((d + 1, y, x))
-    # print(L, mx)
+            
     parent = [-1] * n
     ans = mx
+    connect_two = False
     q = deque([(L, -1)])
     dis = [0] * n
-    child = [0] * n
     while q:
         x, p = q.popleft()
         if dis[x] > ans:
             ans = dis[x]
         for y in g[x]:
             if y == p: continue
-            child[x] += 1
             parent[y] = x
             dis[y] = dis[x] + 1
             q.append((y, x))
+        if not connect_two and len(g[x]) == 2:
+            connect_two = True
     
-    if ans & 1 or ans == n - 1:
+    if ans == n - 1 or connect_two:
         print(ans)
         return
     
-    for i in range(n):
-        if dis[i] * 2 != ans and child[i] > 1:
-            print(ans)
-            return
-        if child[i] == 0 and dis[i] < ans:
-            print(ans)
-            return
+
     print(ans + 1)
 
 for _ in range(int(input())):
