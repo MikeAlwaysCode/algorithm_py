@@ -57,19 +57,7 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n = sint()
-    nums = ints()
-    l = r = (n + 1) // 2
-    lc, rc = l, n - r + 1
-    for x in nums:
-        if x == r:
-            r += 1
-            rc -= 1
-    for x in nums[::-1]:
-        if x == l:
-            l -= 1
-            lc -= 1
-    print(max(lc, rc))
+    return
 
 for _ in range(int(input())):
     solve()

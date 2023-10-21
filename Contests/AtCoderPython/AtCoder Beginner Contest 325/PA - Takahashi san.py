@@ -1,5 +1,4 @@
 import sys
-from itertools import combinations
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -8,20 +7,13 @@ mint = lambda: map(int, input().split())
 ints = lambda: list(map(int, input().split()))
 # endregion fastio
 
-# MOD = 998_244_353
+# MOD = 998244353
 # MOD = 10 ** 9 + 7
-# DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n = sint()
-    nums = ints()
-    ans = nums[0] | nums[-1]
-    if n > 2:
-        ans = max(nums[c[0]] | nums[c[1]] | nums[c[2]] for c in combinations(range(n), 3))
-    else:
-        ans = nums[0] | nums[-1]
-    print(ans)
-
+    s, t = input().split()
+    print(s, "san")
 
 solve()

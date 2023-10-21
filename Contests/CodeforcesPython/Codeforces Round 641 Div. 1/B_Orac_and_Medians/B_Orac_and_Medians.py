@@ -57,19 +57,20 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n = sint()
+    n, k = mint()
     nums = ints()
-    l = r = (n + 1) // 2
-    lc, rc = l, n - r + 1
-    for x in nums:
-        if x == r:
-            r += 1
-            rc -= 1
-    for x in nums[::-1]:
-        if x == l:
-            l -= 1
-            lc -= 1
-    print(max(lc, rc))
+    ge = -3
+    check = False
+    eq = 0
+    for i, x in enumerate(nums):
+        if x >= k:
+            if not check and i - ge <= 2:
+                check = True
+            ge = i
+        if x == k:
+            eq += 1
+            
+    print("yes" if eq == n or (check and eq) else "no")
 
 for _ in range(int(input())):
     solve()

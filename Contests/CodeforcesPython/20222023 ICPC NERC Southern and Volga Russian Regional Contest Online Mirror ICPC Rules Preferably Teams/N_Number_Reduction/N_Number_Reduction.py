@@ -56,7 +56,24 @@ ints = lambda: list(map(int, input().split()))
 # DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    return
+    s = input()
+    k = sint()
+    j = 0
+    for i in range(k + 1):
+        if s[i] != '0' and s[i] < s[j]:
+            j = i
+    k -= j
+    stk = [s[j]]
+    for i in range(j + 1, len(s)):
+        c = s[i]
+        while k > 0 and len(stk) > 1 and stk[-1] > c:
+            stk.pop()
+            k -= 1
+        if k == 0:
+            print("".join(stk) + s[i:])
+            return
+        stk.append(c)
+    print("".join(stk[:len(stk) - k]))
 
 for _ in range(int(input())):
     solve()

@@ -1,6 +1,6 @@
 import sys
+import math
 
-# import math
 # import os
 # import random
 # from bisect import bisect, bisect_left
@@ -59,17 +59,24 @@ ints = lambda: list(map(int, input().split()))
 def solve() -> None:
     n = sint()
     nums = ints()
-    l = r = (n + 1) // 2
-    lc, rc = l, n - r + 1
+    mx = max(nums)
+    seen = [False] * (mx + 1)
     for x in nums:
-        if x == r:
-            r += 1
-            rc -= 1
-    for x in nums[::-1]:
-        if x == l:
-            l -= 1
-            lc -= 1
-    print(max(lc, rc))
+        seen[x] = True
+    ans = 0
+    for i in range(mx, 0, -1):
+        if seen[i]: continue
+        g = 0
+        for j in range(i * 2, mx + 1, i):
+            if seen[j]:
+                if g == 0:
+                    g = j
+                elif math.gcd(g, j) == i:
+                    g = i
+                    break
+        if g == i:
+            ans += 1
+            seen[g] = True
+    print(ans)
 
-for _ in range(int(input())):
-    solve()
+solve()

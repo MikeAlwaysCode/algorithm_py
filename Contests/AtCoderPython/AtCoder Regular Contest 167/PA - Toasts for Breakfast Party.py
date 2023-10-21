@@ -1,15 +1,14 @@
 import sys
 
 # import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
+# from bisect import *
 # from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
+# from functools import *
+# from heapq import *
 # from itertools import *
-# from io import BytesIO, IOBase
+# from random import *
 # from string import *
+# from types import GeneratorType
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -31,7 +30,6 @@ ints = lambda: list(map(int, input().split()))
 # # endregion interactive
 
 # # region dfsconvert
-# from types import GeneratorType
 # def bootstrap(f, stack=[]):
 #     def wrappedfunc(*args, **kwargs):
 #         if stack:
@@ -51,25 +49,23 @@ ints = lambda: list(map(int, input().split()))
 #     return wrappedfunc
 # # endregion dfsconvert
 
-# MOD = 998_244_353
+# MOD = 998244353
 # MOD = 10 ** 9 + 7
-# DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
-# DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 def solve() -> None:
-    n = sint()
+    n, m = mint()
     nums = ints()
-    l = r = (n + 1) // 2
-    lc, rc = l, n - r + 1
-    for x in nums:
-        if x == r:
-            r += 1
-            rc -= 1
-    for x in nums[::-1]:
-        if x == l:
-            l -= 1
-            lc -= 1
-    print(max(lc, rc))
+    nums.sort()
+    ans = 0
+    k = (n - m) * 2
+    i, j = 0, k - 1
+    while i < j:
+        ans += (nums[i] + nums[j]) ** 2
+        i += 1
+        j -= 1
+    for i in range(k, n):
+        ans += nums[i] * nums[i]
+    print(ans)
 
-for _ in range(int(input())):
-    solve()
+solve()
