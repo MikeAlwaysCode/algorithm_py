@@ -1,4 +1,5 @@
 import sys
+from collections import Counter
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -14,9 +15,10 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n, k = mint()
-    while sum(map(int, str(n))) % k:
-        n += 1
-    print(n)
+    s = input()
+    cnt = Counter(s)
+    odd = list(v for v in cnt.values() if v & 1)
+    print("YES" if k >= len(odd) - 1 else "NO")
 
 for _ in range(int(input())):
     solve()

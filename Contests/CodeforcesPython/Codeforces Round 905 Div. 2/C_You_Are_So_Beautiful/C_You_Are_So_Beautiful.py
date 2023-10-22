@@ -13,10 +13,20 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n, k = mint()
-    while sum(map(int, str(n))) % k:
-        n += 1
-    print(n)
+    n = sint()
+    nums = ints()
+    suff = [0] * n
+    s = set()
+    for i in range(n - 1, -1, -1):
+        s.add(nums[i])
+        suff[i] = len(s)
+    ans = 0
+    s = set()
+    for i, x in enumerate(nums):
+        if x not in s:
+            ans += suff[i]
+            s.add(x)
+    print(ans)
 
 for _ in range(int(input())):
     solve()

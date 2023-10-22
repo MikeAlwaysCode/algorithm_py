@@ -14,9 +14,22 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n, k = mint()
-    while sum(map(int, str(n))) % k:
-        n += 1
-    print(n)
+    nums = ints()
+    ans = k
+    m2 = 0
+    for x in nums:
+        if x % k == 0:
+            print(0)
+            return
+        ans = min(ans, k - (x % k))
+        if k == 4 and x % 2 == 0:
+            m2 += 1
+    if m2 >= 2:
+        print(0)
+    elif k == 4:
+        print(min(ans, 2 - m2))
+    else:
+        print(ans)
 
 for _ in range(int(input())):
     solve()

@@ -13,10 +13,22 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n, k = mint()
-    while sum(map(int, str(n))) % k:
-        n += 1
-    print(n)
+    n = sint()
+    s = list(input())
+    cnt = s.count('1')
+    ans = [-1] * n
+    j = n
+    res = 0
+    for i in range(n - cnt):
+        if s[n - i - 1] == '1':
+            j = min(j - 1, n - i - 2)
+            while j >= 0 and s[j] == '1':
+                j -= 1
+            res += n - i - 1 - j
+            s[j] = '1'
+        ans[i] = res
+    print(*ans)
+
 
 for _ in range(int(input())):
     solve()

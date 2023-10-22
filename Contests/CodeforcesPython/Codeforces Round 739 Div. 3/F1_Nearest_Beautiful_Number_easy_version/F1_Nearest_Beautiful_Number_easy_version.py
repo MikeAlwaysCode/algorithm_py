@@ -13,10 +13,7 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n, k = mint()
-    while sum(map(int, str(n))) % k:
-        n += 1
-    print(n)
+    return
 
 for _ in range(int(input())):
     solve()
