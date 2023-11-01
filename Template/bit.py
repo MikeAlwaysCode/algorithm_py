@@ -20,8 +20,6 @@ class BIT:
         #     self.BITree[x] = min(self.BITree[x], val)
         #     x += self.lowbit(x)
 
-
-
     def add(self, x: int, val: int):
         while x <= self.n:
             self.BITree[x] += val

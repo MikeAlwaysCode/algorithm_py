@@ -16,21 +16,23 @@ ints = lambda: list(map(int, input().split()))
 def solve() -> None:
     n = sint()
     nums = ints()
-    ans = n * (n - 1) // 2
     cnt = Counter(nums)
-    p = [0] * (n + 1)
-    for v in cnt.values():
-        ans -= v * (v - 1) // 2
-    for i in sorted(set(nums)):
-        if p[i] == 1: continue
-        for j in range(i + i, n + 1, i):
-            if cnt[j]:
-                if p[i] == 0:
-                    ans -= cnt[i] * cnt[j]
-                else:
-                    ans += (p[i] - 1) * cnt[i] * cnt[j]
-                cnt[i] += cnt[j]
-                p[j] += 1
+    dp = [0] * (n + 1)
+    ans = n * (n - 1) // 2
+    for i in range(1, n + 1):
+        if cnt[i]:
+            for j in range(i, n + 1, i):
+                dp[j] = 1
+
+    for i in range(1, n + 1):
+        if dp[i] == 0: continue
+        ci = dp[i]
+        cc = 0
+        for j in range(i, n + 1, i):
+            dp[j] -= ci
+            cc += cnt[j]
+        ans -= ci * cc * (cc - 1) // 2
+
     print(ans)
 
 for _ in range(int(input())):
