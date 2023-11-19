@@ -13,14 +13,16 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n, m = mint()
-    s = []
-    ans = 26 * m
-    for i in range(n):
-        s.append(list(map(ord, input())))
-        for j in range(i):
-            ans = min(ans, sum(abs(x - y) for x, y in zip(s[i], s[j])))
-    print(ans)
+    n, p, w, d = mint()
+    # If y ≥ w, then we can subtract w from y and add d to x, the number of wins and draws will decrease, and the number of points will stay the same.
+    for y in range(w):
+        q = p - y * d
+        if q < 0:
+            break
+        if q % w == 0 and q // w + y <= n:
+            x = q // w
+            print(x, y, n - x - y)
+            return
+    print(-1)
 
-for _ in range(int(input())):
-    solve()
+solve()

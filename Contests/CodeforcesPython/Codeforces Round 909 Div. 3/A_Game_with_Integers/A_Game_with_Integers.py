@@ -13,23 +13,8 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n, m, a, b = mint()
-    if a * n != b * m:
-        print("NO")
-        return
-    
-    print("YES")
-    shift = 1
-    while shift * n % m:
-        shift += 1
-        
-    j = 0
-    for _ in range(n):
-        if j + a <= m:
-            print('0' * j + '1' * a + '0' * (m - j - a))
-        else:
-            print('1' * (j + a - m) + '0' * (m - a) + '1' * (m - j))
-        j = (j + shift) % m
+    n = sint()
+    print("First" if n % 3 else "Second")
 
 for _ in range(int(input())):
     solve()

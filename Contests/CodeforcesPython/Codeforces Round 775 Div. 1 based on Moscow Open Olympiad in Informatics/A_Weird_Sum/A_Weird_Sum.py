@@ -1,4 +1,5 @@
 import sys
+from collections import Counter, defaultdict
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -14,13 +15,26 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n, m = mint()
-    s = []
-    ans = 26 * m
+
+    cnt = Counter()
+    pres = Counter()
+    pos = defaultdict(list)
+    ans = 0
+
     for i in range(n):
-        s.append(list(map(ord, input())))
-        for j in range(i):
-            ans = min(ans, sum(abs(x - y) for x, y in zip(s[i], s[j])))
+        c = ints()
+        for j, x in enumerate(c):
+            ans += cnt[x] * i - pres[x]
+            cnt[x] += 1
+            pres[x] += i
+            pos[x].append(j)
+    
+    for x, p in pos.items():
+        ps = 0
+        p.sort()
+        for i, j in enumerate(p):
+            ans += i * j - ps
+            ps += j
     print(ans)
 
-for _ in range(int(input())):
-    solve()
+solve()

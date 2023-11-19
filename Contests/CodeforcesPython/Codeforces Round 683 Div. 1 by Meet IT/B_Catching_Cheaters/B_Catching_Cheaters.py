@@ -14,13 +14,22 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n, m = mint()
-    s = []
-    ans = 26 * m
+    s = input()
+    t = input()
+    f = [0] * (m + 1)
+    g = [0] * (m + 1)
+    ans = 0
     for i in range(n):
-        s.append(list(map(ord, input())))
-        for j in range(i):
-            ans = min(ans, sum(abs(x - y) for x, y in zip(s[i], s[j])))
+        for j in range(m):
+            if s[i] == t[j]:
+                g[j + 1] = max(2, f[j] + 2)
+                if g[j + 1] > ans:
+                    ans = g[j + 1]
+            else:
+                g[j + 1] = max(f[j + 1], g[j]) - 1
+
+        f, g = g, f
+
     print(ans)
 
-for _ in range(int(input())):
-    solve()
+solve()

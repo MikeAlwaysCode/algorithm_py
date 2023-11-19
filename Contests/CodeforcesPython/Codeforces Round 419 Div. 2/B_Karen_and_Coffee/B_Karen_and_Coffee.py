@@ -12,24 +12,25 @@ ints = lambda: list(map(int, input().split()))
 # DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
-def solve() -> None:
-    n, m, a, b = mint()
-    if a * n != b * m:
-        print("NO")
-        return
-    
-    print("YES")
-    shift = 1
-    while shift * n % m:
-        shift += 1
-        
-    j = 0
-    for _ in range(n):
-        if j + a <= m:
-            print('0' * j + '1' * a + '0' * (m - j - a))
-        else:
-            print('1' * (j + a - m) + '0' * (m - a) + '1' * (m - j))
-        j = (j + shift) % m
+mx = 2 * 10 ** 5 + 2
 
-for _ in range(int(input())):
-    solve()
+def solve() -> None:
+    n, k, q = mint()
+    d = [0] * mx
+    for _ in range(n):
+        l, r = mint()
+        d[l] += 1
+        d[r + 1] -= 1
+    
+    pres = [0] * mx
+    cnt = 0
+    for i in range(1, mx):
+        cnt += d[i]
+        pres[i] = pres[i - 1]
+        if cnt >= k: pres[i] += 1
+    
+    for _ in range(q):
+        l, r = mint()
+        print(pres[r] - pres[l - 1])
+
+solve()

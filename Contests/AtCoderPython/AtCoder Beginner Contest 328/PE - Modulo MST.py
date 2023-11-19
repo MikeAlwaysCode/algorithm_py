@@ -1,3 +1,4 @@
+import math
 import sys
 
 # region fastio
@@ -9,18 +10,21 @@ ints = lambda: list(map(int, input().split()))
 
 # MOD = 998_244_353
 # MOD = 10 ** 9 + 7
-# DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n, m = mint()
-    s = []
-    ans = 26 * m
-    for i in range(n):
-        s.append(list(map(ord, input())))
-        for j in range(i):
-            ans = min(ans, sum(abs(x - y) for x, y in zip(s[i], s[j])))
-    print(ans)
+    n, m, k = mint()
+    g = [[] for _ in range(n)]
+    for _ in range(m):
+        u, v, w = mint()
+        u -= 1
+        v -= 1
+        g[u].append((v, w))
+        g[v].append((u, w))
+    
+    ans = math.inf
+    
 
-for _ in range(int(input())):
-    solve()
+
+solve()

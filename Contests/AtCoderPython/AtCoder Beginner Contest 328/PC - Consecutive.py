@@ -9,18 +9,21 @@ ints = lambda: list(map(int, input().split()))
 
 # MOD = 998_244_353
 # MOD = 10 ** 9 + 7
-# DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n, m = mint()
-    s = []
-    ans = 26 * m
-    for i in range(n):
-        s.append(list(map(ord, input())))
-        for j in range(i):
-            ans = min(ans, sum(abs(x - y) for x, y in zip(s[i], s[j])))
-    print(ans)
+    n, q = mint()
+    s = input()
+    pres = [0] * (n + 1)
+    for i in range(n - 1):
+        pres[i + 1] = pres[i]
+        if s[i] == s[i + 1]:
+            pres[i + 1] += 1
+    
+    for _ in range(q):
+        l, r = mint()
+        ans = pres[r - 1] - pres[l - 1]
+        print(ans)
 
-for _ in range(int(input())):
-    solve()
+solve()

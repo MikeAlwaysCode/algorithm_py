@@ -1,4 +1,5 @@
 import sys
+from heapq import *
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -14,13 +15,23 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n, m = mint()
-    s = []
-    ans = 26 * m
-    for i in range(n):
-        s.append(list(map(ord, input())))
-        for j in range(i):
-            ans = min(ans, sum(abs(x - y) for x, y in zip(s[i], s[j])))
-    print(ans)
+    g = [[] for _ in range(n + 1)]
+    for _ in range(m):
+        u, v = mint()
+        g[u].append(v)
+        g[v].append(u)
+        
+    ans = []
+    h = [1]
+    seen = [False] * (n + 1)
+    seen[1] = True
+    while h:
+        u = heappop(h)
+        ans.append(u)
+        for v in g[u]:
+            if seen[v]: continue
+            seen[v] = True
+            heappush(h, v)
+    print(*ans)
 
-for _ in range(int(input())):
-    solve()
+solve()
