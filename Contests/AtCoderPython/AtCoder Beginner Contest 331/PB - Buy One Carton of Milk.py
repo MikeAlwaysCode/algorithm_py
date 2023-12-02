@@ -1,3 +1,4 @@
+import math
 import sys
 
 # region fastio
@@ -13,6 +14,11 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    return
+    n, s, m, l = mint()
+    ans = math.inf
+    for i in range((n + 5) // 6 + 1):
+        for j in range((n - i * 6 + 7) // 8 + 1):
+            ans = min(ans, i * s + j * m + (n - i * 6 - j * 8 + 11) // 12 * l)
+    print(ans)
 
 solve()

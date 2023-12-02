@@ -13,6 +13,15 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    return
+    M, D = mint()
+    y, m, d = mint()
+    d += 1
+    if d > D:
+        d = 1
+        m += 1
+        if m > M:
+            m = 1
+            y += 1
+    print(y, m, d)
 
 solve()

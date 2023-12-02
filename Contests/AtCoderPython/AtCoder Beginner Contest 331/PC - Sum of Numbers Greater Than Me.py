@@ -13,6 +13,16 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    return
+    n = sint()
+    nums = ints()
+    idx = sorted(range(n), key = lambda x: -nums[x])
+    ans = [0] * n
+    s = j = 0
+    for i in idx:
+        while j < n and nums[idx[j]] > nums[i]:
+            s += nums[idx[j]]
+            j += 1
+        ans[i] = s
+    print(*ans)
 
 solve()
