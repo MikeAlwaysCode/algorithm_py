@@ -5,6 +5,8 @@ input = lambda: sys.stdin.readline().rstrip()
 sint = lambda: int(input())
 mint = lambda: map(int, input().split())
 ints = lambda: list(map(int, input().split()))
+
+
 # endregion fastio
 
 # MOD = 998_244_353
@@ -26,7 +28,7 @@ def solve() -> None:
             l.append((c, i))
         else:
             u.append((c, i))
-    
+
     ans = []
     i = j = 0
     while i < len(u) and j < len(l):

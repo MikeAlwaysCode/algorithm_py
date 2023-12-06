@@ -15,17 +15,23 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n = sint()
-    A = ints()
-    B = ints()
-    ans, mx, mn = 0, -math.inf, math.inf
-    for a, b in zip(A, B):
-        ans += abs(a - b)
-        mx = max(mx, min(a, b))
-        mn = min(mn, max(a, b))
-    
-    if mx > mn:
-        ans += (mx - mn) * 2
-    print(ans)
+    nums = ints()
+    if n == 1:
+        print(1)
+        return
+    nums.sort()
+    ans = g = 0
+    for i in range(1, n):
+        g = math.gcd(g, nums[i] - nums[i - 1])
+    for x in nums:
+        ans += (nums[-1] - x) // g
+    s = set(nums)
+    k = n
+    for i in range(1, n):
+        if nums[-1] - i * g not in s:
+            k = i
+            break
+    print(ans + k)
 
 for _ in range(int(input())):
     solve()

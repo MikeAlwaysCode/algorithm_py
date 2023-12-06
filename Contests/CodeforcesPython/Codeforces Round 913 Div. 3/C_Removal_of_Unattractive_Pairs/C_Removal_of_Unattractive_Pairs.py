@@ -1,5 +1,5 @@
-import math
 import sys
+from collections import Counter
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -13,19 +13,14 @@ ints = lambda: list(map(int, input().split()))
 # DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
+
 def solve() -> None:
     n = sint()
-    A = ints()
-    B = ints()
-    ans, mx, mn = 0, -math.inf, math.inf
-    for a, b in zip(A, B):
-        ans += abs(a - b)
-        mx = max(mx, min(a, b))
-        mn = min(mn, max(a, b))
-    
-    if mx > mn:
-        ans += (mx - mn) * 2
-    print(ans)
+    s = input()
+    cnt = Counter(s)
+    v = cnt.most_common(1)[0][1]
+    print(max(v * 2 - n, n & 1))
+
 
 for _ in range(int(input())):
     solve()

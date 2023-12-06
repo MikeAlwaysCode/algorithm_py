@@ -13,7 +13,17 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    return
+    n = sint()
+    nums = ints()
+    ans, mx = 0, nums[-1]
+    for i in range(n - 2, -1, -1):
+        if nums[i] > mx:
+            p = (nums[i] + mx - 1) // mx
+            mx = nums[i] // p
+            ans += p - 1
+        else:
+            mx = nums[i]
+    print(ans)
 
 for _ in range(int(input())):
     solve()

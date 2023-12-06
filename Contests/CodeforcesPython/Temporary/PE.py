@@ -15,16 +15,11 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n = sint()
-    A = ints()
-    B = ints()
-    ans, mx, mn = 0, -math.inf, math.inf
-    for a, b in zip(A, B):
-        ans += abs(a - b)
-        mx = max(mx, min(a, b))
-        mn = min(mn, max(a, b))
-    
-    if mx > mn:
-        ans += (mx - mn) * 2
+    ans = 1
+    while n:
+        d = n % 10
+        ans *= math.comb(d + 2, 2)
+        n //= 10
     print(ans)
 
 for _ in range(int(input())):

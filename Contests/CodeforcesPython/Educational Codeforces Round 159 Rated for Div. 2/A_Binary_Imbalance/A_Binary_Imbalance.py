@@ -1,4 +1,3 @@
-import math
 import sys
 
 # region fastio
@@ -15,17 +14,8 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n = sint()
-    A = ints()
-    B = ints()
-    ans, mx, mn = 0, -math.inf, math.inf
-    for a, b in zip(A, B):
-        ans += abs(a - b)
-        mx = max(mx, min(a, b))
-        mn = min(mn, max(a, b))
-    
-    if mx > mn:
-        ans += (mx - mn) * 2
-    print(ans)
+    s = input()
+    print("NO" if s.count('1') == n else "YES")
 
 for _ in range(int(input())):
     solve()

@@ -13,7 +13,25 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    return
+    n, k = mint()
+    s = input()
+    cnt = s.count('B')
+    if cnt == k:
+        print(0)
+    elif cnt < k:
+        for i in range(n):
+            if s[i] == 'A':
+                cnt += 1
+                if cnt == k:
+                    print(1)
+                    print(i + 1, 'B')
+    else:
+        for i in range(n):
+            if s[i] == 'B':
+                cnt -= 1
+                if cnt == k:
+                    print(1)
+                    print(i + 1, 'A')
 
 for _ in range(int(input())):
     solve()

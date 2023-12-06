@@ -1,4 +1,3 @@
-import math
 import sys
 
 # region fastio
@@ -14,18 +13,19 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n = sint()
-    A = ints()
-    B = ints()
-    ans, mx, mn = 0, -math.inf, math.inf
-    for a, b in zip(A, B):
-        ans += abs(a - b)
-        mx = max(mx, min(a, b))
-        mn = min(mn, max(a, b))
-    
-    if mx > mn:
-        ans += (mx - mn) * 2
-    print(ans)
+    n, p, l, t = mint()
+    task = (n + 6) // 7
+    ans = min(task // 2, (p + l + t * 2 - 1) // (l + t * 2))
+    p -= ans * (l + t * 2)
+    if p <= 0:
+        print(n - ans)
+        return
+    if task & 1:
+        ans += 1
+        p -= l + t
+    if p > 0:
+        ans += (p + l - 1) // l
+    print(n - ans)
 
 for _ in range(int(input())):
     solve()
