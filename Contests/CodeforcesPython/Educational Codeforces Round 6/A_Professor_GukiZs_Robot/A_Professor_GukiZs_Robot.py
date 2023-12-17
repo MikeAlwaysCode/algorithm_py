@@ -1,4 +1,3 @@
-import math
 import sys
 
 # region fastio
@@ -15,20 +14,8 @@ ints = lambda: list(map(int, input().split()))
 
 
 def solve() -> None:
-    s = input()
-    pos = [-1] * 26
-    mx = [0] * 26
-    for i, c in enumerate(s):
-        c = ord(c) - 97
-        mx[c] = max(mx[c], i - pos[c])
-        pos[c] = i
-    n, ans = len(s), math.inf
-    for i in range(26):
-        if pos[i] == -1:
-            continue
-        mx[i] = max(mx[i], n - pos[i])
-        ans = min(ans, mx[i])
-    print(ans)
+    return
 
 
-solve()
+for _ in range(int(input())):
+    solve()
