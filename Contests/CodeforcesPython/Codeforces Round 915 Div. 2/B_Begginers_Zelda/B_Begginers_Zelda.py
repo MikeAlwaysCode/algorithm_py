@@ -14,20 +14,16 @@ ints = lambda: list(map(int, input().split()))
 
 
 def solve() -> None:
-    n = int(input())
-    arrx = ints()
-    arrt = ints()
-
-    mn = 10 ** 8
-    mx = 0
-    for i in range(n):
-        mn = min(mn, arrx[i] - arrt[i])
-        mx = max(mx, arrx[i] + arrt[i])
-    
-    ans = (mn + mx) / 2
-    print(f"{ans:.6f}")
+    n = sint()
+    deg = [0] * n
+    for _ in range(n - 1):
+        u, v = mint()
+        u -= 1
+        v -= 1
+        deg[u] += 1
+        deg[v] += 1
+    print((sum(d == 1 for d in deg) + 1) // 2)
 
 
 for _ in range(int(input())):
     solve()
-    

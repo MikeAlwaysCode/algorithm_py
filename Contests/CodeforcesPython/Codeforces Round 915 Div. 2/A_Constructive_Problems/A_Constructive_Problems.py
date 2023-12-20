@@ -14,20 +14,9 @@ ints = lambda: list(map(int, input().split()))
 
 
 def solve() -> None:
-    n = int(input())
-    arrx = ints()
-    arrt = ints()
-
-    mn = 10 ** 8
-    mx = 0
-    for i in range(n):
-        mn = min(mn, arrx[i] - arrt[i])
-        mx = max(mx, arrx[i] + arrt[i])
-    
-    ans = (mn + mx) / 2
-    print(f"{ans:.6f}")
+    n, m = mint()
+    print(max(n, m))
 
 
 for _ in range(int(input())):
     solve()
-    
