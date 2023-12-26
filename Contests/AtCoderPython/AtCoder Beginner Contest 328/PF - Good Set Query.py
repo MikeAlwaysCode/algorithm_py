@@ -15,83 +15,36 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n, q = mint()
-    nums = [0] * n
-    seen = [False] * n
 
     parent = list(range(n + 1))
+    weight = [0] * (n + 1)
+
     def find(x: int):
         cur = x
+        s = weight[x]
         while x != parent[x]:
             x = parent[x]
+            s += weight[x]
+
         while parent[cur] != x:
+            s -= weight[cur]
+            weight[cur] += s
             parent[cur], cur = x, parent[cur]
         return x
 
-    def union(x: int, y: int):
-        parent[find(x)] = find(y)
+    def union(x: int, y: int, w: int) -> bool:
+        fx, fy = find(x), find(y)
+        if fx == fy: return weight[y] - weight[x] == w
+        parent[fx] = fy
+        weight[fx] = weight[y] - weight[x] - w
+        return True
 
     ans = []
-    qry = []
     for i in range(1, q + 1):
         a, b, d = mint()
-        a -= 1
-        b -= 1
-        if a == b:
-            if d == 0:
-                ans.append(i)
-        elif not seen[a] and not seen[b]:
+        if union(a, b, d):
             ans.append(i)
-            nums[b] = nums[a] - d
-            seen[a] = seen[b] = True
-            union(a, b)
-        elif not seen[a]:
-            ans.append(i)
-            nums[a] = nums[b] + d
-            seen[a] = True
-            union(a, b)
-        elif not seen[b]:
-            ans.append(i)
-            nums[b] = nums[a] - d
-            seen[b] = True
-            union(b, a)
-        else:
-            fa, fb = find(a), find(b)
-            if fa == fb:
-                if nums[a] - nums[b] == d:
-                    ans.append(i)
-            else:
-                qry.append((fa, fb, a, b, d, i))
-
-    while qry:
-        tmp = qry
-        qry = []
-        nums2 = [0] * n
-        seen = [False] * n
-        parent = list(range(n + 1))
-        for a, b, oa, ob, d, i in tmp:
-            if not seen[a] and not seen[b]:
-                ans.append(i)
-                nums2[b] = nums2[a] - d
-                seen[a] = seen[b] = True
-                union(a, b)
-            elif not seen[a]:
-                ans.append(i)
-                nums2[a] = nums2[b] + d
-                seen[a] = True
-                union(a, b)
-            elif not seen[b]:
-                ans.append(i)
-                nums2[b] = nums2[a] - d
-                seen[b] = True
-                union(b, a)
-            else:
-                fa, fb = find(a), find(b)
-                if fa == fb:
-                    if nums2[fa] + nums[oa] - (nums2[fb] + nums[ob]) == d:
-                        ans.append(i)
-                else:
-                    qry.append((fa, fb, d, i))
-    ans.sort()
+        
     print(*ans)
 
 solve()

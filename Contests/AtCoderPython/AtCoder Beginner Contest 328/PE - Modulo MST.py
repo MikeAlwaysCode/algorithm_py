@@ -23,7 +23,18 @@ def solve() -> None:
         g[u].append((v, w))
         g[v].append((u, w))
     
-    ans = math.inf
+    dp = [set() for _ in range(1 << n)]
+    for i in range(n):
+        dp[1 << i].add(0)
+    for mask in range(1, 1 << n):
+        for i in range(n):
+            if not (mask >> i) & 1:
+                continue
+            for x in dp[mask]:
+                for j, w in g[i]:
+                    if (mask >> j) & 1 == 0:
+                        dp[mask | (1 << j)].add((x + w) % k)
+    print(min(dp[-1]))
     
 
 
