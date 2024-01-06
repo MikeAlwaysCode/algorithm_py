@@ -1,5 +1,5 @@
 import sys
-from collections import Counter
+# from collections import Counter
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -20,17 +20,17 @@ def solve() -> None:
     dp = [0] * n
     dp[0] = 1
     ans = 0
-    cnt = Counter()
-    s = [set() for _ in range(n)]
+    M = 500
+    cnt = [[0] * M for _ in range(M)]
     for i in range(n):
-        for a in s[i]:
-            dp[i] = (dp[i] + cnt[a * n + (i % a)]) % MOD
-            if i + a < n:
-                s[i + a].add(a)
+        for j in range(1, M):
+            dp[i] = (dp[i] + cnt[j][i % j]) % MOD
         ans = (ans + dp[i]) % MOD
-        if i + nums[i] < n:
-            s[i + nums[i]].add(nums[i])
-            cnt[nums[i] * n + (i % nums[i])] = (cnt[nums[i] * n + (i % nums[i])] + dp[i]) % MOD
+        if nums[i] >= M:
+            for j in range(i + nums[i], n, nums[i]):
+                dp[j] = (dp[j] + dp[i]) % MOD
+        elif i + nums[i] < n:
+            cnt[nums[i]][i % nums[i]] = (cnt[nums[i]][i % nums[i]] + dp[i]) % MOD
     print(ans)
 
 
