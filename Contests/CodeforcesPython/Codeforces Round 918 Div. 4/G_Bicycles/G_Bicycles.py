@@ -26,7 +26,24 @@ def solve() -> None:
         g[v].append((u, w))
     
     s = ints()
+    dis = [[math.inf] * 1001 for _ in range(n)]
+    seen = [[False] * 1001 for _ in range(n)]
+    dis[0][s[0]] = 0
+    h = [(0, 0, s[0])]
+    while h:
+        d, x, v = heappop(h)
+        if seen[x][v] or dis[x][v] == math.inf:
+            continue
+        seen[x][v] = True
+        for y, w in g[x]:
+            nv = min(v, s[y])
+            if d + w * v < dis[y][nv]:
+                dis[y][nv] = d + w * v
+                heappush(h, (dis[y][nv], y, nv))
+    print(min(dis[-1]))
 
+
+    '''
     dis = [math.inf] * n
     dis[0] = 0
     def dijkstra(g: list, start: int, s: int):
@@ -53,6 +70,7 @@ def solve() -> None:
             continue
         dijkstra(g, x, s[x])
     print(dis[-1])
+    '''
 
 
 for _ in range(int(input())):

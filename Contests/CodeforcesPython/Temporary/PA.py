@@ -12,20 +12,19 @@ ints = lambda: list(map(int, input().split()))
 # DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
-col = "abcdefgh"
-
 def solve() -> None:
-    s = input()
-
-    c, r = s[0], s[1]
-    for i in range(1, 9):
-        if i == int(r):
-            continue
-        print(c + str(i))
-    for cs in col:
-        if cs == c:
-            continue
-        print(cs + r)
+    n, k = mint()
+    nums = ints()
+    s = 1
+    for x in nums:
+        s *= x
+    if 2023 % s:
+        print("NO")
+    else:
+        print("YES")
+        ans = [2023 // s] + [1] * (k - 1)
+        print(*ans)
+    
 
 for _ in range(int(input())):
     solve()

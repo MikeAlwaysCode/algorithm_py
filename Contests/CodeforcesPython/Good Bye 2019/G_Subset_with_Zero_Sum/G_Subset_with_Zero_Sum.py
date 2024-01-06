@@ -1,5 +1,4 @@
 import sys
-from collections import Counter
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -13,22 +12,24 @@ ints = lambda: list(map(int, input().split()))
 # DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
+
 def solve() -> None:
     n = sint()
     nums = ints()
-    ans = []
-    s = odd = even = 0
-    for x in nums:
-        s += x
-        if x & 1:
-            odd += 1
-        else:
-            even += 1
-        ans.append(s)
-        if odd + even > 1:
-            ans[-1] -= odd // 3
-            if odd % 3 == 1:
-                ans[-1] -= 1
+    g = [0] * (n + 1)
+    for i, x in enumerate(nums, 1):
+        g[i] = i - x
+
+    x = 1
+    while g[x] > 0:
+        g[x] = -g[x]
+        x = -g[x]
+    ans = [x]
+    x = -g[x]
+    while x != ans[0]:
+        ans.append(x)
+        x = -g[x]
+    print(len(ans))
     print(*ans)
 
 

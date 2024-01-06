@@ -1,5 +1,5 @@
-import math
 import sys
+from collections import deque
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -15,12 +15,14 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n = sint()
-    ans = 1
-    while n:
-        d = n % 10
-        ans *= math.comb(d + 2, 2)
-        n //= 10
-    print(ans)
+    p = ints()
+    a = ints()
+
+    g = [[] for _ in range(n)]
+    for x, y in enumerate(p, 1):
+        y -= 1
+        g[x].append(y)
+        g[y].append(x)
 
 for _ in range(int(input())):
     solve()

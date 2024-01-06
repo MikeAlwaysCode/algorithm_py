@@ -14,7 +14,12 @@ ints = lambda: list(map(int, input().split()))
 
 
 def solve() -> None:
-    return
+    n, x = mint()
+    nums = ints()
+    ans = max(nums[0], (x - nums[-1]) * 2)
+    for i in range(n):
+        ans = max(ans, nums[i] - nums[i - 1])
+    print(ans)
 
 
 for _ in range(int(input())):

@@ -14,7 +14,16 @@ ints = lambda: list(map(int, input().split()))
 
 
 def solve() -> None:
-    return
+    n = sint()
+    nums = ints()
+    nums.sort()
+    ans = 0
+    while nums[-1] != nums[0]:
+        ans += 1
+        nums[-1] = (nums[-1] + nums[0]) // 2
+    print(ans)
+    if 0 < ans <= n:
+        print(*[nums[0]] * ans)
 
 
 for _ in range(int(input())):

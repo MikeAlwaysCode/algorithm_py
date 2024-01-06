@@ -15,37 +15,6 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n = sint()
-    nums = ints()
-    ans = math.inf
-    mn = nums[0]
-    le = [1] * n
-    ge = [1] * n
-    for i in range(1, n):
-        mn = min(mn, nums[i])
-        if nums[i] >= nums[i - 1]:
-            le[i] = le[i - 1] + 1
-        if nums[i] <= nums[i - 1]:
-            ge[i] = ge[i - 1] + 1
-    if le[-1] == n:
-        print(0)
-        return
-    if ge[-1] == n:
-        print(1)
-        return
-    for i in range(n):
-        if nums[i] == mn:
-            if i == 0:
-                if ge[-1] == n - 1:
-                    ans = min(ans, 2)
-            elif i == n - 1:
-                if le[i - 1] == n - 1:
-                    ans = min(ans, 1)
-            else:
-                if nums[0] >= nums[-1] and le[-1] >= n - i and le[i - 1] == i:
-                    ans = min(ans, n - i, i + 2)
-                if nums[0] <= nums[-1] and ge[i] == i + 1 and ge[-1] >= n - i - 1:
-                    ans = min(ans, n - i, i + 2)
-    print(-1 if ans == math.inf else ans)
 
 for _ in range(int(input())):
     solve()

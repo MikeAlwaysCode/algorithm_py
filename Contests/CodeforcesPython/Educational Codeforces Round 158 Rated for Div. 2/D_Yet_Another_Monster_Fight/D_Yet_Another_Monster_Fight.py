@@ -1,3 +1,4 @@
+import math
 import sys
 
 # region fastio
@@ -14,8 +15,17 @@ ints = lambda: list(map(int, input().split()))
 
 
 def solve() -> None:
-    return
+    n = sint()
+    nums = ints()
+    suff = [0] * n
+    for i in range(n - 2, -1, -1):
+        suff[i] = max(suff[i + 1], nums[i + 1] + i + 1)
+    ans = max(nums[0], suff[0])
+    pres = 0
+    for i in range(1, n):
+        pres = max(pres, nums[i - 1] + n - i)
+        ans = min(ans, max(pres, suff[i], nums[i]))
+    print(ans)
 
 
-for _ in range(int(input())):
-    solve()
+solve()
