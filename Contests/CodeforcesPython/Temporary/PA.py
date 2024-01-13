@@ -13,17 +13,8 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n, k = mint()
-    nums = ints()
-    s = 1
-    for x in nums:
-        s *= x
-    if 2023 % s:
-        print("NO")
-    else:
-        print("YES")
-        ans = [2023 // s] + [1] * (k - 1)
-        print(*ans)
+    a, b = mint()
+    print("Alice" if (a + b) & 1 else "Bob")
     
 
 for _ in range(int(input())):
