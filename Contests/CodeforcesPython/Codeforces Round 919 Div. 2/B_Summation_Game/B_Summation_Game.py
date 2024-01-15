@@ -1,4 +1,6 @@
+import math
 import sys
+from itertools import accumulate
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -14,7 +16,15 @@ ints = lambda: list(map(int, input().split()))
 
 
 def solve() -> None:
-    return
+    n, k, x = mint()
+    nums = ints()
+    nums.sort()
+    pres = list(accumulate(nums, initial=0))
+    ans = - math.inf
+    for i in range(n, n - k - 1, -1):
+        r = max(0, i - x)
+        ans = max(ans, pres[r] * 2 - pres[i])
+    print(ans)
 
 
 for _ in range(int(input())):

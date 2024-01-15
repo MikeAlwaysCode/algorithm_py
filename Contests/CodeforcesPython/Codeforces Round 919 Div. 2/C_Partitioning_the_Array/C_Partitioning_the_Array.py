@@ -1,3 +1,4 @@
+import math
 import sys
 
 # region fastio
@@ -14,7 +15,22 @@ ints = lambda: list(map(int, input().split()))
 
 
 def solve() -> None:
-    return
+    n = sint()
+    nums = ints()
+    ans = 1
+    for k in range(1, n):
+        if n % k:
+            continue
+        
+        g = 0
+        for i in range(n - k):
+            g = math.gcd(g, nums[i + k] - nums[i])
+            if g == 1:
+                break
+        if g != 1:
+            ans += 1
+
+    print(ans)
 
 
 for _ in range(int(input())):
