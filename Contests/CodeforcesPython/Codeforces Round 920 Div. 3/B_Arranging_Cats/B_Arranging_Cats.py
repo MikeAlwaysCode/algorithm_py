@@ -1,4 +1,3 @@
-import math
 import sys
 
 # region fastio
@@ -13,14 +12,20 @@ ints = lambda: list(map(int, input().split()))
 # DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
+
 def solve() -> None:
-    mx, mn = -math.inf, math.inf
-    for _ in range(4):
-        x, y = mint()
-        mx = max(mx, x)
-        mn = min(mn, x)
-    print((mx - mn) * (mx - mn))
-    
+    n = sint()
+    s = input()
+    t = input()
+    d = a = 0
+    for c1, c2 in zip(s, t):
+        if c1 != c2:
+            if c1 == '1':
+                d += 1
+            else:
+                a += 1
+    print(d + a - min(d, a))
+
 
 for _ in range(int(input())):
     solve()
