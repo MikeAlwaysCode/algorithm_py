@@ -19,6 +19,7 @@
     *   [SortedList](/Template/SortedList.py)
     *   [SortedSet](/Template/SortedSet.py)
     *   [SortedMultiset](/Template/SortedMultiset.py)
+    *   [Sum of Top K](/Template/SumOfTopK.py)
 
 </details>
 
