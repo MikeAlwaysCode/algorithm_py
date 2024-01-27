@@ -9,20 +9,13 @@ ints = lambda: list(map(int, input().split()))
 
 # MOD = 998_244_353
 # MOD = 10 ** 9 + 7
-# DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 
 def solve() -> None:
-    n = sint()
-    nums = ints()
-    ans = [-1] * n
-    idx = sorted(range(n), key = lambda x: nums[x])
-    mx = -1
-    for i in idx:
-        mx = max(mx, i)
-        ans[i] = mx - i - 1
-    print(*ans)
+    s = input()
+    print("Yes" if s.capitalize() == s else "No")
 
 
 solve()

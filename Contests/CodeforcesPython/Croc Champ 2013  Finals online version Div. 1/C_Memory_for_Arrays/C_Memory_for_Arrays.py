@@ -14,21 +14,28 @@ ints = lambda: list(map(int, input().split()))
 
 
 def solve() -> None:
-    x = sint()
-    ans = []
-    cur = 99
-    x -= 1
-    while x:
-        if x & 1:
-            ans.append(cur)
-            cur -= 1
+    n, m = mint()
+    A = ints()
+    B = ints()
+    cnt = [0] * 32
+    for x in A:
+        bit = 0
+        while x:
+            if x & 1:
+                cnt[bit] += 1
+            bit += 1
             x >>= 1
-        else:
-            ans.append(0)
-            x -= 1
-    print(len(ans))
-    print(*reversed(ans))
+    ans = 0
+    B.sort()
+    for x in B:
+        while x < 32 and cnt[x] == 0:
+            cnt[x] += 1
+            x += 1
+        if x > 31:
+            break
+        cnt[x] -= 1
+        ans += 1
+    print(ans)
 
 
-for _ in range(int(input())):
-    solve()
+solve()

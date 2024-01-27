@@ -1,5 +1,4 @@
 import sys
-from bisect import bisect_left
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -15,25 +14,14 @@ ints = lambda: list(map(int, input().split()))
 
 
 def solve() -> None:
-    n = int(input())
-    arr = ints()
+    n, m, x = mint()
+    vals = ints()
+    for _ in range(m):
+        u, v = mint()
+        u -= 1
+        v -= 1
+        
 
-    ans = 2
-    cnt = 0
-    for i in range(1, n):
-        cnt += 1
-        if arr[i] == arr[i - 1]:
-            continue
-        j = i
-        while j < n:
-            cnt += 1
-            j = bisect_left(arr, arr[j] * 2 - arr[i - 1], j + 1)
-
-        ans = max(ans, cnt)
-        cnt = 0
-    ans = max(ans, cnt + 1)
-
-    print(n - ans)
 
 for _ in range(int(input())):
     solve()
