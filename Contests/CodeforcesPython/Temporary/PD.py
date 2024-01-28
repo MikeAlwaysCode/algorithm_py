@@ -8,39 +8,25 @@ ints = lambda: list(map(int, input().split()))
 # endregion fastio
 
 # MOD = 998_244_353
-# MOD = 10 ** 9 + 7
+MOD = 10 ** 9 + 7
 # DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n, m = mint()
-    A = ints()
-    B = ints()
-    A.sort()
-    B.sort()
+    n, m, k = mint()
+    p = 0
+    for _ in range(m):
+        a, b, f = mint()
+        p += f
     ans = 0
-    ai, aj, bi, bj = 0, n - 1, 0, m - 1
-    while ai <= aj:
-        if ai == aj:
-            ans += max(abs(B[bi] - A[ai]), abs(B[bj] - A[ai]))
-            break
-        elif (B[bi] <= A[ai] and B[bj] >= A[aj]) or (B[bi] >= A[ai] and B[bj] <= A[aj]):
-            if abs(A[ai] - B[bj]) >= abs(A[aj] - B[bi]):
-                ans += abs(A[ai] - B[bj])
-                ai += 1
-                bj -= 1
-            else:
-                ans += abs(A[aj] - B[bi])
-                aj -= 1
-                bi += 1
-        elif A[ai] <= B[bi]:
-            ans += B[bj] - A[ai]
-            ai += 1
-            bj -= 1
-        else:
-            ans += A[aj] - B[bi]
-            aj -= 1
-            bi += 1
+    q0 = q = n * (n - 1) // 2
+    ans = p * pow(q, MOD - 2, MOD) % MOD
+    more = m
+    for _ in range(k - 1):
+        p = p * q + more
+        q0 = q0 * q % MOD
+        ans = (ans + p * pow(q0, MOD - 2, MOD)) % MOD
+        more = more * q
     print(ans)
 
 

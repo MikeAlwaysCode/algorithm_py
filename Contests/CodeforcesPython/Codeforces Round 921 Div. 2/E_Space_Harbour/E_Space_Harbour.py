@@ -12,18 +12,9 @@ ints = lambda: list(map(int, input().split()))
 # DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
+
 def solve() -> None:
-    x, n = mint()
-    ans = 1
-    d = 1
-    while d * d <= x:
-        if x % d == 0:
-            if x // d >= n:
-                ans = max(ans, d)
-            if d >= n:
-                ans = max(ans, x // d)
-        d += 1
-    print(ans)
+    return
 
 
 for _ in range(int(input())):
