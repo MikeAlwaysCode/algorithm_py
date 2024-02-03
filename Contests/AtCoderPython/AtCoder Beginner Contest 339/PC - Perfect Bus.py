@@ -9,25 +9,18 @@ ints = lambda: list(map(int, input().split()))
 
 # MOD = 998_244_353
 # MOD = 10 ** 9 + 7
-# DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 
 def solve() -> None:
     n = sint()
-    A = ints()
-    B = ints()
+    nums = ints()
+    mn = cur = 0
+    for x in nums:
+        cur += x
+        mn = min(mn, cur)
+    print(cur - mn)
 
-    for i in range(n):
-        if A[i] > B[i]:
-            print("No")
-            return
-            
-        if A[i] != B[i] and B[(i + 1) % n] < B[i] - 1:
-            print("No")
-            return
 
-    print("Yes")
-
-for _ in range(int(input())):
-    solve()
+solve()

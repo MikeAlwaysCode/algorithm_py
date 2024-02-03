@@ -17,17 +17,14 @@ def solve() -> None:
     n = sint()
     A = ints()
     B = ints()
+    idx = sorted(range(n), key = lambda x: A[x])
+    ansa, ansb = [], []
+    for i in idx:
+        ansa.append(A[i])
+        ansb.append(B[i])
+    print(*ansa)
+    print(*ansb)
 
-    for i in range(n):
-        if A[i] > B[i]:
-            print("No")
-            return
-            
-        if A[i] != B[i] and B[(i + 1) % n] < B[i] - 1:
-            print("No")
-            return
-
-    print("Yes")
 
 for _ in range(int(input())):
     solve()

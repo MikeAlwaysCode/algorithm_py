@@ -14,20 +14,21 @@ ints = lambda: list(map(int, input().split()))
 
 
 def solve() -> None:
-    n = sint()
-    A = ints()
-    B = ints()
+    n, m = mint()
+    vals = ints()
+    books = ints()
+    ans = 0
+    last = [0] * n
+    seen = [-1] * n
+    for i, b in enumerate(books):
+        b -= 1
+        for j in range(last[b], i):
+            if seen[books[j] - 1] != b:
+                ans += vals[books[j] - 1]
+                seen[books[j] - 1] = b
+        seen[b] = b
+        last[b] = i + 1
+    print(ans) 
 
-    for i in range(n):
-        if A[i] > B[i]:
-            print("No")
-            return
-            
-        if A[i] != B[i] and B[(i + 1) % n] < B[i] - 1:
-            print("No")
-            return
 
-    print("Yes")
-
-for _ in range(int(input())):
-    solve()
+solve()

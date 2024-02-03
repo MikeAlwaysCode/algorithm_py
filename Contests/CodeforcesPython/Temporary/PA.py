@@ -1,5 +1,4 @@
 import sys
-from string import ascii_lowercase
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -14,8 +13,9 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n, k = mint()
-    print(ascii_lowercase[:k] * n)
+    n, m = mint()
+    ans = n * (m // 2)
+    print(ans)
     
 
 for _ in range(int(input())):

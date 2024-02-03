@@ -12,6 +12,7 @@ ints = lambda: list(map(int, input().split()))
 # DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
+
 def solve() -> None:
     a, b, r = mint()
     if a == b:
@@ -33,7 +34,7 @@ def solve() -> None:
         if not less and (r >> bit) & 1 and not op:
             less = True
     print(a - b)
-            
+
 
 for _ in range(int(input())):
     solve()

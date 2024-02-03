@@ -14,20 +14,8 @@ ints = lambda: list(map(int, input().split()))
 
 
 def solve() -> None:
-    n = sint()
-    A = ints()
-    B = ints()
+    return
 
-    for i in range(n):
-        if A[i] > B[i]:
-            print("No")
-            return
-            
-        if A[i] != B[i] and B[(i + 1) % n] < B[i] - 1:
-            print("No")
-            return
-
-    print("Yes")
 
 for _ in range(int(input())):
     solve()

@@ -9,21 +9,13 @@ ints = lambda: list(map(int, input().split()))
 
 # MOD = 998_244_353
 # MOD = 10 ** 9 + 7
-# DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
+
 def solve() -> None:
-    n = sint()
-    A = ints()
-    B = ints()
-    idx = sorted(range(n), key = lambda x: A[x])
-    ansa, ansb = [], []
-    for i in idx:
-        ansa.append(A[i])
-        ansb.append(B[i])
-    print(*ansa)
-    print(*ansb)
+    s = input()
+    print(s.split(".")[-1])
 
 
-for _ in range(int(input())):
-    solve()
+solve()
