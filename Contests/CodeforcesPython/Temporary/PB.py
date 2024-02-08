@@ -14,15 +14,6 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n = sint()
-    A = ints()
-    B = ints()
-    idx = sorted(range(n), key = lambda x: A[x])
-    ansa, ansb = [], []
-    for i in idx:
-        ansa.append(A[i])
-        ansb.append(B[i])
-    print(*ansa)
-    print(*ansb)
 
 
 for _ in range(int(input())):

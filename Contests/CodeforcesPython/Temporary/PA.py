@@ -13,9 +13,16 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n, m = mint()
-    ans = n * (m // 2)
-    print(ans)
+    n = sint()
+    s = input()
+    l = s.find("B")
+    if l == -1:
+        print(0)
+    else:
+        r = n - 1
+        while s[r] == 'W':
+            r -= 1
+        print(r - l + 1)
     
 
 for _ in range(int(input())):

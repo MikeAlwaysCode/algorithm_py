@@ -83,6 +83,17 @@ class BinaryTrie:
             else:
                 cur = nxt
         return res
+    
+    # Get min max result for x ^ element in array
+    def min_max(self, res: int, bit: int, cur: int) -> int:
+        if bit < 0:
+            return res
+        if self.to[0][cur] != -1 and self.to[1][cur] != -1:
+            return min(self.min_max(res | (1 << bit), bit - 1, self.to[0][cur]), self.min_max(res | (1 << bit), bit - 1, self.to[1][cur]))
+        elif self.to[0][cur] != -1:
+            return self.min_max(res, bit - 1, self.to[0][cur])
+        elif self.to[1][cur] != -1:
+            return self.min_max(res, bit - 1, self.to[1][cur])
         
 '''
 HIGH_BIT = 14

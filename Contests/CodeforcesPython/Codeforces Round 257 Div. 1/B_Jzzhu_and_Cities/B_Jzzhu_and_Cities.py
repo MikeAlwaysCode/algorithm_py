@@ -1,3 +1,4 @@
+import math
 import sys
 from heapq import *
 
@@ -13,6 +14,7 @@ ints = lambda: list(map(int, input().split()))
 # DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
+
 def solve() -> None:
     n, m, k = mint()
     g = [[] for _ in range(n)]
@@ -24,17 +26,27 @@ def solve() -> None:
         g[v].append((u, d))
     
     ans = 0
-    train = [-1] * n
+    dis = [math.inf] * n
+    dis[0] = 0
+    q = [(0, 0, 0)]
     for _ in range(k):
         u, d = mint()
-        u -= 1
-        if train[u] == -1:
-            train[u] = d
-        else:
-            ans += 1
-            train[u] = min(train[u], d)
-        
+        q.append((d, 1, u - 1))
+    
+    heapify(q)
+    while q:
+        d, t, u = heappop(q)
+        if d > dis[u] or (d == dis[u] and t == 1):
+            ans += t
+            continue
+        dis[u] = d
+        for v, w in g[u]:
+            if d + w >= dis[v]:
+                continue
+            dis[v] = d + w
+            heappush(q, (d + w, 0, v))
     
     print(ans)
+
 
 solve()

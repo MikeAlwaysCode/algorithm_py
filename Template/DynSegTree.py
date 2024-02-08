@@ -117,3 +117,13 @@ def solve() -> None:
         ans = max(ans, res)
         st.update(x, res)
     print(ans)
+
+    
+    def min_merge(x, y):
+        mnx, cntx = x
+        mny, cnty = y
+        if mnx < mny:
+            return (mnx, cntx)
+        if mnx > mny:
+            return (mny, cnty)
+        return (mnx, cntx + cnty)

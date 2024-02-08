@@ -1,5 +1,4 @@
 import sys
-from collections import deque
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -14,29 +13,14 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    h, w, xa, ya, xb, yb = mint()
-    if xa >= xb:
-        print("Draw")
-        return
-    d = xb - xa
-    if d & 1:
-        # Alice
-        x = d // 2
-        if yb - ya > 1 and min(w, yb + x) > ya + x + 1:
-            print("Draw")
-        elif ya - yb > 1 and max(1, yb - x) < ya - x - 1:
-            print("Draw")
-        else:
-            print("Alice")
-    else:
-        # Bob
-        x = d // 2
-        if ya > yb and min(w, ya + x) > yb + x:
-            print("Draw")
-        elif ya < yb and max(1, ya - x) < yb - x:
-            print("Draw")
-        else:
-            print("Bob")
+    n, k = mint()
+    d = [n, 1]
+    ans = [0] * n
+    for i in range(k):
+        for j in range(i, n, k):
+            ans[j] = d[i & 1]
+            d[i & 1] += (i & 1) * 2 - 1
+    print(*ans)
 
 for _ in range(int(input())):
     solve()

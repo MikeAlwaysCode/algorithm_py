@@ -1,105 +1,122 @@
-import itertools
 import math
-import os
-import random
 import sys
-from bisect import bisect, bisect_left
-from collections import *
-from functools import reduce
-from heapq import heapify, heappop, heappush
-from io import BytesIO, IOBase
-from string import *
 
 # region fastio
-BUFSIZE = 8192
-class FastIO(IOBase):
-    newlines = 0
-
-    def __init__(self, file):
-        self._fd = file.fileno()
-        self.buffer = BytesIO()
-        self.writable = "x" in file.mode or "r" not in file.mode
-        self.write = self.buffer.write if self.writable else None
-
-    def read(self):
-        while True:
-            b = os.read(self._fd, max(os.fstat(self._fd).st_size, BUFSIZE))
-            if not b:
-                break
-            ptr = self.buffer.tell()
-            self.buffer.seek(0, 2), self.buffer.write(b), self.buffer.seek(ptr)
-        self.newlines = 0
-        return self.buffer.read()
-
-    def readline(self):
-        while self.newlines == 0:
-            b = os.read(self._fd, max(os.fstat(self._fd).st_size, BUFSIZE))
-            self.newlines = b.count(b"\n") + (not b)
-            ptr = self.buffer.tell()
-            self.buffer.seek(0, 2), self.buffer.write(b), self.buffer.seek(ptr)
-        self.newlines -= 1
-        return self.buffer.readline()
-
-    def flush(self):
-        if self.writable:
-            os.write(self._fd, self.buffer.getvalue())
-            self.buffer.truncate(0), self.buffer.seek(0)
-
-class IOWrapper(IOBase):
-    def __init__(self, file):
-        self.buffer = FastIO(file)
-        self.flush = self.buffer.flush
-        self.writable = self.buffer.writable
-        self.write = lambda s: self.buffer.write(s.encode("ascii"))
-        self.read = lambda: self.buffer.read().decode("ascii")
-        self.readline = lambda: self.buffer.readline().decode("ascii")
-        
-sys.stdin, sys.stdout = IOWrapper(sys.stdin), IOWrapper(sys.stdout)
-input = lambda: sys.stdin.readline().rstrip("\r\n")
+input = lambda: sys.stdin.readline().rstrip()
+sint = lambda: int(input())
+mint = lambda: map(int, input().split())
 ints = lambda: list(map(int, input().split()))
 # endregion fastio
 
-# region interactive
-def printQry(a, b) -> None:
-    sa = str(a)
-    sb = str(b)
-    print(f"? {sa} {sb}", flush = True)
-
-def printAns(ans) -> None:
-    s = str(ans)
-    print(f"! {s}", flush = True)
-# endregion interactive
-
-# from types import GeneratorType
-# def bootstrap(f, stack=[]):
-#     def wrappedfunc(*args, **kwargs):
-#         if stack:
-#             return f(*args, **kwargs)
-#         else:
-#             to = f(*args, **kwargs)
-#             while True:
-#                 if type(to) is GeneratorType:
-#                     stack.append(to)
-#                     to = next(to)
-#                 else:
-#                     stack.pop()
-#                     if not stack:
-#                         break
-#                     to = stack[-1].send(to)
-#             return to
-#     return wrappedfunc
-
-# MOD = 998244353
+# MOD = 998_244_353
 # MOD = 10 ** 9 + 7
-# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
+# DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
+# DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
+class SparseTable:
+    def __init__(self, nums: list, op) -> None:
+        self.pow2 = [1]
+        for _ in range(20):
+            self.pow2.append(2 * self.pow2[-1])
+        self.op = op
+        self.st = []
+        s, l = nums, 1
+        self.st.append(s)
+        while l * 2 <= len(nums):
+            ns = []
+            for i in range(len(s) - l):
+                ns.append(self.op(s[i], s[i + l]))
+            s = ns
+            self.st.append(s)
+            l *= 2
+
+    def query(self, l: int, r: int):
+        s = len(bin(r - l + 1)) - 3
+        res = self.op(self.st[s][l], self.st[s][r - self.pow2[s] + 1])
+        return res
+
+class SegmentTree():
+    def __init__(self, init, unitX, f):
+        self.f = f  # (X, X) -> X
+        self.unitX = unitX
+        self.f = f
+        if type(init) == int:
+            self.n = init
+            self.n = 1 << (self.n - 1).bit_length()
+            self.X = [unitX] * (self.n * 2)
+        else:
+            self.n = len(init)
+            self.n = 1 << (self.n - 1).bit_length()
+            # len(init)が2の累乗ではない時UnitXで埋める
+            self.X = [unitX] * self.n + init + [unitX] * (self.n - len(init))
+            # 配列のindex1まで埋める
+            for i in range(self.n - 1, 0, -1):
+                self.X[i] = self.f(self.X[i * 2], self.X[i * 2 | 1])
+
+    def update(self, i, x):
+        """0-indexedのi番目の値をxで置換"""
+        # 最下段に移動
+        i += self.n
+        self.X[i] = self.f(self.X[i], x)
+        # 上向に更新
+        i >>= 1
+        while i:
+            self.X[i] = self.f(self.X[i * 2], self.X[i * 2 | 1])
+            i >>= 1
+
+    def getvalue(self, i):
+        """元の配列のindexの値を見る"""
+        return self.X[i + self.n]
+
+    def getrange(self, l, r):
+        """区間[l, r)でのfを行った値"""
+        l += self.n
+        r += self.n
+        al = self.unitX
+        ar = self.unitX
+        while l < r:
+            # 左端が右子ノードであれば
+            if l & 1:
+                al = self.f(al, self.X[l])
+                l += 1
+            # 右端が右子ノードであれば
+            if r & 1:
+                r -= 1
+                ar = self.f(self.X[r], ar)
+            l >>= 1
+            r >>= 1
+        return self.f(al, ar)
+    
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n = sint()
+    nums = ints()
+    st = SparseTable(nums, math.gcd)
 
-    return
+    def min_merge(x, y):
+        mnx, cntx = x
+        mny, cnty = y
+        if mnx < mny:
+            return (mnx, cntx)
+        if mnx > mny:
+            return (mny, cnty)
+        return (mnx, cntx + cnty)
+    
+    # 842 ms
+    seg = SegmentTree(n, (math.inf, 0), min_merge)
+    for i, x in enumerate(nums):
+        seg.update(i, (x, 1))
+        
+    # 998 ms
+    # seg = SegmentTree(list((x, 1) for x in nums), (math.inf, 0), min_merge)
 
-for _ in range(int(input())):
-    solve()
+    for _ in range(sint()):
+        l, r = mint()
+        g = st.query(l - 1, r - 1)
+        mn, cnt = seg.getrange(l - 1, r)
+        if g == mn:
+            print(r - l + 1 - cnt)
+        else:
+            print(r - l + 1)
+
+
+solve()
