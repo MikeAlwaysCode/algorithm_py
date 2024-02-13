@@ -33,7 +33,5 @@ def solve() -> None:
             j += 1
     print(ans)
 
-    return
-
 
 solve()

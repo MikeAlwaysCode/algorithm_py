@@ -14,17 +14,25 @@ ints = lambda: list(map(int, input().split()))
 
 
 def solve() -> None:
-    n = sint()
+    n, m = mint()
     nums = ints()
-    dp = [0] * (n + 1)
-    for i in range(1, n - 1, 2):
-        dp[i + 1] = dp[i - 1] + max(max(nums[i - 1], nums[i + 1]) + 1 - nums[i], 0)
-    ans = dp[n - 1] if n & 1 else dp[n - 2]
-    if not n & 1:
-        suff = 0
-        for i in range(n - 2, 0, -2):
-            suff += max(max(nums[i - 1], nums[i + 1]) + 1 - nums[i], 0)
-            ans = min(ans, suff + dp[i - 2])
+    cnt = [0] * 62
+    for x in nums:
+        cnt[x.bit_length() - 1] += 1
+    ans = 0
+    for bit in range(61):
+        if (n >> bit) & 1:
+            j = bit
+            while j < 62 and cnt[j] == 0:
+                j += 1
+            if j > 61:
+                print(-1)
+                return
+            ans += j - bit
+            for i in range(bit, j):
+                cnt[i] += 1
+            cnt[j] -= 1
+        cnt[bit + 1] += cnt[bit] // 2
     print(ans)
 
 

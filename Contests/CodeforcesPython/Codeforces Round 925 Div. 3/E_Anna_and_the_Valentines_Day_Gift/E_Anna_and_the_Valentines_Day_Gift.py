@@ -14,18 +14,20 @@ ints = lambda: list(map(int, input().split()))
 
 
 def solve() -> None:
-    n = sint()
+    n, m = mint()
     nums = ints()
-    dp = [0] * (n + 1)
-    for i in range(1, n - 1, 2):
-        dp[i + 1] = dp[i - 1] + max(max(nums[i - 1], nums[i + 1]) + 1 - nums[i], 0)
-    ans = dp[n - 1] if n & 1 else dp[n - 2]
-    if not n & 1:
-        suff = 0
-        for i in range(n - 2, 0, -2):
-            suff += max(max(nums[i - 1], nums[i + 1]) + 1 - nums[i], 0)
-            ans = min(ans, suff + dp[i - 2])
-    print(ans)
+    zero = []
+    s = 0
+    for a in nums:
+        sa = str(a)
+        k = len(sa.rstrip('0'))
+        s += k
+        if k < len(sa):
+            zero.append(len(sa) - k)
+    zero.sort(reverse=True)
+    for i in range(1, len(zero), 2):
+        s += zero[i]
+    print("Sasha" if s > m else "Anna")
 
 
 for _ in range(int(input())):

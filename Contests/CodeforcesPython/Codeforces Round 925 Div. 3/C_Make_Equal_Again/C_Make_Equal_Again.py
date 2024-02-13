@@ -16,16 +16,18 @@ ints = lambda: list(map(int, input().split()))
 def solve() -> None:
     n = sint()
     nums = ints()
-    dp = [0] * (n + 1)
-    for i in range(1, n - 1, 2):
-        dp[i + 1] = dp[i - 1] + max(max(nums[i - 1], nums[i + 1]) + 1 - nums[i], 0)
-    ans = dp[n - 1] if n & 1 else dp[n - 2]
-    if not n & 1:
-        suff = 0
-        for i in range(n - 2, 0, -2):
-            suff += max(max(nums[i - 1], nums[i + 1]) + 1 - nums[i], 0)
-            ans = min(ans, suff + dp[i - 2])
-    print(ans)
+    i, j = 0, n - 1
+    while i < n - 1 and nums[i + 1] == nums[i]:
+        i += 1
+    if i == n - 1:
+        print(0)
+        return
+    while j > 0 and nums[j - 1] == nums[j]:
+        j -= 1
+    if nums[0] == nums[-1]:
+        print(j - i - 1)
+    else:
+        print(min(n - 1 - i, j))
 
 
 for _ in range(int(input())):
