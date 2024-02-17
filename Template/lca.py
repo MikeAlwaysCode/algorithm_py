@@ -63,6 +63,7 @@ class LCA:
         for p in range(self.K-1,-1,-1):
             if self.db[p][u] != self.db[p][v]:
                 u, v = self.db[p][u], self.db[p][v]
+        return self.db[0][u]
 
 
 def solve() -> None:

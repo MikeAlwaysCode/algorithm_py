@@ -1,56 +1,142 @@
 import sys
-from sortedcontainers import sortedlist
 
-# import math
-# import os
-# import random
-# from bisect import bisect, bisect_left
-# from collections import *
-# from functools import reduce
-# from heapq import heapify, heappop, heappush
-# from itertools import *
-# from io import BytesIO, IOBase
-# from string import *
+import math
+from bisect import bisect_left, bisect_right
+from typing import Generic, Iterable, Iterator, List, TypeVar, Union
+
+T = TypeVar('T')
+
+class SortedSet(Generic[T]):
+    BUCKET_RATIO = 50
+    REBUILD_RATIO = 170
+
+    def _build(self, a=None) -> None:
+        "Evenly divide `a` into buckets."
+        if a is None: a = list(self)
+        size = self.size = len(a)
+        bucket_size = int(math.ceil(math.sqrt(size / self.BUCKET_RATIO)))
+        self.a = [a[size * i // bucket_size : size * (i + 1) // bucket_size] for i in range(bucket_size)]
+    
+    def __init__(self, a: Iterable[T] = []) -> None:
+        "Make a new SortedSet from iterable. / O(N) if sorted and unique / O(N log N)"
+        a = list(a)
+        if not all(a[i] < a[i + 1] for i in range(len(a) - 1)):
+            a = sorted(set(a))
+        self._build(a)
+
+    def __iter__(self) -> Iterator[T]:
+        for i in self.a:
+            for j in i: yield j
+
+    def __reversed__(self) -> Iterator[T]:
+        for i in reversed(self.a):
+            for j in reversed(i): yield j
+    
+    def __len__(self) -> int:
+        return self.size
+    
+    def __repr__(self) -> str:
+        return "SortedSet" + str(self.a)
+    
+    def __str__(self) -> str:
+        s = str(list(self))
+        return "{" + s[1 : len(s) - 1] + "}"
+
+    def _find_bucket(self, x: T) -> List[T]:
+        "Find the bucket which should contain x. self must not be empty."
+        for a in self.a:
+            if x <= a[-1]: return a
+        return a
+
+    def __contains__(self, x: T) -> bool:
+        if self.size == 0: return False
+        a = self._find_bucket(x)
+        i = bisect_left(a, x)
+        return i != len(a) and a[i] == x
+
+    def add(self, x: T) -> bool:
+        "Add an element and return True if added. / O(√N)"
+        if self.size == 0:
+            self.a = [[x]]
+            self.size = 1
+            return True
+        a = self._find_bucket(x)
+        i = bisect_left(a, x)
+        if i != len(a) and a[i] == x: return False
+        a.insert(i, x)
+        self.size += 1
+        if len(a) > len(self.a) * self.REBUILD_RATIO:
+            self._build()
+        return True
+
+    def discard(self, x: T) -> bool:
+        "Remove an element and return True if removed. / O(√N)"
+        if self.size == 0: return False
+        a = self._find_bucket(x)
+        i = bisect_left(a, x)
+        if i == len(a) or a[i] != x: return False
+        a.pop(i)
+        self.size -= 1
+        if len(a) == 0: self._build()
+        return True
+    
+    def lt(self, x: T) -> Union[T, None]:
+        "Find the largest element < x, or None if it doesn't exist."
+        for a in reversed(self.a):
+            if a[0] < x:
+                return a[bisect_left(a, x) - 1]
+
+    def le(self, x: T) -> Union[T, None]:
+        "Find the largest element <= x, or None if it doesn't exist."
+        for a in reversed(self.a):
+            if a[0] <= x:
+                return a[bisect_right(a, x) - 1]
+
+    def gt(self, x: T) -> Union[T, None]:
+        "Find the smallest element > x, or None if it doesn't exist."
+        for a in self.a:
+            if a[-1] > x:
+                return a[bisect_right(a, x)]
+
+    def ge(self, x: T) -> Union[T, None]:
+        "Find the smallest element >= x, or None if it doesn't exist."
+        for a in self.a:
+            if a[-1] >= x:
+                return a[bisect_left(a, x)]
+    
+    def __getitem__(self, x: int) -> T:
+        "Return the x-th element, or IndexError if it doesn't exist."
+        if x < 0: x += self.size
+        if x < 0: raise IndexError
+        for a in self.a:
+            if x < len(a): return a[x]
+            x -= len(a)
+        raise IndexError
+    
+    def index(self, x: T) -> int:
+        "Count the number of elements < x."
+        ans = 0
+        for a in self.a:
+            if a[-1] >= x:
+                return ans + bisect_left(a, x)
+            ans += len(a)
+        return ans
+
+    def index_right(self, x: T) -> int:
+        "Count the number of elements <= x."
+        ans = 0
+        for a in self.a:
+            if a[-1] > x:
+                return ans + bisect_right(a, x)
+            ans += len(a)
+        return ans
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
 sint = lambda: int(input())
 mint = lambda: map(int, input().split())
 ints = lambda: list(map(int, input().split()))
-# print = lambda d: sys.stdout.write(str(d) + "\n")
 # endregion fastio
-
-# # region interactive
-# def printQry(a, b) -> None:
-#     sa = str(a)
-#     sb = str(b)
-#     print(f"? {sa} {sb}", flush = True)
-
-# def printAns(ans) -> None:
-#     s = str(ans)
-#     print(f"! {s}", flush = True)
-# # endregion interactive
-
-# # region dfsconvert
-# from types import GeneratorType
-# def bootstrap(f, stack=[]):
-#     def wrappedfunc(*args, **kwargs):
-#         if stack:
-#             return f(*args, **kwargs)
-#         else:
-#             to = f(*args, **kwargs)
-#             while True:
-#                 if type(to) is GeneratorType:
-#                     stack.append(to)
-#                     to = next(to)
-#                 else:
-#                     stack.pop()
-#                     if not stack:
-#                         break
-#                     to = stack[-1].send(to)
-#             return to
-#     return wrappedfunc
-# # endregion dfsconvert
 
 # MOD = 998_244_353
 # MOD = 10 ** 9 + 7
@@ -72,12 +158,12 @@ class BIT:
             ans += self.BITree[x]
             x -= self.lowbit(x)
         return ans
-
+ 
     def add(self, x: int, val: int):
         while x <= self.n:
             self.BITree[x] += val
             x += self.lowbit(x)
-
+ 
     def update(self, x: int, val: int) -> None:
         self.add(x + 1, val - self.nums[x])
         self.nums[x] = val
@@ -85,74 +171,55 @@ class BIT:
 def solve() -> None:
     n, m = mint()
     s = list(ord(x) - 97 for x in input())
-    ss2 = sortedlist()
-    # print(s)
-    bit_left2 = BIT(n)
-    bit_right2 = BIT(n)
-    bit_left3 = BIT(n)
-    bit_right3 = BIT(n)
-    bit_op = BIT(n + 1)
-    for i in range(1, n):
-        if s[i] == s[i - 1]:
-            bit_left2.add(i, 1)
-            bit_right2.add(i + 1, 1)
+
+    ss2 = SortedSet()
+    ss3 = SortedSet()
+
+    bit = BIT(n + 1)
+    for i in range(n):
+        if i and s[i] == s[i - 1]:
+            ss2.add(i)
         if i > 1 and s[i] == s[i - 2]:
-            bit_left3.add(i - 1, 1)
-            bit_right3.add(i + 1, 1)
+            ss3.add(i - 1)
+
+    def recheck(l: int, r: int):
+        for i in range(max(0, l - 1), min(n - 1, r)):
+            a = (s[i] + bit.query(i + 1)) % 26
+            b = (s[i + 1] + bit.query(i + 2)) % 26
+            if a == b:
+                ss2.add(i + 1)
+            else:
+                ss2.discard(i + 1)
+            if i + 3 <= n:
+                c = (s[i + 2] + bit.query(i + 3)) % 26
+                if a == c:
+                    ss3.add(i + 1)
+                else:
+                    ss3.discard(i + 1)
     
-    op = [0] * n
     for _ in range(m):
         qry = ints()
         if qry[0] == 1:
             l, r, x = qry[1:]
-            for i in range(max(1, l - 2), min(r, l + 1) + 1):
-                op[i - 1] = bit_op.query(i)
-            for i in range(max(l + 2, r - 1), min(n, r + 2) + 1):
-                op[i - 1] = bit_op.query(i)
+            x %= 26
+            bit.add(l, x)
+            if r < n:
+                bit.add(r + 1, -x)
+            recheck(l - 3, l)
+            recheck(r - 3, r)
 
-            if l > 1 and (s[l - 1] + op[l - 1]) % 26 == (s[l - 2] + op[l - 2]) % 26:
-                bit_left2.add(l - 1, -1)
-                bit_right2.add(l, -1)
-                    
-            if l > 1 and (s[l - 1] + op[l - 1] + x) % 26 == (s[l - 2] + op[l - 2]) % 26:
-                bit_left2.add(l - 1, 1)
-                bit_right2.add(l, 1)
-
-            for i in range(l, min(r, l + 1) + 1):
-                if i > 2 and (s[i - 1] + op[i - 1]) % 26 == (s[i - 3] + op[i - 3]) % 26:
-                    bit_left3.add(i - 2, -1)
-                    bit_right3.add(i, -1)
-                    
-                if i > 2 and (s[i - 1] + op[i - 1] + x) % 26 == (s[i - 3] + op[i - 3]) % 26:
-                    bit_left3.add(i - 2, 1)
-                    bit_right3.add(i, 1)
-
-            if r > l and (s[r - 1] + op[r - 1]) % 26 == (s[r - 2] + op[r - 2]) % 26:
-                bit_left2.add(r - 1, -1)
-                bit_right2.add(r, -1)
-
-            if r > l and (s[r - 1] + op[r - 1]) % 26 == (s[r - 2] + op[r - 2] + x) % 26:
-                bit_left2.add(r - 1, 1)
-                bit_right2.add(r, 1)
-
-            for i in range(max(l + 2, r + 1), min(n, r + 2) + 1):
-                if i > 2 and (s[i - 1] + op[i - 1]) % 26 == (s[i - 3] + op[i - 3]) % 26:
-                    bit_left3.add(i - 2, -1)
-                    bit_right3.add(i, -1)
-
-                if i > 2 and (s[i - 1] + op[i - 1]) % 26 == (s[i - 3] + op[i - 3] + x) % 26:
-                    bit_left3.add(i - 2, 1)
-                    bit_right3.add(i, 1)
-
-            bit_op.add(l, x)
-            bit_op.add(r + 1, -x)
         else:
             l, r = qry[1:]
-            lcnt2 = bit_left2.query(l - 1)
-            rcnt2 = bit_right2.query(r)
-            lcnt3 = bit_left3.query(l - 1)
-            rcnt3 = bit_right3.query(r)
-            print("NO" if rcnt2 > lcnt2 or rcnt3 > lcnt3 else "YES")
+            i = bisect_left(ss2, l)
+            if i < len(ss2) and ss2[i] + 1 <= r:
+                print("NO")
+                continue
+            i = bisect_left(ss3, l)
+            if i < len(ss3) and ss3[i] + 2 <= r:
+                print("NO")
+                continue
+            print("YES")
+
 
 for _ in range(int(input())):
     solve()
