@@ -14,13 +14,7 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n, k = mint()
-    d = [n, 1]
-    ans = [0] * n
-    for i in range(k):
-        for j in range(i, n, k):
-            ans[j] = d[i & 1]
-            d[i & 1] += (i & 1) * 2 - 1
-    print(*ans)
+    
 
 for _ in range(int(input())):
     solve()

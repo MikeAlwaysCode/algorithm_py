@@ -12,9 +12,15 @@ ints = lambda: list(map(int, input().split()))
 # DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
+
 def solve() -> None:
     n = sint()
-    
+    nums = ints()
+    ans = 0
+    for a in nums:
+        ans = (ans + a) // a * a
+    print(ans)
+
 
 for _ in range(int(input())):
     solve()
