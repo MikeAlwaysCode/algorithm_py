@@ -30,14 +30,16 @@ def solve() -> None:
     idx = sorted(range(n), key = lambda x: w[x])
     sz = [0] * n
     for u in idx:
-        dp = [0] * w[u]
-        dp[0] = 1
+        # dp = [0] * w[u]
+        # dp[0] = 1
+        dp = [1] * w[u]
         for v in g[u]:
             if w[v] >= w[u]:
                 continue
             for j in range(w[u] - 1, w[v] - 1, -1):
                 dp[j] = max(dp[j], dp[j - w[v]] + sz[v])
-        sz[u] = max(dp)
+        # sz[u] = max(dp)
+        sz[u] = dp[-1]
     ans = sum(a[i] * sz[i] for i in range(n))
     # idx.sort(key = lambda x: -w[x])
     # ans = 0
