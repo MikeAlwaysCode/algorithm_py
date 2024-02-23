@@ -10,8 +10,10 @@ class BIT:
     
     def query(self, x: int) -> int:
         ans = 0
+        # t = x
         while x:
             ans += self.BITree[x]
+            # ranses += BITree[x][0] * t - BITree[x][1]
             x -= self.lowbit(x)
         return ans
         # ans = math.inf
@@ -21,8 +23,11 @@ class BIT:
         #     x += self.lowbit(x)
 
     def add(self, x: int, val: int):
+        # t = x
         while x <= self.n:
             self.BITree[x] += val
+            # BITree[x][0] += val
+            # BITree[x][1] += val * (t - 1)
             x += self.lowbit(x)
 
     def update(self, x: int, val: int) -> None:
@@ -103,4 +108,23 @@ for i in range(n - 1, -1, -1):
     idx = discretization[arr[i]]
     ans += query(idx+1)
     add(idx+1, 1)
+
+# BIT for rmq
+bit1 = [0] * (n + 1)
+bit2 = [0] * (n + 1)
+
+def query(x: int) -> int:
+    res, t = 0, x
+    while x:
+        # res += BITree[x]
+        res += bit1[x] * t - bit2[x]
+        x &= x - 1
+    return res
+
+def add(x: int, val: int):
+    t = x
+    while x <= n:
+        bit1[x] += val
+        bit2[x] += val * (t - 1)
+        x += x & -x
 

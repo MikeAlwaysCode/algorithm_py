@@ -12,11 +12,16 @@ ints = lambda: list(map(int, input().split()))
 # DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
+
 def solve() -> None:
-    s = input()
-    cnt = s.count("A")
-    print("A" if cnt > 2 else "B")
-    
+    n, k = mint()
+    p = 1
+    while k > (n + 1) // 2:
+        k -= (n + 1) // 2
+        n >>= 1
+        p <<= 1
+    print((k * 2 - 1) * p)
+
 
 for _ in range(int(input())):
     solve()

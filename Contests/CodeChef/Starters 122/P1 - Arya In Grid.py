@@ -9,14 +9,16 @@ ints = lambda: list(map(int, input().split()))
 
 # MOD = 998_244_353
 # MOD = 10 ** 9 + 7
-# DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
-def solve() -> None:
-    s = input()
-    cnt = s.count("A")
-    print("A" if cnt > 2 else "B")
-    
 
-for _ in range(int(input())):
+def solve() -> None:
+    n, m, x, y, l = mint()
+    a = (x - 1) // l + (n - x) // l + 1
+    b = (y - 1) // l + (m - y) // l + 1
+    print(a * b)
+
+
+for _ in range(sint()):
     solve()

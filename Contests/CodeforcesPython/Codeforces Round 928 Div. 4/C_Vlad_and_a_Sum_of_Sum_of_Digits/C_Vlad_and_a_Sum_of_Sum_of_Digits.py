@@ -12,11 +12,19 @@ ints = lambda: list(map(int, input().split()))
 # DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
+mx = 2 * 10 ** 5 + 1
+p = [0] * (mx)
+p[1] = 1
+for i in range(2, mx):
+    p[i] = p[i - 1] * 2 - p[i - 2] + 1
+    x = i
+    while x % 10 == 0:
+        p[i] -= 9
+        x //= 10
+
 def solve() -> None:
-    s = input()
-    cnt = s.count("A")
-    print("A" if cnt > 2 else "B")
-    
+    n = sint()
+    print(p[n])
 
 for _ in range(int(input())):
     solve()

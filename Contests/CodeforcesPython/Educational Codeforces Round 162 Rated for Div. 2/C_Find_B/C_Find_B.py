@@ -13,10 +13,21 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    s = input()
-    cnt = s.count("A")
-    print("A" if cnt > 2 else "B")
+    n, q = mint()
+    nums = ints()
+    cnt = [0] * (n + 1)
+    pres = [0] * (n + 1)
+    for i in range(n):
+        pres[i + 1] = pres[i] + nums[i]
+        cnt[i + 1] = cnt[i] + (nums[i] == 1)
     
+    for _ in range(q):
+        l, r = mint()
+        if l == r:
+            print("NO")
+        else:
+            s, c = pres[r] - pres[l - 1], cnt[r] - cnt[l - 1]
+            print("YES" if s - r + l - 1 >= c else "NO")
 
 for _ in range(int(input())):
     solve()

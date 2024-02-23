@@ -12,22 +12,26 @@ ints = lambda: list(map(int, input().split()))
 # DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
+
 def solve() -> None:
     n = sint()
-    g = []
-    for _ in range(n):
-        g.append(input())
-
+    nums = ints()
+    qry = []
+    for _ in range(sint()):
+        qry.append(ints())
+    seen = [False] * n
+    mx = 0
+    for q in qry[::-1]:
+        if q[0] == 2:
+            mx = max(mx, q[1])
+        elif not seen[q[1] - 1]:
+            nums[q[1] - 1] = max(q[2], mx)
+            seen[q[1] - 1] = True
     for i in range(n):
-        for j in range(n):
-            if g[i][j] == '1':
-                if i + 1 < n and g[i + 1][j] == '1' and j + 1 < n and g[i][j + 1]  == '1':
-                    print("SQUARE")
-                else:
-                    print("TRIANGLE")
-                return
-    
-    print("TRIANGLE")
- 
-for _ in range(int(input())):
-    solve()
+        if seen[i]:
+            continue
+        nums[i] = max(nums[i], mx)
+    print(*nums)
+
+
+solve()

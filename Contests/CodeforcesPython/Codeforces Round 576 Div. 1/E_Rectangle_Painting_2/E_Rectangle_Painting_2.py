@@ -12,11 +12,10 @@ ints = lambda: list(map(int, input().split()))
 # DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
+
 def solve() -> None:
-    s = input()
-    cnt = s.count("A")
-    print("A" if cnt > 2 else "B")
-    
+    return
+
 
 for _ in range(int(input())):
     solve()

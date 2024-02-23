@@ -13,10 +13,23 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    s = input()
-    cnt = s.count("A")
-    print("A" if cnt > 2 else "B")
-    
+    n, k = mint()
+    a = ints()
+    pos = ints()
+    for i in range(n):
+        if pos[i] < 0:
+            pos[i] = -pos[i]
+    idx = sorted(range(n), key = lambda x: pos[x])
+    t = s = 0
+    for i in idx:
+        s += (pos[i] - t) * k
+        if s < a[i]:
+            print("NO")
+            return
+        s -= a[i]
+        t += pos[i] - t
+
+    print("YES")
 
 for _ in range(int(input())):
     solve()

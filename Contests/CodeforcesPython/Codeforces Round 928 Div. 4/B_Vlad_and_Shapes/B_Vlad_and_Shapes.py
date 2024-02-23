@@ -12,11 +12,22 @@ ints = lambda: list(map(int, input().split()))
 # DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
+
 def solve() -> None:
-    s = input()
-    cnt = s.count("A")
-    print("A" if cnt > 2 else "B")
-    
+    n = sint()
+    g = []
+    for _ in range(n):
+        g.append(input())
+ 
+    for i in range(n):
+        for j in range(n):
+            if g[i][j] == '1':
+                if i + 1 < n and g[i + 1][j] == '1' and j + 1 < n and g[i][j + 1]  == '1':
+                    print("SQUARE")
+                else:
+                    print("TRIANGLE")
+                return
+
 
 for _ in range(int(input())):
     solve()

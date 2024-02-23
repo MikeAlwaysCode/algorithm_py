@@ -1,5 +1,5 @@
 import sys
-from heapq import *
+# from heapq import *
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -17,14 +17,22 @@ ints = lambda: list(map(int, input().split()))
 def solve() -> None:
     n, m = mint()
     d = [0] * (n + 2)
-    cats = []
+    # cats = []
+    q = [[] for _ in range(n + 1)]
     for _ in range(m):
         l, r = mint()
         d[l] += 1
         d[r + 1] -= 1
-        cats.append((l, r))
+        # cats.append((l, r))
+        q[r].append(l)
     
     left = list(range(n + 1))
+    mn = n
+    for i in range(n, 0, -1):
+        for l in q[i]:
+            mn = min(mn, l)
+        left[i] = min(left[i], mn)
+    '''
     cats.sort(key = lambda x: -x[1])
     i = 0
     h = []
@@ -36,6 +44,7 @@ def solve() -> None:
             i += 1
         if h:
             left[j] = h[0]
+    '''
     # print(left)
     dp = [0] * (n + 1)
     cur = 0

@@ -13,10 +13,21 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    s = input()
-    cnt = s.count("A")
-    print("A" if cnt > 2 else "B")
-    
+    n = sint()
+    nums = ints()
+    neg = 0
+    for x in nums:
+        if x == 0:
+            print(0)
+            return
+        elif x < 0:
+            neg += 1
+    if neg & 1:
+        print(0)
+    else:
+        print(1)
+        print(1, 0)
+
 
 for _ in range(int(input())):
     solve()
