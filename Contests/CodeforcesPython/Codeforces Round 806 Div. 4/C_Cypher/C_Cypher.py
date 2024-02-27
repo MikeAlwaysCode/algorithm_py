@@ -13,14 +13,19 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    s = input()
-    ans = w = o = 0
-    for i in range(1, len(s)):
-        if s[i] == s[i - 1] == 'v':
-            w += 1
-            ans += o
-        elif s[i] == 'o':
-            o += w
-    print(ans)
+    n = sint()
+    ans = ints()
+    for i in range(n):
+        _, s = input().split()
+        cnt = 0
+        for c in s:
+            if c == 'D':
+                cnt += 1
+            else:
+                cnt -= 1
+        ans[i] = (ans[i] + cnt) % 10
+    print(*ans)
 
-solve()
+
+for _ in range(int(input())):
+    solve()

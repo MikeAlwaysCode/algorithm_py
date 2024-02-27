@@ -14,13 +14,8 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     s = input()
-    ans = w = o = 0
-    for i in range(1, len(s)):
-        if s[i] == s[i - 1] == 'v':
-            w += 1
-            ans += o
-        elif s[i] == 'o':
-            o += w
-    print(ans)
+    print("YES" if s.upper() == "YES" else "NO")
 
-solve()
+
+for _ in range(int(input())):
+    solve()

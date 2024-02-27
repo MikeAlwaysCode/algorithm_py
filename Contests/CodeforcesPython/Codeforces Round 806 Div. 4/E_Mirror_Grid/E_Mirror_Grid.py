@@ -13,14 +13,18 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    s = input()
-    ans = w = o = 0
-    for i in range(1, len(s)):
-        if s[i] == s[i - 1] == 'v':
-            w += 1
-            ans += o
-        elif s[i] == 'o':
-            o += w
+    n = sint()
+    g = []
+    for _ in range(n):
+        g.append(list(map(int, list(input()))))
+    
+    ans = 0
+    for i in range(n//2):
+        for j in range(i, n - i - 1):
+            cnt = g[i][j] + g[j][n - i - 1] + g[n - i - 1][n - j - 1] + g[n - j - 1][i]
+            ans += min(cnt, 4 - cnt)
     print(ans)
 
-solve()
+
+for _ in range(int(input())):
+    solve()

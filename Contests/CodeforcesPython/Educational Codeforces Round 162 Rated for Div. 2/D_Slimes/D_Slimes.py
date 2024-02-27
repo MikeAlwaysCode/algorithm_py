@@ -27,11 +27,9 @@ def solve() -> None:
             left[i] = i - 1
         if nums[i] < nums[i - 1]:
             ans[i] = 1
-        elif nums[i] >= pres[i] or left[i] == -1 or (left[i] == i - 1 and left[i - 1] == -1):
+        elif nums[i] >= pres[i] or left[i - 1] == -1:
             continue
-        elif left[i] < i - 1 and pres[i] - pres[left[i]] > nums[i]:
-            ans[i] = i - left[i]
-        elif left[i] == i - 1 and pres[i] - pres[left[i - 1]] > nums[i]:
+        elif pres[i] - pres[left[i - 1]] > nums[i]:
             ans[i] = i - left[i - 1]
         else:
             k = bisect_left(pres, pres[i] - nums[i])
@@ -44,12 +42,9 @@ def solve() -> None:
             right[i] = i + 1
         if nums[i] < nums[i + 1]:
             ans[i] = 1
-        elif nums[i] >= pres[-1] - pres[i + 1] or right[i] == n or (right[i] == i + 1 and right[i + 1] == n):
+        elif nums[i] >= pres[-1] - pres[i + 1] or right[i + 1] == n:
             continue
-        elif right[i] > i + 1 and pres[right[i] + 1] - pres[i + 1] > nums[i]:
-            if ans[i] == -1 or right[i] - i < ans[i]:
-                ans[i] = right[i] - i
-        elif right[i] == i + 1 and pres[right[i + 1] + 1] - pres[i + 1] > nums[i]:
+        elif pres[right[i + 1] + 1] - pres[i + 1] > nums[i]:
             if ans[i] == -1 or right[i + 1] - i < ans[i]:
                 ans[i] = right[i + 1] - i
         else:

@@ -9,18 +9,23 @@ ints = lambda: list(map(int, input().split()))
 
 # MOD = 998_244_353
 # MOD = 10 ** 9 + 7
-# DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
+
 def solve() -> None:
-    s = input()
-    ans = w = o = 0
-    for i in range(1, len(s)):
-        if s[i] == s[i - 1] == 'v':
-            w += 1
-            ans += o
-        elif s[i] == 'o':
-            o += w
-    print(ans)
+    n = sint()
+    nums = ints()
+    s = set()
+    for x in nums:
+        if x > n:
+            print(0)
+            return
+        s.add(x)
+    if len(s) < n:
+        print(0)
+        return
+    print(1)
+    print(1, nums[1])
 
 solve()

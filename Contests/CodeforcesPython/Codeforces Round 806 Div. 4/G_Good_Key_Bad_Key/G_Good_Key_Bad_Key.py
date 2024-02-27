@@ -13,14 +13,15 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    s = input()
-    ans = w = o = 0
-    for i in range(1, len(s)):
-        if s[i] == s[i - 1] == 'v':
-            w += 1
-            ans += o
-        elif s[i] == 'o':
-            o += w
-    print(ans)
+    n, k = mint()
+    nums = ints()
+    dp = [0] * 32
+    for i, x in enumerate(nums):
+        dp[31] = max(dp[31], dp[30])
+        for j in range(min(30, i + 1), 0, -1):
+            dp[j] = max(dp[j] + (x >> j) - k, dp[j - 1] + (x >> j))
+        dp[0] += x - k
+    print(max(dp))
 
-solve()
+for _ in range(int(input())):
+    solve()
