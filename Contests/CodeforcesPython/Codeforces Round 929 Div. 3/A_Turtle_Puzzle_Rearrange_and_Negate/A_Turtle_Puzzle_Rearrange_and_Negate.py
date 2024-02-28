@@ -13,8 +13,10 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    w, b = mint()
-    
+    n = sint()
+    nums = ints()
+    print(sum(abs(x) for x in nums))
 
 
-solve()
+for _ in range(int(input())):
+    solve()

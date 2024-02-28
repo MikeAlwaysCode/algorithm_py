@@ -13,8 +13,20 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    w, b = mint()
-    
+    n = sint()
+    nums = ints()
+    s = m1 = 0
+    for x in nums:
+        s = (s + x) % 3
+        if x % 3 == 1:
+            m1 = 1
+    if s == 0:
+        print(0)
+    elif s == 2 or (s == 1 and m1):
+        print(1)
+    else:
+        print(2)
 
 
-solve()
+for _ in range(int(input())):
+    solve()

@@ -1,4 +1,6 @@
 import sys
+from functools import reduce
+from math import gcd
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -13,8 +15,15 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    w, b = mint()
-    
+    n = sint()
+    nums = ints()
+    nums.sort()
+    if nums[0] < nums[1]:
+        print("YES")
+        return
+    g = reduce(gcd, nums)
+    print("YES" if g < nums[0] else "NO")
 
 
-solve()
+for _ in range(int(input())):
+    solve()

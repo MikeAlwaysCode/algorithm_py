@@ -1,3 +1,4 @@
+import math
 import sys
 
 # region fastio
@@ -13,8 +14,18 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    w, b = mint()
+    r, b, k = mint()
+    if r == b:
+        print("OBEY")
+        return
     
+    if r < b:
+        r, b = b, r
 
+    g = math.gcd(r, b)
+    
+    
+    print("OBEY" if g + (k - 1) * b >= r else "REBEL")
 
-solve()
+for _ in range(int(input())):
+    solve()

@@ -13,8 +13,8 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    w, b = mint()
-    
+    return
 
 
-solve()
+for _ in range(int(input())):
+    solve()

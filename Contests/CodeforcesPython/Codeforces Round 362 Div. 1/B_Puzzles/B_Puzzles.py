@@ -13,8 +13,17 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    w, b = mint()
-    
+    n = sint()
+    p = ints()
 
+    sz = [1] * n
+    dp = [1.0] * n
+    for i in range(n - 1, 0, -1):
+        sz[p[i - 1] - 1] += sz[i]
+    
+    for i in range(1, n):
+        dp[i] = dp[p[i - 1] - 1] + (sz[p[i - 1] - 1] - sz[i] - 1) / 2 + 1
+    
+    print(*dp)
 
 solve()

@@ -13,8 +13,18 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    w, b = mint()
-    
+    a, b, l = mint()
+    s = set()
+    i = 0
+    while pow(a, i) <= l:
+        pa, j = pow(a, i), 0
+        while pa * pow(b, j) <= l:
+            if l % (pa * pow(b, j)) == 0:
+                s.add(l // (pa * pow(b, j)))
+            j += 1
+        i += 1
+    print(len(s))
 
 
-solve()
+for _ in range(int(input())):
+    solve()
