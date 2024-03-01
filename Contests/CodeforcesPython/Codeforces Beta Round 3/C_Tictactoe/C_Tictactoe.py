@@ -13,13 +13,8 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n = sint()
-    ans = 1
-    while ans * 2 <= n:
-        ans *= 2
+    return
 
-    print(ans)
-    
 
 for _ in range(int(input())):
     solve()

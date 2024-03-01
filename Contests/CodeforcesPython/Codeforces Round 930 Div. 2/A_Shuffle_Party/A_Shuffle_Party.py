@@ -17,9 +17,7 @@ def solve() -> None:
     ans = 1
     while ans * 2 <= n:
         ans *= 2
-
     print(ans)
-    
 
 for _ in range(int(input())):
     solve()
