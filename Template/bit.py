@@ -128,3 +128,20 @@ def add(x: int, val: int):
         bit2[x] += val * (t - 1)
         x += x & -x
 
+
+    dis = {x:i for i, x in enumerate(sorted(xs), 1)}
+    tn = len(dis)
+    bit = [0] * (tn + 1)
+
+    def query(x: int) -> int:
+        res = 0
+        while x:
+            res += bit[x]
+            x &= x - 1
+        return res
+
+    def add(x: int, val: int):
+        while x <= tn:
+            bit[x] += val
+            x += x & -x
+
