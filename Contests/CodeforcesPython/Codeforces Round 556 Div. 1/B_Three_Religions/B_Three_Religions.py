@@ -23,12 +23,6 @@ def solve() -> None:
         nxt[i][ord(s[i]) - 97] = i
 
     m = 255
-    def encode(mask: list):
-        return (mask[0] * m + mask[1]) * m + mask[2]
-    
-    # def decode(x: int):
-    #     xy, z = divmod(x, m)
-    #     return *divmod(xy, m), z
 
     dp = [n] * (m ** 3)
     dp[0] = -1
@@ -45,29 +39,36 @@ def solve() -> None:
         else:
             c = ord(qry[2]) - 97
 
-            mask = [0, 0, 0]
-            mask[idx] = cur[idx] + 1
-            for i in range(cur[(idx + 1) % 3] + 1):
-                for j in range(cur[(idx + 2) % 3] + 1):
-                    mask[(idx + 1) % 3] = i
-                    mask[(idx + 2) % 3] = j
-                    pmask = mask[:]
-                    pmask[idx] -= 1
-                    dp[encode(mask)] = nxt[dp[encode(pmask)] + 1][c]
+            mask = cur[:]
+            mask[idx] += 1
+            idx1, idx2 = (idx + 1) % 3, (idx + 2) % 3
+            pmask = mask[:]
+            for i in range(cur[idx1] + 1):
+                for j in range(cur[idx2] + 1):
+                    mask[idx1] = pmask[idx1] = i
+                    mask[idx2] = pmask[idx2] = j
+                    pmask[idx] = mask[idx] - 1
+                    to = (mask[0] * m + mask[1]) * m + mask[2]
+                    fr = (pmask[0] * m + pmask[1]) * m + pmask[2]
+                    dp[to] = nxt[dp[fr] + 1][c]
                     if i:
-                        pmask = mask[:]
-                        pmask[(idx + 1) % 3] -= 1
-                        if nxt[dp[encode(pmask)] + 1][s[(idx + 1) % 3][i - 1]] < dp[encode(mask)]:
-                            dp[encode(mask)] = nxt[dp[encode(pmask)] + 1][s[(idx + 1) % 3][i - 1]]
+                        pmask[idx1] = mask[idx1] - 1
+                        pmask[idx2] = mask[idx2]
+                        pmask[idx] = mask[idx]
+                        fr = (pmask[0] * m + pmask[1]) * m + pmask[2]
+                        if nxt[dp[fr] + 1][s[idx1][i - 1]] < dp[to]:
+                            dp[to] = nxt[dp[fr] + 1][s[idx1][i - 1]]
                     if j:
-                        pmask = mask[:]
-                        pmask[(idx + 2) % 3] -= 1
-                        if nxt[dp[encode(pmask)] + 1][s[(idx + 2) % 3][j - 1]] < dp[encode(mask)]:
-                            dp[encode(mask)] = nxt[dp[encode(pmask)] + 1][s[(idx + 2) % 3][j - 1]]
+                        pmask[idx1] = mask[idx1]
+                        pmask[idx2] = mask[idx2] - 1
+                        pmask[idx] = mask[idx]
+                        fr = (pmask[0] * m + pmask[1]) * m + pmask[2]
+                        if nxt[dp[fr] + 1][s[idx2][j - 1]] < dp[to]:
+                            dp[to] = nxt[dp[fr] + 1][s[idx2][j - 1]]
 
             s[idx].append(c)
             cur[idx] += 1
         
-        print('YES' if dp[encode(cur)] < n else 'NO')
+        print('YES' if dp[(cur[0] * m + cur[1]) * m + cur[2]] < n else 'NO')
 
 solve()
