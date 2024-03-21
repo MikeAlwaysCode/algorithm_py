@@ -9,18 +9,12 @@ ints = lambda: list(map(int, input().split()))
 
 # MOD = 998_244_353
 # MOD = 10 ** 9 + 7
-# DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
+
 def solve() -> None:
-    n = sint()
-    nums = ints()
-    ans = cnt1 = 0
-    for x in nums:
-        if x:
-            cnt1 += 1
-        else:
-            ans += cnt1
-    print(ans)
+    return
+
 
 solve()

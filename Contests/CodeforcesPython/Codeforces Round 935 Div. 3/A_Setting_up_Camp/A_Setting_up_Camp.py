@@ -13,14 +13,15 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n = sint()
-    nums = ints()
-    ans = cnt1 = 0
-    for x in nums:
-        if x:
-            cnt1 += 1
-        else:
-            ans += cnt1
+    a, b, c = mint()
+    ans = a + b // 3
+    b %= 3
+    if b and b + c < 3:
+        print(-1)
+        return
+    ans += (b + c + 2) // 3
     print(ans)
 
-solve()
+
+for _ in range(int(input())):
+    solve()

@@ -13,14 +13,10 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n = sint()
-    nums = ints()
-    ans = cnt1 = 0
-    for x in nums:
-        if x:
-            cnt1 += 1
-        else:
-            ans += cnt1
+    a, b, m = mint()
+    ans = m // a + m // b + 2
     print(ans)
 
-solve()
+
+for _ in range(int(input())):
+    solve()

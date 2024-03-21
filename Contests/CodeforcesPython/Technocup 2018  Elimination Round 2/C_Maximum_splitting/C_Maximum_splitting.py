@@ -14,13 +14,10 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n = sint()
-    nums = ints()
-    ans = cnt1 = 0
-    for x in nums:
-        if x:
-            cnt1 += 1
-        else:
-            ans += cnt1
-    print(ans)
+    if n == 1 or n == 2 or n == 3 or n == 5 or n == 7 or n == 11:
+        print(-1)
+    else:
+        print(n // 4 - n % 2)
 
-solve()
+for _ in range(int(input())):
+    solve()

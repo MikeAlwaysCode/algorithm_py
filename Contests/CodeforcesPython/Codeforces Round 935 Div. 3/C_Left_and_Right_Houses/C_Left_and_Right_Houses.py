@@ -14,13 +14,26 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n = sint()
-    nums = ints()
-    ans = cnt1 = 0
-    for x in nums:
-        if x:
-            cnt1 += 1
+    s = input()
+    l0 = l1 = 0
+    r1 = s.count('1')
+    r0 = n - r1
+    d = n
+    ans = -1
+    if r1 >= r0:
+        ans, d = 0, n / 2
+    for i, c in enumerate(s, 1):
+        if c == '1':
+            l1 += 1
+            r1 -= 1
         else:
-            ans += cnt1
+            l0 += 1
+            r0 -= 1
+        if l0 >= l1 and r1 >= r0:
+            if abs(n // 2 - i) < d:
+                ans, d = i, abs(n / 2 - i)
     print(ans)
 
-solve()
+
+for _ in range(int(input())):
+    solve()

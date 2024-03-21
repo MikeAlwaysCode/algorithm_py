@@ -1,4 +1,5 @@
 import sys
+from collections import Counter
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -15,12 +16,17 @@ ints = lambda: list(map(int, input().split()))
 def solve() -> None:
     n = sint()
     nums = ints()
-    ans = cnt1 = 0
-    for x in nums:
-        if x:
-            cnt1 += 1
-        else:
-            ans += cnt1
+    cnt = Counter(nums)
+    one = False
+    ans = 0
+    while cnt[ans]:
+        if cnt[ans] == 1:
+            if one:
+                break
+            one = True
+        ans += 1
     print(ans)
 
-solve()
+
+for _ in range(int(input())):
+    solve()
