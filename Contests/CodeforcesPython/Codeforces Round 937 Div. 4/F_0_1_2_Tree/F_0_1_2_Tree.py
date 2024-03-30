@@ -13,14 +13,25 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    a, b = mint()
-    s = input()
-    ans, pre = 0, -1000
-    for i, c in enumerate(s):
-        if c == '1':
-            ans += min(b * (i - pre - 1), a)
-            pre = i
-    print(ans)
+    a, b, c = mint()
+
+    if c != a + 1:
+        print(-1)
+        return
+    
+    if a == 0:
+        print(b)
+        return
+
+    x, h = 2, 1
+    while x < c:
+        h += 1
+        x <<= 1
+    
+    if b > x - c:
+        h += (b - x + c * 2 - 1) // c
+    print(h)
+
 
 for _ in range(int(input())):
     solve()

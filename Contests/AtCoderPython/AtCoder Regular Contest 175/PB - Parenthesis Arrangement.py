@@ -9,18 +9,26 @@ ints = lambda: list(map(int, input().split()))
 
 # MOD = 998_244_353
 # MOD = 10 ** 9 + 7
-# DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
+
 def solve() -> None:
-    a, b = mint()
+    n, a, b = mint()
     s = input()
-    ans, pre = 0, -1000
-    for i, c in enumerate(s):
-        if c == '1':
-            ans += min(b * (i - pre - 1), a)
-            pre = i
+    ans = cnt = l = r = 0
+    for c in s:
+        cnt += 1 if c == '(' else -1
+        if cnt < 0:
+            r += 1
+            cnt += 2
+    l = cnt // 2
+    if a < b * 2:
+        m = min(l, r)
+        ans += m * a
+        l -= m
+        r -= m
+    ans += (l + r) * b
     print(ans)
 
-for _ in range(int(input())):
-    solve()
+solve()

@@ -13,14 +13,14 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    a, b = mint()
-    s = input()
-    ans, pre = 0, -1000
-    for i, c in enumerate(s):
-        if c == '1':
-            ans += min(b * (i - pre - 1), a)
-            pre = i
-    print(ans)
+    a, b, c = mint()
+    if a < b < c:
+        print("STAIR")
+    elif a < b and c < b:
+        print("PEAK")
+    else:
+        print("NONE")
+
 
 for _ in range(int(input())):
     solve()

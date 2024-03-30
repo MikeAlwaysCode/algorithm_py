@@ -12,15 +12,26 @@ ints = lambda: list(map(int, input().split()))
 # DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
+p = []
+for k in range(6):
+    base = 10 ** k
+    for x in p[:]:
+        p.append(base + x)
+    p.append(base)
+p.sort()
+s = {1}
+for a in p[1:]:
+    x = a
+    while x <= 10 ** 5:
+        for b in p:
+            if x * b > 10 ** 5:
+                break
+            s.add(x * b)
+        x *= a
+
 def solve() -> None:
-    a, b = mint()
-    s = input()
-    ans, pre = 0, -1000
-    for i, c in enumerate(s):
-        if c == '1':
-            ans += min(b * (i - pre - 1), a)
-            pre = i
-    print(ans)
+    n = sint()
+    print("YES" if n in s else "NO")
 
 for _ in range(int(input())):
     solve()

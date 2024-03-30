@@ -1,4 +1,5 @@
 import sys
+from collections import Counter
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
@@ -13,14 +14,20 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    a, b = mint()
+    n = sint()
     s = input()
-    ans, pre = 0, -1000
-    for i, c in enumerate(s):
-        if c == '1':
-            ans += min(b * (i - pre - 1), a)
-            pre = i
-    print(ans)
+    for k in range(1, n // 2 + 1):
+        if n % k:
+            continue
+        for i in (0, k):
+            cnt = 0
+            for j in range(n):
+                cnt += s[i + (j % k)] != s[j]
+            if cnt <= 1:
+                print(k)
+                return
+    print(n)
+
 
 for _ in range(int(input())):
     solve()
