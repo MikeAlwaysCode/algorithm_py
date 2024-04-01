@@ -14,7 +14,12 @@ ints = lambda: list(map(int, input().split()))
 
 
 def solve() -> None:
-    return
-
+    n, k = mint()
+    nums = ints()
+    ans = []
+    for x in nums:
+        if x % k == 0:
+            ans.append(x // k)
+    print(*ans)
 
 solve()
