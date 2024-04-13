@@ -21,6 +21,5 @@ def solve() -> None:
     else:
         print(-1)
 
-
 for _ in range(int(input())):
     solve()
