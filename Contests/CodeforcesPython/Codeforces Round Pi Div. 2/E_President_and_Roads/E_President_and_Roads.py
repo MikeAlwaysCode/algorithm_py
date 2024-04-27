@@ -1,63 +1,82 @@
 import math
+import random
 import sys
-from bisect import *
-from collections import *
-from functools import *
 from heapq import *
-from itertools import *
-from random import *
-from string import *
 
 # region fastio
 input = lambda: sys.stdin.readline().rstrip()
+sint = lambda: int(input())
 mint = lambda: map(int, input().split())
 ints = lambda: list(map(int, input().split()))
-# print = lambda d: sys.stdout.write(str(d) + " ")
 # endregion fastio
 
-# MOD = 998244353
+# MOD = 998_244_353
 # MOD = 10 ** 9 + 7
-# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
+# DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1)) #URDL
+# DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
+
+def dijkstra(g: list, start: int) -> list:
+    dist = [math.inf] * len(g)
+    dist[start] = 0
+    h = [(0, start)]
+    while h:
+        d, x = heappop(h)
+        if d > dist[x]:
+            continue
+        for y, wt in g[x]:
+            new_d = dist[x] + wt
+            if new_d < dist[y]:
+                dist[y] = new_d
+                heappush(h, (new_d, y))
+    return dist
 
 def solve() -> None:
-    # n = int(input())
-    # s = input()
-    # n, m = map(int, input().split())
-    # arr = ints()
+    n, m, s, t = mint()
+    s -= 1
+    t -= 1
+    edges = []
+    g = [[] for _ in range(n)]
+    ng = [[] for _ in range(n)]
+    for _ in range(m):
+        u, v, w = mint()
+        u -= 1
+        v -= 1
+        edges.append((u, v, w))
+        g[u].append((v, w))
+        ng[v].append((u, w))
+    
+    dist1 = dijkstra(g, s)
+    dist2 = dijkstra(ng, t)
 
-    return
+    MOD = random.getrandbits(32)
 
-for _ in range(int(input())):
-    solve()
+    dp1 = [0] * n
+    dp1[s] = 1
 
-# # region interactive
-# def printQry(a, b) -> None:
-#     sa = str(a)
-#     sb = str(b)
-#     print(f"? {sa} {sb}", flush = True)
+    for u in sorted(range(n), key = lambda x: dist1[x]):
+        for v, w in ng[u]:
+            if dist1[u] == dist1[v] + w:
+                dp1[u] = (dp1[u] + dp1[v]) % MOD
 
-# def printAns(ans) -> None:
-#     s = str(ans)
-#     print(f"! {s}", flush = True)
-# # endregion interactive
+    dp2 = [0] * n
+    dp2[t] = 1
 
-# # region dfsconvert
-# from types import GeneratorType
-# def bootstrap(f, stack=[]):
-#     def wrappedfunc(*args, **kwargs):
-#         if stack:
-#             return f(*args, **kwargs)
-#         else:
-#             to = f(*args, **kwargs)
-#             while True:
-#                 if type(to) is GeneratorType:
-#                     stack.append(to)
-#                     to = next(to)
-#                 else:
-#                     stack.pop()
-#                     if not stack:
-#                         break
-#                     to = stack[-1].send(to)
-#             return to
-#     return wrappedfunc
-# # endregion dfsconvert
+    for u in sorted(range(n), key=lambda x: dist2[x]):
+        for v, w in g[u]:
+            if dist2[u] == dist2[v] + w:
+                dp2[u] = (dp2[u] + dp2[v]) % MOD
+    
+    for u, v, w in edges:
+        if dist1[u] + w + dist2[v] == dist1[t]:
+            if dp1[u] * dp2[v] % MOD == dp1[t]:
+                print("YES")
+            else:
+                print("CAN 1" if w > 1 else "NO")
+        elif dist1[u] + dist2[v] >= dist1[t] - 1:
+            print('NO')
+        else:
+            res = w - dist1[t] + 1 + dist1[u] + dist2[v]
+            print("CAN", res)
+
+
+solve()

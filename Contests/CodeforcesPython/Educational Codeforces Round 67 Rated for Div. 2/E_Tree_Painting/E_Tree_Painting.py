@@ -74,8 +74,6 @@ def solve() -> None:
             if v == parent[u]:
                 continue
             q.append((v, res - size[v] * 2 + n))
-
-    # DP
     
     print(ans)
 
