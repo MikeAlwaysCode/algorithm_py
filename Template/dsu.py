@@ -44,8 +44,8 @@ def find(x: int):
     cur = x
     while x != fa[x]:
         x = fa[x]
-    if cur != x:
-        fa[cur] = x
+    while fa[cur] != x:
+        fa[cur], cur = x, fa[cur]
     return x
 
 def union(fr: int, to: int):
