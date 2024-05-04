@@ -13,14 +13,15 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n = sint()
-    A = ints()
-    B = ints()
-    d = {v:i for i, v in enumerate(A)}
-    cnt = [0] * n
-    for i, v in enumerate(B):
-        cnt[(i - d[v]) % n] += 1
-    print(max(cnt))
+    s = input()
+    ans = one = 0
+    for c in s:
+        if c == '1':
+            one += 1
+        elif one:
+            ans += one + 1
+    print(ans)
 
 
-solve()
+for _ in range(int(input())):
+    solve()

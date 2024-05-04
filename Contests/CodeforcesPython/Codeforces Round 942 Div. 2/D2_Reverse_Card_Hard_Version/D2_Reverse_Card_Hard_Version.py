@@ -1,3 +1,4 @@
+import math
 import sys
 
 # region fastio
@@ -13,14 +14,18 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n = sint()
-    A = ints()
-    B = ints()
-    d = {v:i for i, v in enumerate(A)}
-    cnt = [0] * n
-    for i, v in enumerate(B):
-        cnt[(i - d[v]) % n] += 1
-    print(max(cnt))
+    n, m = mint()
+    ans = 0
+    for b in range(2, m + 1):
+        r = min(b - 1, m // b)
+        l = max(1, b - n // b)
+        if r < l:
+            break
+        # print(b, l, r)
+        # ans += max(0, r - l + 1)
+        ans += (r - l + 1) * (m // b)
 
+    print(ans)
 
-solve()
+for _ in range(int(input())):
+    solve()

@@ -16,11 +16,12 @@ def solve() -> None:
     n = sint()
     A = ints()
     B = ints()
-    d = {v:i for i, v in enumerate(A)}
-    cnt = [0] * n
-    for i, v in enumerate(B):
-        cnt[(i - d[v]) % n] += 1
-    print(max(cnt))
+    i = 0
+    for b in B:
+        if A[i] <= b:
+            i += 1
+    print(n - i)
 
 
-solve()
+for _ in range(int(input())):
+    solve()

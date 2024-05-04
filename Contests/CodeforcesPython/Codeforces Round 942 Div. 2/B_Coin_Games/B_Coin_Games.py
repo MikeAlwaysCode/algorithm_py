@@ -14,13 +14,9 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n = sint()
-    A = ints()
-    B = ints()
-    d = {v:i for i, v in enumerate(A)}
-    cnt = [0] * n
-    for i, v in enumerate(B):
-        cnt[(i - d[v]) % n] += 1
-    print(max(cnt))
+    s = input()
+    print("YES" if s.count("U") & 1 else "NO")
 
 
-solve()
+for _ in range(int(input())):
+    solve()

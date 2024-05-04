@@ -14,13 +14,15 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n = sint()
-    A = ints()
-    B = ints()
-    d = {v:i for i, v in enumerate(A)}
-    cnt = [0] * n
-    for i, v in enumerate(B):
-        cnt[(i - d[v]) % n] += 1
-    print(max(cnt))
+    if n == 2:
+        print(1, 1)
+        print(1, 2)
+    else:
+        for y in range(1, n - 1):
+            print(1, y)
+        print(n, 2)
+        print(n, n)
 
 
-solve()
+for _ in range(int(input())):
+    solve()
