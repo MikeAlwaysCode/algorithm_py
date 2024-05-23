@@ -13,8 +13,29 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    return
+    n, m, q = mint()
 
+    fa = list(range(n + m))
 
-for _ in range(int(input())):
-    solve()
+    def find(x: int):
+        cur = x
+        while x != fa[x]:
+            x = fa[x]
+        while fa[cur] != x:
+            fa[cur], cur = x, fa[cur]
+        return x
+
+    def union(x: int, y: int) -> bool:
+        fx, fy = find(x), find(y)
+        if fx == fy:
+            return False
+        fa[fx] = find(fy)
+        return True
+
+    ans = n + m - 1
+    for _ in range(q):
+        x, y = mint()
+        ans -= union(x - 1, y + n - 1)
+    print(ans)
+
+solve()

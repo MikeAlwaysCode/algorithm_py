@@ -15,16 +15,18 @@ ints = lambda: list(map(int, input().split()))
 
 def solve() -> None:
     n, m = mint()
+    sqn, sqm = math.isqrt(n) + 2, math.isqrt(m) + 2
+    bad = [[False] * (sqm + 1) for _ in range(sqn + 1)]
+    for i in range(2, min(sqn, sqm) + 1):
+        for a in range(i, sqn + 1, i):
+            for b in range(i, sqm + 1, i):
+                bad[a][b] = True
     ans = 0
-    for b in range(2, m + 1):
-        r = min(b - 1, m // b)
-        l = max(1, b - n // b)
-        if r < l:
-            break
-        # print(b, l, r)
-        # ans += max(0, r - l + 1)
-        ans += (r - l + 1) * (m // b)
-
+    for a in range(1, math.isqrt(n) + 1):
+        for b in range(1, math.isqrt(m) + 1):
+            if bad[a][b]:
+                continue
+            ans += min(n // (a + b) // a, m // (a + b) // b)
     print(ans)
 
 for _ in range(int(input())):

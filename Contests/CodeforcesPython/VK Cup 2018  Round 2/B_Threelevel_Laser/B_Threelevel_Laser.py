@@ -13,8 +13,16 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    return
+    n, u = mint()
+    nums = ints()
+    p, q = -1, 1
+    r = 0
+    for l in range(1, n - 1):
+        r = max(r, l)
+        while r < n - 1 and nums[r + 1] - nums[l - 1] <= u:
+            r += 1
+        if l < r and (nums[r] - nums[l]) * q > p * (nums[r] - nums[l - 1]):
+            p, q = nums[r] - nums[l], nums[r] - nums[l - 1]
+    print(p / q)
 
-
-for _ in range(int(input())):
-    solve()
+solve()

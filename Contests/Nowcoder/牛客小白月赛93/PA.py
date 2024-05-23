@@ -1,0 +1,30 @@
+import sys
+
+# region fastio
+input = lambda: sys.stdin.readline().rstrip()
+sint = lambda: int(input())
+mint = lambda: map(int, input().split())
+ints = lambda: list(map(int, input().split()))
+# endregion fastio
+
+# MOD = 998_244_353
+# MOD = 10 ** 9 + 7
+# DIR = ((-1, 0), (0, 1), (1, 0), (0, -1))
+# DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
+
+
+def solve() -> None:
+    n, a, k = mint()
+    ans = []
+    a += 1
+    for _ in range(k):
+        sa = str(a)
+        if a % 7 == 0 or '7' in sa:
+            ans.append('p')
+        else:
+            ans.append(sa)
+        a += n
+    print(*ans)
+    
+for _ in range(sint()):
+    solve()

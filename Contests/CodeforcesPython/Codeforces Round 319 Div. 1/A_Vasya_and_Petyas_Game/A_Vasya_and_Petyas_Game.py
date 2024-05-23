@@ -13,8 +13,19 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    return
+    n = sint()
+    ans = []
+    isprime = [True] * (n + 1)
+    for i in range(2, n + 1):
+        if not isprime[i]:
+            continue
+        v = i
+        while v <= n:
+            ans.append(v)
+            v *= i
+        for j in range(i + i, n + 1, i):
+            isprime[j] = False
+    print(len(ans))
+    print(*ans)
 
-
-for _ in range(int(input())):
-    solve()
+solve()
