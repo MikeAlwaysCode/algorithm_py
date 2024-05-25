@@ -32,16 +32,16 @@ def solve() -> None:
                 continue
             parent[v] = u
             q.append(v)
-    dp = [-1] * n
+    dp = [[0] * 2 for _ in range(n)]
     sz = [1] * n
     for u in order[::-1]:
         if (p := parent[u]) != -1:
             sz[p] += sz[u]
-            if dp[p] == -1:
-                dp[p] = sz[u] - 1
+            if dp[p][0] == 0:
+                dp[p][0], dp[p][1] = sz[u] - 1, dp[u][0]
             else:
-                dp[p] = max()
-    print(sz)
+                dp[p][0] = max(dp[p][0] + dp[u][0], dp[p][1] + sz[u] - 1)
+    print(dp[0][0])
 
 
 for _ in range(int(input())):
