@@ -13,22 +13,16 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n, k, x = map(int, input().split())
-    arr = ints()
-    
+    n = sint()
+    nums = ints()
     ans = 0
-    dp = [0] * (k + 1)
-    for i in range(n):
-        for j in range(min(i + 1, k), -1, -1):
-            if j <= i:
-                dp[j] = max(0, dp[j] + arr[i] - x)
-            elif j > i:
-                dp[j] = max(0, dp[j - 1] + arr[i] + x)
-            if j:
-                dp[j] = max(dp[j], dp[j - 1] + arr[i] + x)
-            
-            if k - j < n - i: ans = max(ans, dp[j])
-        
+    for i in range(1, n):
+        ans = max(ans, min(nums[i], nums[i - 1]))
+        if i > 1:
+            if nums[i - 1] <= nums[i] <= nums[i - 2]:
+                ans = max(ans, nums[i])
+            if nums[i - 1] <= nums[i - 2] <= nums[i]:
+                ans = max(ans, nums[i - 2])
     print(ans)
 
 

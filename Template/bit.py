@@ -129,6 +129,24 @@ def add(x: int, val: int):
         x += x & -x
 
 
+# 树状数组模板（维护前缀最大值）
+class BIT:
+    def __init__(self, n: int):
+        self.tree = [-inf] * n
+
+    def update(self, i: int, val: int) -> None:
+        while i < len(self.tree):
+            self.tree[i] = max(self.tree[i], val)
+            i += i & -i
+
+    def pre_max(self, i: int) -> int:
+        mx = -inf
+        while i > 0:
+            mx = max(mx, self.tree[i])
+            i &= i - 1
+        return mx
+
+
     dis = {x:i for i, x in enumerate(sorted(xs), 1)}
     tn = len(dis)
     bit = [0] * (tn + 1)

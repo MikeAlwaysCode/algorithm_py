@@ -13,23 +13,27 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    n, k, x = map(int, input().split())
-    arr = ints()
-    
-    ans = 0
-    dp = [0] * (k + 1)
+    n = sint()
+    nums = ints()
+    nums.sort()
+    j = -1
+    seen = [False] * n
+    for i, x in enumerate(nums):
+        if x % nums[0]:
+            if j == -1:
+                j = i
+        else:
+            seen[i] = True
+    if j == -1:
+        print("Yes")
+        return
     for i in range(n):
-        for j in range(min(i + 1, k), -1, -1):
-            if j <= i:
-                dp[j] = max(0, dp[j] + arr[i] - x)
-            elif j > i:
-                dp[j] = max(0, dp[j - 1] + arr[i] + x)
-            if j:
-                dp[j] = max(dp[j], dp[j - 1] + arr[i] + x)
-            
-            if k - j < n - i: ans = max(ans, dp[j])
-        
-    print(ans)
+        if seen[i]:
+            continue
+        if nums[i] % nums[j]:
+            print("No")
+            return
+    print("Yes")
 
 
 for _ in range(int(input())):
