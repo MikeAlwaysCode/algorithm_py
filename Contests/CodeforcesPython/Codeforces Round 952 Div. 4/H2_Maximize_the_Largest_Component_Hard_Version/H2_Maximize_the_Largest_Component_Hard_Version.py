@@ -42,8 +42,6 @@ def solve() -> None:
     for i, row in enumerate(g):
         for j, c in enumerate(row):
             if c == '.':
-                rcnt[i] += 1
-                ccnt[j] += 1
                 continue
             u = i * m + j
             sz[u] = 1
@@ -53,11 +51,18 @@ def solve() -> None:
             if j and g[i][j - 1] == '#':
                 v = i * m + j - 1
                 union(u, v)
-            u = find(u)
-            mn_r[u] = min(mn_r[u], max(0, i - 1))
-            mx_r[u] = max(mx_r[u], min(n - 1, i + 1))
-            mn_c[u] = min(mn_c[u], max(0, j - 1))
-            mx_c[u] = max(mx_c[u], min(m - 1, j + 1))
+
+    for i, row in enumerate(g):
+        for j, c in enumerate(row):
+            if c == '.':
+                rcnt[i] += 1
+                ccnt[j] += 1
+            else:
+                u = find(i * m + j)
+                mn_r[u] = min(mn_r[u], max(0, i - 1))
+                mx_r[u] = max(mx_r[u], min(n - 1, i + 1))
+                mn_c[u] = min(mn_c[u], max(0, j - 1))
+                mx_c[u] = max(mx_c[u], min(m - 1, j + 1))
 
     cnt = [[0] * (m + 1) for _ in range(n + 1)]
     for i in range(n):
