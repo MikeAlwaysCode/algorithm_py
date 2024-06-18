@@ -13,17 +13,18 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    input()
-    g = []
-    for i in range(8):
-        g.append(input())
+    n = sint()
+    seg = []
+    for i in range(1, n + 1):
+        l, r = mint()
+        seg.append((l, r, i))
+    seg.sort(key = lambda x: (x[0], -x[1]))
+    for i in range(1, n):
+        if seg[i][1] <= seg[i - 1][1]:
+            print(seg[i][2], seg[i - 1][2])
+            return
+    print(-1, -1)
         
-    for i in range(1, 7):
-        for j in range(1, 7):
-            if g[i][j] == '#' and g[i - 1][j - 1] == '#' and g[i - 1][j + 1] == '#':
-                print(i + 1, j + 1)
-                return
 
 
-for _ in range(int(input())):
-    solve()
+solve()

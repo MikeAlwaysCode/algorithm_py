@@ -13,16 +13,7 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    input()
-    g = []
-    for i in range(8):
-        g.append(input())
-        
-    for i in range(1, 7):
-        for j in range(1, 7):
-            if g[i][j] == '#' and g[i - 1][j - 1] == '#' and g[i - 1][j + 1] == '#':
-                print(i + 1, j + 1)
-                return
+    return
 
 
 for _ in range(int(input())):

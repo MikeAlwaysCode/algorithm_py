@@ -13,17 +13,21 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    input()
-    g = []
-    for i in range(8):
-        g.append(input())
-        
-    for i in range(1, 7):
-        for j in range(1, 7):
-            if g[i][j] == '#' and g[i - 1][j - 1] == '#' and g[i - 1][j + 1] == '#':
-                print(i + 1, j + 1)
-                return
+    n = sint()
+    nums = ints()
+    suff = [0] * (n + 1)
+    s = mx = 0
+    for i in range(n - 1, -1, -1):
+        s += nums[i]
+        suff[i] = max(nums[i], suff[i + 1])
+    ans = []
+    for i, x in enumerate(nums, 1):
+        if s - x == max(suff[i], mx) * 2:
+            ans.append(i)
+        mx = max(mx, x)
+    
+    print(len(ans))
+    print(*ans)
 
 
-for _ in range(int(input())):
-    solve()
+solve()

@@ -16,23 +16,20 @@ ints = lambda: list(map(int, input().split()))
 def solve() -> None:
     n, c = mint()
     nums = ints()
+    nums[0] += c
     pres = list(accumulate(nums, initial=0))
-    pres[1] += c
     ans = [0] * n
     suff = [0] * (n + 1)
     for i in range(n - 1, -1, -1):
         suff[i] = max(nums[i], suff[i + 1])
     mx = -1
     for i, x in enumerate(nums):
-        if i == 0:
-            x += c
-        y = x
         if x <= mx or x < suff[i + 1]:
             ans[i] += i
             x += pres[i]
         if x < suff[i + 1]:
             ans[i] += 1
-        mx = max(mx, y)
+        mx = max(mx, nums[i])
     print(*ans)
 
 for _ in range(int(input())):

@@ -13,7 +13,8 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    return
+    d = ints()
+    print(sum(x > d[0] for x in d[1:]))
 
 
 for _ in range(int(input())):

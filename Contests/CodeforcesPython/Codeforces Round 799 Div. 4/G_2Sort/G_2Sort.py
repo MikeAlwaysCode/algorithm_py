@@ -13,7 +13,18 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    return
+    n, k = mint()
+    nums = ints()
+    suff = 1
+    ans = 0
+    for i in range(n - 2, -1, -1):
+        if nums[i] < nums[i + 1] * 2:
+            suff += 1
+        else:
+            suff = 1
+        if suff > k:
+            ans += 1
+    print(ans)
 
 
 for _ in range(int(input())):

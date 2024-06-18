@@ -1,3 +1,4 @@
+import math
 import sys
 
 # region fastio
@@ -13,7 +14,19 @@ ints = lambda: list(map(int, input().split()))
 # DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
 
 def solve() -> None:
-    return
+    n, s = mint()
+    nums = ints()
+    ans = math.inf
+    l = m = 0
+    for r, x in enumerate(nums):
+        m += x
+        while m > s:
+            m -= nums[l]
+            l += 1
+        if m == s:
+            ans = min(ans, l + n - 1 - r)
+
+    print(-1 if ans == math.inf else ans)
 
 
 for _ in range(int(input())):
